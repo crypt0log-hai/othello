@@ -20,13 +20,32 @@ namespace ProjetOthello
     /// </summary>
     public partial class MainWindow : Window
     {
+        int iSize = 8;
+        Token[][] tokensBoard;
         public MainWindow()
         {
             InitializeComponent();
+            Initialization();
         }
 
-        private void Ininitialisation()
+        private void Initialization()
         {
+            tokensBoard = new Token[iSize][];
+            for(int i = 0; i < iSize; i++)
+            {
+                tokensBoard[i] = new Token[iSize];
+                for (int j = 0; j < iSize; j++)
+                {
+                    System.Windows.Controls.Button newBtn = new Button();
+                    newBtn.IsEnabled = true;
+                    
+                    Grid.SetRow(newBtn, i);
+                    Grid.SetColumn(newBtn, j);
+                    tokensBoard[i][j] = new Token(newBtn);
+                    gridBoard.Children.Add(newBtn);
+                }
+            }
+
 
         }
     }
