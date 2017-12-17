@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjetOthello"
         mc:Ignorable="d"
-        Title="SelectionMenu" Height="300" Width="300">
+        Title="SelectionMenu" Height="300" Width="300"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Button x:Name="btnNext" Content="Next" Click="btnNext_Click"/>
     </Grid>

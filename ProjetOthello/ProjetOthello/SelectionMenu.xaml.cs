@@ -24,11 +24,13 @@ namespace ProjetOthello
             InitializeComponent();
             BitmapImage bitmapImage1 = new BitmapImage();
             bitmapImage1.BeginInit();
-            bitmapImage1.UriSource = new Uri("Assets/Tokens/BlackTocken.png", UriKind.Relative);
+            bitmapImage1.UriSource = new Uri("pack://application:,,,/Assets/Tokens/BlackToken.png", UriKind.RelativeOrAbsolute);
+            bitmapImage1.CacheOption = BitmapCacheOption.OnLoad;
             bitmapImage1.EndInit();
             BitmapImage bitmapImage2 = new BitmapImage();
             bitmapImage2.BeginInit();
-            bitmapImage2.UriSource = new Uri("Assets/Tokens/WhiteTocken.png", UriKind.Relative);
+            bitmapImage2.UriSource = new Uri("pack://application:,,,/Assets/Tokens/WhiteToken.png", UriKind.RelativeOrAbsolute);
+            bitmapImage2.CacheOption = BitmapCacheOption.OnLoad;
             bitmapImage2.EndInit();
             Image img1 = new Image();
             img1.Source = bitmapImage1;
