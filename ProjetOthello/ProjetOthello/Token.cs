@@ -8,14 +8,44 @@ namespace ProjetOthello
 {
     class Token
     {
-        public Button btn;
-        public int iTokenValue = -1;
-        public Token(Button _btn)
+
+        #region Propreties
+
+        private Button btnContainer;
+        private int iTokenValue = -1;
+
+        #endregion
+
+
+        #region Getter/Setter
+
+        public Button BtnContainer { get => btnContainer; set => btnContainer = value; }
+
+        #endregion
+
+
+        #region Constructor
+
+        public Token(Button _btnContainer)
         {
-            btn = _btn;
-            btn.Content = GameParameter.imageIndex[0];
+            BtnContainer = _btnContainer;
         }
 
-        
+        #endregion
+
+        #region Function
+
+        public void UpdateToken(int iPlayerId)
+        {
+            iTokenValue = iPlayerId;
+            Image imgToken = new Image();
+            imgToken.Source = GameParameter.imageIndex[iTokenValue];
+            btnContainer.Content = imgToken;
+        }
+
+        #endregion
+
+
+
     }
 }

@@ -20,33 +20,89 @@ namespace ProjetOthello
     /// </summary>
     public partial class MainWindow : Window
     {
-        int iSize = 8;
+
+        #region Proprety
+
+        int iSize = 0;
+        int iActualPlayerId = 0;
         Token[][] tokensBoard;
+
+        #endregion
+
+        #region Constructor
+
         public MainWindow()
         {
             InitializeComponent();
-            Initialization();
+            iSize = GameParameter.iSize;
+            InitializationBoard();
+            InitializationGame();
         }
 
-        private void Initialization()
+        #endregion
+
+        #region Initialization
+
+        private void InitializationBoard()
         {
             tokensBoard = new Token[iSize][];
             for(int i = 0; i < iSize; i++)
             {
-                tokensBoard[i] = new Token[iSize];
                 for (int j = 0; j < iSize; j++)
                 {
-                    System.Windows.Controls.Button newBtn = new Button();
-                    newBtn.IsEnabled = true;
-                    
-                    Grid.SetRow(newBtn, i);
-                    Grid.SetColumn(newBtn, j);
-                    tokensBoard[i][j] = new Token(newBtn);
-                    gridBoard.Children.Add(newBtn);
+                    if(i==0)
+                        tokensBoard[j] = new Token[iSize];
+                    Button btnNewCell = new Button();
+                    btnNewCell.IsEnabled = true;
+
+                    btnNewCell.MouseEnter +=  new MouseEventHandler(MouseEnterCell);
+                    btnNewCell.MouseLeave += new MouseEventHandler(MouseLeaveCell);
+                    Grid.SetRow(btnNewCell, i);
+                    Grid.SetColumn(btnNewCell, j);
+                    tokensBoard[j][i] = new Token(btnNewCell);
+                    gridBoard.Children.Add(btnNewCell);
                 }
             }
 
-
         }
+
+        
+
+        #endregion
+
+        private void InitializationGame()
+        {
+            //Initialize the fourth first tokens
+            tokensBoard[(int)iSize / 2 - 1][(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
+            tokensBoard[(int)iSize / 2][(int)iSize / 2].UpdateToken(iActualPlayerId);
+
+            ChangeTurn();
+
+            tokensBoard[(int)iSize / 2][(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
+            tokensBoard[(int)iSize / 2 - 1][(int)iSize / 2].UpdateToken(iActualPlayerId);
+        }
+
+        #region Function
+
+        private void ChangeTurn(){iActualPlayerId = (iActualPlayerId == 0) ? 1 : 0;}
+
+        #endregion
+
+        #region Event
+
+        private void MouseEnterCell(object sender, MouseEventArgs e)
+        {
+            Button btn = (Button)sender;
+            Image imgToken = new Image();
+            imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
+            btn.Content = imgToken;
+        }
+
+        private void MouseLeaveCell(object sender, MouseEventArgs e)
+        {
+            Button btn = (Button)sender;
+            btn.Content = "";
+        }
+        #endregion
     }
 }
