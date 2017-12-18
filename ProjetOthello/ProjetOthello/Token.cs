@@ -20,6 +20,7 @@ namespace ProjetOthello
         #region Getter/Setter
 
         public Button BtnContainer { get => btnContainer; set => btnContainer = value; }
+        public int ITokenValue { get => iTokenValue;}
 
         #endregion
 
@@ -38,8 +39,13 @@ namespace ProjetOthello
         public void UpdateToken(int iPlayerId)
         {
             iTokenValue = iPlayerId;
+            Token_ChangeDisplay(iPlayerId);
+        }
+
+        public void Token_ChangeDisplay(int iPlayerId)
+        {
             Image imgToken = new Image();
-            imgToken.Source = GameParameter.imageIndex[iTokenValue];
+            imgToken.Source = GameParameter.imageIndex[iPlayerId];
             btnContainer.Content = imgToken;
         }
 

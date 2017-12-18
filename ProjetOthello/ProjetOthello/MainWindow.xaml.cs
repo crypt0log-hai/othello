@@ -54,7 +54,7 @@ namespace ProjetOthello
                         tokensBoard[j] = new Token[iSize];
                     Button btnNewCell = new Button();
                     btnNewCell.IsEnabled = true;
-
+                    btnNewCell.Uid = i + ";" + j;
                     btnNewCell.MouseEnter +=  new MouseEventHandler(MouseEnterCell);
                     btnNewCell.MouseLeave += new MouseEventHandler(MouseLeaveCell);
                     Grid.SetRow(btnNewCell, i);
@@ -93,15 +93,21 @@ namespace ProjetOthello
         private void MouseEnterCell(object sender, MouseEventArgs e)
         {
             Button btn = (Button)sender;
-            Image imgToken = new Image();
-            imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
-            btn.Content = imgToken;
+            string[] strUid = btn.Uid.Split(';');
+            if (tokensBoard[Convert.ToInt32(strUid[1])][Convert.ToInt32(strUid[0])].ITokenValue == -1)
+            {
+                Image imgToken = new Image();
+                imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
+                btn.Content = imgToken;
+            }
         }
 
         private void MouseLeaveCell(object sender, MouseEventArgs e)
-        {
+        {            
             Button btn = (Button)sender;
-            btn.Content = "";
+            string[] strUid = btn.Uid.Split(';');
+            if(tokensBoard[Convert.ToInt32(strUid[1])][Convert.ToInt32(strUid[0])].ITokenValue == -1)
+                btn.Content = "";
         }
         #endregion
     }

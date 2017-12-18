@@ -12,9 +12,6 @@
         <BitmapImage x:Key="btmLogo" UriSource="Assets/Menu/Logo.png" />
         <BitmapImage x:Key="btmBackground" UriSource="Assets/Menu/BackgroundMenu.jpg" />
         <Thickness x:Key="tbMargin">0,10,10,10</Thickness>
-        <Style TargetType="{x:Type Window}">
-            <Setter Property="Background" Value="Black" />
-        </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="#1A1A1A" />
             <Setter Property="Foreground" Value="White" />

@@ -7,43 +7,101 @@
         mc:Ignorable="d"
         Title="SelectionMenu" Height="300" Width="694.958"
         WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Margin="5">
+                            <Path Stretch="Fill"
+                                  Data="M20,0 L100,0 80,90 0,90 Z"
+                                  Fill="{TemplateBinding Background}"
+                                  Stroke="Black"
+                                  StrokeThickness="1"
+                                  SnapsToDevicePixels="True"/>
+                            <ContentPresenter Name="content" 
+                         HorizontalAlignment="Center" 
+                         VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#999999" />
+                                <Setter Property="Foreground" Value="#E2106E" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NormalButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#1A1A1A" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontFamily" Value="./#Arial" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="4" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Path x:Name="PathIcon" Width="20" Height="22" Stretch="Fill" Fill="#FFFFFF" HorizontalAlignment="Left" Margin="5,0,0,0" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z "/>
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#999999" />
+                                <Setter Property="Foreground" Value="#E2106E" />
+                                <Setter TargetName="PathIcon" Property="Fill" Value="#E2106E" />
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="560*"/>
+            <ColumnDefinition Width="127*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="0"  >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="2*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+                <Rectangle Grid.Column="0" Name="rPlayer1"></Rectangle>
             </Grid>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-            </Grid>
+            <Canvas  Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Button x:Uid="0" Name="btn0"  Canvas.ZIndex="0" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  />
+                <Button x:Uid="1" Canvas.ZIndex="1" Canvas.Left="70" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
+                <Button x:Uid="2" Canvas.ZIndex="2" Canvas.Left="140" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
+                <Button x:Uid="3" Canvas.ZIndex="3" Canvas.Left="210" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
+                <Button x:Uid="4" Canvas.ZIndex="4" Canvas.Left="280" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
+                <Button x:Uid="5" Canvas.ZIndex="5" Canvas.Left="350" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
+            </Canvas>
         </Grid>
 
-        <Button Grid.Row="2" x:Name="btnNext" Content="Next" Click="btnNext_Click"/>
+        <Button Style="{StaticResource NormalButton}" Grid.Row="2" x:Name="btnNext" Content="Next" Click="btnNext_Click" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
