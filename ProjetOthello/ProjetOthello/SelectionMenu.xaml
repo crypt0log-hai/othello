@@ -93,13 +93,20 @@
                 <Rectangle Grid.Column="0" Name="rPlayer1"></Rectangle>
             </Grid>
             <Canvas  Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Button x:Uid="0" Name="btn0"  Canvas.ZIndex="0" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  />
-                <Button x:Uid="1" Canvas.ZIndex="1" Canvas.Left="70" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
-                <Button x:Uid="2" Canvas.ZIndex="2" Canvas.Left="140" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
-                <Button x:Uid="3" Canvas.ZIndex="3" Canvas.Left="210" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
-                <Button x:Uid="4" Canvas.ZIndex="4" Canvas.Left="280" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
-                <Button x:Uid="5" Canvas.ZIndex="5" Canvas.Left="350" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"/>
+                <Button x:Uid="0" Name="btnPortrait0" Canvas.ZIndex="0" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter" MouseLeave="btnPortrait_mouseLeave"  />
+                <Button x:Uid="1" Name="btnPortrait1" Canvas.ZIndex="1" Canvas.Left="70" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="2" Name="btnPortrait2" Canvas.ZIndex="2" Canvas.Left="140" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="3" Canvas.ZIndex="3" Canvas.Left="210" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="4" Canvas.ZIndex="4" Canvas.Left="280" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="5" Canvas.ZIndex="5" Canvas.Left="350" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
             </Canvas>
+            <Grid Grid.Column="2"  >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.Column="1" Name="rPlayer2"></Rectangle>
+            </Grid>
         </Grid>
 
         <Button Style="{StaticResource NormalButton}" Grid.Row="2" x:Name="btnNext" Content="Next" Click="btnNext_Click" Grid.ColumnSpan="2"/>

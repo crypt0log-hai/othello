@@ -20,33 +20,48 @@ namespace ProjetOthello
     public partial class SelectionMenu : Window
     {
 
-        BitmapImage portrait = new BitmapImage();
+        BitmapImage[] tbtmPortrait;
+
+        Rectangle[] rSelected;
+        int iChooseTurn = 0;
+
+        List<Image> lImgPortraits;
+        int iSelectedPortrait = -1;
+
+        BitmapImage btmVoidPortait;
 
         public SelectionMenu()
         {
             InitializeComponent();
-            BitmapImage bitmapImage1 = new BitmapImage();
-            bitmapImage1.BeginInit();
-            bitmapImage1.UriSource = new Uri("pack://application:,,,/Assets/Tokens/BlackToken.png", UriKind.RelativeOrAbsolute);
-            bitmapImage1.EndInit();
-            BitmapImage bitmapImage2 = new BitmapImage();
-            bitmapImage2.BeginInit();
-            bitmapImage2.UriSource = new Uri("pack://application:,,,/Assets/Tokens/WhiteToken.png", UriKind.RelativeOrAbsolute);
-            bitmapImage2.EndInit();
-            Image img1 = new Image();
-            img1.Source = bitmapImage1;
-            Image img2 = new Image();
-            img2.Source = bitmapImage2;
+            
+            string[] tPathsToSelectedImage = { "Carrino.png" };
+            tbtmPortrait = new BitmapImage[6];
+            lImgPortraits = new List<Image>();
+            for (int i = 0; i < tPathsToSelectedImage.Length; i++)
+            {
+                tbtmPortrait[i] = new BitmapImage();
+                tbtmPortrait[i].BeginInit();
+                tbtmPortrait[i].UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/" + tPathsToSelectedImage[i], UriKind.RelativeOrAbsolute);
+                tbtmPortrait[i].EndInit();
+                Image imgSelected = new Image();
+                imgSelected.Source = tbtmPortrait[i];
+                lImgPortraits.Add(imgSelected);
+            }
 
-            portrait.BeginInit();
-            portrait.UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/Carrino.png", UriKind.RelativeOrAbsolute);
-            portrait.EndInit();
-            Image img3 = new Image();
-            img3.Source = portrait;
+            btmVoidPortait = new BitmapImage();
+            btmVoidPortait.BeginInit();
+            btmVoidPortait.UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/Inconnu.png", UriKind.RelativeOrAbsolute);
+            btmVoidPortait.EndInit();
 
-            GameParameter.imageIndex[0] = bitmapImage2;
-            GameParameter.imageIndex[1] = bitmapImage1;
-            btn0.Content = img3;
+            rSelected = new Rectangle[2];
+            rSelected[0] = rPlayer1;
+            rSelected[1] = rPlayer2;
+            btnPortrait0.Content = lImgPortraits[0];
+
+
+            UpdatePlayerImage(0);
+            UpdatePlayerImage(1);
+
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
@@ -64,10 +79,36 @@ namespace ProjetOthello
         private void btnPortrait_mouseEnter(object sender, MouseEventArgs e)
         {
             Button btnEvent = (Button)sender;
-            btnNext.Content = btnEvent.Uid;
+            try { iSelectedPortrait = Convert.ToInt32(btnEvent.Uid); }
+            catch { Console.Write("Id de sélection non entier"); iSelectedPortrait = -1;}
+            UpdatePlayerImage(iChooseTurn);
+        }
+
+        private void btnPortrait_mouseLeave(object sender, MouseEventArgs e)
+        {
+            Button btnEvent = (Button)sender;
+            if (iSelectedPortrait.ToString() == btnEvent.Uid)
+            {
+                iSelectedPortrait = -1;
+                UpdatePlayerImage(iChooseTurn);
+            }
+
+        }
+
+        private void UpdatePlayerImage(int iPlayerId)
+        {
             ImageBrush imageBrush = new ImageBrush();
-            imageBrush.ImageSource = portrait;
-            rPlayer1.Fill = imageBrush;
+            if (iSelectedPortrait == -1)
+            {
+                imageBrush.ImageSource = btmVoidPortait;
+                rSelected[iPlayerId].Fill = imageBrush;
+            }
+            else
+            {
+                imageBrush.ImageSource = tbtmPortrait[iSelectedPortrait];
+                rSelected[iPlayerId].Fill = imageBrush;
+            }
+
         }
     }
 }
