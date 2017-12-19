@@ -13,6 +13,7 @@ namespace ProjetOthello
 
         private Button btnContainer;
         private int iTokenValue = -1;
+        private bool isPlayable = false;
 
         #endregion
 
@@ -21,6 +22,7 @@ namespace ProjetOthello
 
         public Button BtnContainer { get => btnContainer; set => btnContainer = value; }
         public int ITokenValue { get => iTokenValue;}
+        public bool IsPlayable { get => isPlayable; set => isPlayable = value; }
 
         #endregion
 

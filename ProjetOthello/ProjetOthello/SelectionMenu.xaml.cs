@@ -80,7 +80,7 @@ namespace ProjetOthello
         {
             Button btnEvent = (Button)sender;
             try { iSelectedPortrait = Convert.ToInt32(btnEvent.Uid); }
-            catch { Console.Write("Id de sélection non entier"); iSelectedPortrait = -1;}
+            catch { Console.Write("Select Id is not integer"); iSelectedPortrait = -1;}
             UpdatePlayerImage(iChooseTurn);
         }
 

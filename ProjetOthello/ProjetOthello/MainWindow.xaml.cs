@@ -54,7 +54,7 @@ namespace ProjetOthello
                         tokensBoard[j] = new Token[iSize];
                     Button btnNewCell = new Button();
                     btnNewCell.IsEnabled = true;
-                    btnNewCell.Uid = i + ";" + j;
+                    btnNewCell.Uid = j + ";" + i;
                     btnNewCell.MouseEnter +=  new MouseEventHandler(MouseEnterCell);
                     btnNewCell.MouseLeave += new MouseEventHandler(MouseLeaveCell);
                     Grid.SetRow(btnNewCell, i);
@@ -86,6 +86,13 @@ namespace ProjetOthello
 
         private void ChangeTurn(){iActualPlayerId = (iActualPlayerId == 0) ? 1 : 0;}
 
+        private void ResetPlayableToken() { tokensBoard.ToList().ForEach(list => list.ToList().ForEach(token => token.IsPlayable = false)); }
+
+        private bool IsCellPlayable(int x, int y)
+        {
+            return true;
+        }
+
         #endregion
 
         #region Event
@@ -94,8 +101,15 @@ namespace ProjetOthello
         {
             Button btn = (Button)sender;
             string[] strUid = btn.Uid.Split(';');
-            if (tokensBoard[Convert.ToInt32(strUid[1])][Convert.ToInt32(strUid[0])].ITokenValue == -1)
+            int iX = 0;
+            int iY = 0;
+            try { iX = Convert.ToInt32(strUid[0]); iY = Convert.ToInt32(strUid[1]); }
+            catch{ Console.WriteLine("Btn.Uid is not integer.");}
+            Token tokenRef = tokensBoard[iX][iY];
+            if (tokenRef.ITokenValue == -1)
             {
+                if (!tokenRef.IsPlayable)
+                    tokenRef.IsPlayable = IsCellPlayable(iX, iY);
                 Image imgToken = new Image();
                 imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
                 btn.Content = imgToken;

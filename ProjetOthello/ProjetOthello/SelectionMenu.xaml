@@ -8,6 +8,9 @@
         Title="SelectionMenu" Height="300" Width="694.958"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="Background" Value="Black"/>
+        </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Control.Template">
@@ -70,15 +73,15 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="560*"/>
-            <ColumnDefinition Width="127*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Grid.ColumnSpan="2">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="8*"/>
@@ -109,6 +112,6 @@
             </Grid>
         </Grid>
 
-        <Button Style="{StaticResource NormalButton}" Grid.Row="2" x:Name="btnNext" Content="Next" Click="btnNext_Click" Grid.ColumnSpan="2"/>
+        <Button Style="{StaticResource NormalButton}" Grid.Row="2" x:Name="btnNext" Content="Next" Click="btnNext_Click"/>
     </Grid>
 </Window>
