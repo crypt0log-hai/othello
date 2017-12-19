@@ -5,24 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjetOthello"
         mc:Ignorable="d"
-        Title="SelectionMenu" Height="300" Width="694.958"
+        Title="SelectionMenu" Height="567" Width="1063.208"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <Style TargetType="{x:Type Window}">
+        <Style TargetType="{x:Type Grid}">
             <Setter Property="Background" Value="Black"/>
         </Style>
         <Style TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="-4"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid Margin="5">
+                        <Grid>
                             <Path Stretch="Fill"
-                                  Data="M20,0 L100,0 80,90 0,90 Z"
+                                  Data="M22,0 L102,0 80,90 0,90 Z"
                                   Fill="{TemplateBinding Background}"
                                   Stroke="Black"
                                   StrokeThickness="1"
-                                  SnapsToDevicePixels="True"/>
+                                  SnapsToDevicePixels="True"
+                                  Margin="0,0,0,0"/>
                             <ContentPresenter Name="content" 
                          HorizontalAlignment="Center" 
                          VerticalAlignment="Center"/>
@@ -43,6 +47,7 @@
             <Setter Property="Foreground" Value="White" />
             <Setter Property="FontFamily" Value="./#Arial" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
+            
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -77,38 +82,36 @@
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="110"/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0"  >
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="121"/>
                 </Grid.ColumnDefinitions>
-                <Rectangle Grid.Column="0" Name="rPlayer1"></Rectangle>
+                <Rectangle Name="rPlayer1"></Rectangle>
             </Grid>
             <Canvas  Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Button x:Uid="0" Name="btnPortrait0" Canvas.ZIndex="0" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter" MouseLeave="btnPortrait_mouseLeave"  />
-                <Button x:Uid="1" Name="btnPortrait1" Canvas.ZIndex="1" Canvas.Left="70" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="2" Name="btnPortrait2" Canvas.ZIndex="2" Canvas.Left="140" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="3" Canvas.ZIndex="3" Canvas.Left="210" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="4" Canvas.ZIndex="4" Canvas.Left="280" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="5" Canvas.ZIndex="5" Canvas.Left="350" Width="100" Height="90" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="0" Name="btnPortrait0" Canvas.ZIndex="0" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter" MouseLeave="btnPortrait_mouseLeave"  />
+                <Button x:Uid="1" Name="btnPortrait1" Canvas.ZIndex="1" Canvas.Left="77" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="2" Name="btnPortrait2" Canvas.ZIndex="2" Canvas.Left="154" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="3" Name="btnPortrait3" Canvas.ZIndex="3" Canvas.Left="231" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="4" Name="btnPortrait4" Canvas.ZIndex="4" Canvas.Left="308" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="5" Name="btnPortrait5" Canvas.ZIndex="5" Canvas.Left="385" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
             </Canvas>
             <Grid Grid.Column="2"  >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <Rectangle Grid.Column="1" Name="rPlayer2"></Rectangle>
+                <Rectangle Name="rPlayer2"></Rectangle>
             </Grid>
         </Grid>
 

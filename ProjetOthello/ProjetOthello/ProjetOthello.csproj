@@ -132,8 +132,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Menu\Portrait\QuestionMark.png" />
     <Resource Include="Assets\Menu\Portrait\Carrino.png" />
-    <Resource Include="Assets\Menu\Portrait\Inconnu.png" />
     <Content Include="Assets\Tokens\BlackToken.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

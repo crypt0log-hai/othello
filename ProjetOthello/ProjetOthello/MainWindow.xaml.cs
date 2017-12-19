@@ -66,9 +66,6 @@ namespace ProjetOthello
 
         }
 
-        
-
-        #endregion
 
         private void InitializationGame()
         {
@@ -81,6 +78,9 @@ namespace ProjetOthello
             tokensBoard[(int)iSize / 2][(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
             tokensBoard[(int)iSize / 2 - 1][(int)iSize / 2].UpdateToken(iActualPlayerId);
         }
+
+        #endregion
+
 
         #region Function
 

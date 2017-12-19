@@ -50,7 +50,7 @@ namespace ProjetOthello
 
             btmVoidPortait = new BitmapImage();
             btmVoidPortait.BeginInit();
-            btmVoidPortait.UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/Inconnu.png", UriKind.RelativeOrAbsolute);
+            btmVoidPortait.UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/QuestionMark.png", UriKind.RelativeOrAbsolute);
             btmVoidPortait.EndInit();
 
             rSelected = new Rectangle[2];
