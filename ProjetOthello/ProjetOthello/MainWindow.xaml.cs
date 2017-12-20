@@ -22,11 +22,18 @@ namespace ProjetOthello
     {
 
         #region Proprety
-
+        
+        //Number if collumns and rows of the board, iSize*iSize = Number of cells
         int iSize = 0;
+
+        //Id of the player to whom it is the turn
         int iActualPlayerId = 0;
+
+        //Represent the cells on the board
         Token[][] tokensBoard;
 
+        //Represent the cells who can be played this turn
+        List<Token> lTokenPlayable;
         #endregion
 
         #region Constructor
@@ -34,6 +41,23 @@ namespace ProjetOthello
         public MainWindow()
         {
             InitializeComponent();
+
+            //ZONE A MOURRIR
+            BitmapImage btm1 = new BitmapImage();
+            btm1.BeginInit();
+            btm1.UriSource = new Uri("pack://application:,,,/Assets/Tokens/BlackToken.png");
+            btm1.EndInit();
+            GameParameter.imageIndex[0] = btm1;
+            btm1 = new BitmapImage();
+            btm1.BeginInit();
+            btm1.UriSource = new Uri("pack://application:,,,/Assets/Tokens/WhiteToken.png");
+            btm1.EndInit();
+            GameParameter.imageIndex[1] = btm1;
+
+
+            /////////////////
+
+
             iSize = GameParameter.iSize;
             InitializationBoard();
             InitializationGame();
@@ -42,7 +66,7 @@ namespace ProjetOthello
         #endregion
 
         #region Initialization
-
+        //Initialize the cells, with the buttons and their events
         private void InitializationBoard()
         {
             tokensBoard = new Token[iSize][];
@@ -50,46 +74,55 @@ namespace ProjetOthello
             {
                 for (int j = 0; j < iSize; j++)
                 {
+                    //[j,i] correspond to [x,y], so first of all the collumns are created and only after the rows are made
                     if(i==0)
                         tokensBoard[j] = new Token[iSize];
+
                     Button btnNewCell = new Button();
                     btnNewCell.IsEnabled = true;
                     btnNewCell.Uid = j + ";" + i;
                     btnNewCell.MouseEnter +=  new MouseEventHandler(MouseEnterCell);
                     btnNewCell.MouseLeave += new MouseEventHandler(MouseLeaveCell);
+
+                    //Put the buttons into the grid
                     Grid.SetRow(btnNewCell, i);
                     Grid.SetColumn(btnNewCell, j);
-                    tokensBoard[j][i] = new Token(btnNewCell);
                     gridBoard.Children.Add(btnNewCell);
+
+                   
+                    tokensBoard[j][i] = new Token(btnNewCell);
                 }
             }
+            lTokenPlayable = new List<Token>();
 
         }
 
-        
+
 
         #endregion
 
+        //Initialize the fourth first tokens
         private void InitializationGame()
         {
-            //Initialize the fourth first tokens
             tokensBoard[(int)iSize / 2 - 1][(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
             tokensBoard[(int)iSize / 2][(int)iSize / 2].UpdateToken(iActualPlayerId);
-
             ChangeTurn();
-
             tokensBoard[(int)iSize / 2][(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
             tokensBoard[(int)iSize / 2 - 1][(int)iSize / 2].UpdateToken(iActualPlayerId);
+            ChangeTurn();
         }
 
         #region Function
 
-        private void ChangeTurn(){iActualPlayerId = (iActualPlayerId == 0) ? 1 : 0;}
+        
+        private void ChangeTurn(){iActualPlayerId = (iActualPlayerId == 0) ? 1 : 0; ResetPlayableToken(); }
 
-        private void ResetPlayableToken() { tokensBoard.ToList().ForEach(list => list.ToList().ForEach(token => token.IsPlayable = false)); }
+        //Reset every IsPlayable for each cells
+        private void ResetPlayableToken() { lTokenPlayable.ForEach(token => token.IsPlayable = false); lTokenPlayable = new List<Token>();}
 
-        private bool IsCellPlayable(int x, int y)
+        private bool IsCellPlayable(int x, int y, ref Token token)
         {
+            lTokenPlayable.Add(token);
             return true;
         }
 
@@ -109,7 +142,7 @@ namespace ProjetOthello
             if (tokenRef.ITokenValue == -1)
             {
                 if (!tokenRef.IsPlayable)
-                    tokenRef.IsPlayable = IsCellPlayable(iX, iY);
+                    tokenRef.IsPlayable = IsCellPlayable(iX, iY, ref tokenRef);
                 Image imgToken = new Image();
                 imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
                 btn.Content = imgToken;

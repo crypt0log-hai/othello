@@ -11,6 +11,7 @@ namespace ProjetOthello
 
         #region Propreties
 
+        //Reference of grid buttons
         private Button btnContainer;
         private int iTokenValue = -1;
         private bool isPlayable = false;

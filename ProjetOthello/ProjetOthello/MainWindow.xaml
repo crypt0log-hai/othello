@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjetOthello"
         mc:Ignorable="d"
-        Title="MainWindow" Height="916.37" Width="972.852"
+        Title="MainWindow" Height="916.37" Width="975.852"
         WindowStartupLocation="CenterScreen">
+    
     <Grid>
         
         <Grid.ColumnDefinitions>
