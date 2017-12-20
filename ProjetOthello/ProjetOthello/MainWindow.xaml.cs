@@ -96,10 +96,7 @@ namespace ProjetOthello
             lTokenPlayable = new List<Token>();
 
         }
-
-
-
-        #endregion
+       
 
         //Initialize the fourth first tokens
         private void InitializationGame()
@@ -111,6 +108,9 @@ namespace ProjetOthello
             tokensBoard[(int)iSize / 2 - 1][(int)iSize / 2].UpdateToken(iActualPlayerId);
             ChangeTurn();
         }
+
+        #endregion
+
 
         #region Function
 
