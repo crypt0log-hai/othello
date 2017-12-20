@@ -5,20 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjetOthello"
         mc:Ignorable="d"
-        Title="MainWindow" Height="916.37" Width="975.852"
-        WindowStartupLocation="CenterScreen">
-    
+        Title="MainWindow" Height="1080" Width="1920"            
+        WindowStartupLocation="CenterScreen"
+        Background="Gray">
+
+    <Window.Resources>
+        <BitmapImage x:Key="btmBackground" UriSource="Assets/BackGroundTest.png"/>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="False">
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        
+        <Grid.Background>
+            <ImageBrush ImageSource="{StaticResource btmBackground}"  />
+        </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="214*" />
+            <ColumnDefinition Width="800"/>
+            <ColumnDefinition Width="215*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition/>
+            <RowDefinition Height="800"/>
+            <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Grid.Column="1" Name="gridBoard">
             <Grid.RowDefinitions>
@@ -43,5 +66,5 @@
             </Grid.ColumnDefinitions>
         </Grid>
     </Grid>
-    
+
 </Window>

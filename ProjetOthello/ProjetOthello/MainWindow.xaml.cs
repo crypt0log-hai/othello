@@ -109,6 +109,15 @@ namespace ProjetOthello
             ChangeTurn();
         }
 
+
+
+        private void UidToIJ(Button btn, ref int j, ref int i)
+        {
+            string[] strUid = btn.Uid.Split(';');
+            try { j = Convert.ToInt32(strUid[0]); i = Convert.ToInt32(strUid[1]); }
+            catch { Console.WriteLine("Btn.Uid is not integer."); }
+        }
+
         #endregion
 
 
@@ -133,11 +142,9 @@ namespace ProjetOthello
         private void MouseEnterCell(object sender, MouseEventArgs e)
         {
             Button btn = (Button)sender;
-            string[] strUid = btn.Uid.Split(';');
             int iX = 0;
             int iY = 0;
-            try { iX = Convert.ToInt32(strUid[0]); iY = Convert.ToInt32(strUid[1]); }
-            catch{ Console.WriteLine("Btn.Uid is not integer.");}
+            UidToIJ(btn, ref iX, ref iY);
             Token tokenRef = tokensBoard[iX][iY];
             if (tokenRef.ITokenValue == -1)
             {
@@ -151,10 +158,11 @@ namespace ProjetOthello
 
         private void MouseLeaveCell(object sender, MouseEventArgs e)
         {            
-            Button btn = (Button)sender;
-            string[] strUid = btn.Uid.Split(';');
-            if(tokensBoard[Convert.ToInt32(strUid[1])][Convert.ToInt32(strUid[0])].ITokenValue == -1)
-                btn.Content = "";
+            Button btnEvent = (Button)sender;
+            int iX = 0;
+            int iY = 0;
+            UidToIJ(btnEvent, ref iX, ref iY);
+            tokensBoard[iX][iY].TokenResetDisplay();
         }
         #endregion
     }

@@ -134,6 +134,7 @@
   <ItemGroup>
     <Resource Include="Assets\Menu\Portrait\QuestionMark.png" />
     <Resource Include="Assets\Menu\Portrait\Carrino.png" />
+    <Resource Include="Assets\BackGroundTest.png" />
     <Content Include="Assets\Tokens\BlackToken.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

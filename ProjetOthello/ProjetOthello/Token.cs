@@ -42,14 +42,20 @@ namespace ProjetOthello
         public void UpdateToken(int iPlayerId)
         {
             iTokenValue = iPlayerId;
-            Token_ChangeDisplay(iPlayerId);
+            TokenChangeDisplay(iPlayerId);
         }
 
-        public void Token_ChangeDisplay(int iPlayerId)
+        public void TokenChangeDisplay(int iPlayerId)
         {
             Image imgToken = new Image();
             imgToken.Source = GameParameter.imageIndex[iPlayerId];
             btnContainer.Content = imgToken;
+        }
+
+        public void TokenResetDisplay()
+        {
+            if (iTokenValue == -1)
+                btnContainer.Content = "";
         }
 
         #endregion
