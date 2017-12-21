@@ -127,9 +127,17 @@ namespace ProjetOthello
         {
             lTokenPlayable.ForEach(token => token.ResetTokenList());
             lTokenPlayable = new List<Token>();
+            CellPlayableThisTurn();
         }
 
-        private int IsCellPlayable(int x, int y, ref Token token)
+        private void CellPlayableThisTurn()
+        {
+            for (int i = 0; i < iSize; i++)
+                for (int j = 0; j < iSize; j++)
+                    IsCellPlayable(j, i, ref tokensBoard[j][i]);
+        }
+
+        private void IsCellPlayable(int x, int y, ref Token token)
         {
             for (int i = -1; i <= 1; i++)
                 for (int j = -1; j <= 1; j++)
@@ -143,10 +151,9 @@ namespace ProjetOthello
             if (token.LTokenActionList.Count > 0)
             {
                 lTokenPlayable.Add(token);
-                return 1;
+                token.IIsPlayable = true;
             }
-            else
-                return -1;
+            
 
         }
 
@@ -211,7 +218,7 @@ namespace ProjetOthello
             UidToIJ(btn, ref iX, ref iY);
             Token tokenRef = tokensBoard[iX][iY];
 
-            if(tokenRef.IIsPlayable == 1)
+            if(tokenRef.IIsPlayable)
             {
                 tokenRef.UpdateToken(iActualPlayerId);
                 foreach (Token tokTarget in tokenRef.LTokenActionList){tokTarget.UpdateToken(iActualPlayerId);}
@@ -232,17 +239,11 @@ namespace ProjetOthello
             
             if (tokenRef.ITokenValue == -1)
             {
-                if (tokenRef.IIsPlayable != -1)
+                if (tokenRef.IIsPlayable)
                 {
-                    if (tokenRef.IIsPlayable == 0)
-                        tokenRef.IIsPlayable = IsCellPlayable(iX, iY, ref tokenRef);
-
-                    if (tokenRef.IIsPlayable == 1)
-                    {
-                        Image imgToken = new Image();
-                        imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
-                        btn.Content = imgToken;
-                    }
+                    Image imgToken = new Image();
+                    imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
+                    btn.Content = imgToken;
                 }
             }
         }

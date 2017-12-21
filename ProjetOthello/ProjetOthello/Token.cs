@@ -14,7 +14,7 @@ namespace ProjetOthello
         //Reference of grid buttons
         private Button btnContainer;
         private int iTokenValue = -1;
-        private int iIsPlayable = 0;
+        private bool iIsPlayable = false;
         private List<Token> lTokenActionList;
 
         #endregion
@@ -25,7 +25,7 @@ namespace ProjetOthello
         public Button BtnContainer { get => btnContainer; set => btnContainer = value; }
         public int ITokenValue { get => iTokenValue;}
         internal List<Token> LTokenActionList { get => lTokenActionList; set => lTokenActionList = value; }
-        public int IIsPlayable { get => iIsPlayable; set => iIsPlayable = value; }
+        public bool IIsPlayable { get => iIsPlayable; set => iIsPlayable = value; }
 
         #endregion
 
@@ -63,7 +63,7 @@ namespace ProjetOthello
 
         public void ResetTokenList()
         {
-            iIsPlayable = 0;
+            IIsPlayable = false;
             lTokenActionList = new List<Token>();
         }
 
