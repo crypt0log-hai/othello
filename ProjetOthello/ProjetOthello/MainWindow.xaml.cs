@@ -83,6 +83,7 @@ namespace ProjetOthello
                     btnNewCell.Uid = j + ";" + i;
                     btnNewCell.MouseEnter +=  new MouseEventHandler(MouseEnterCell);
                     btnNewCell.MouseLeave += new MouseEventHandler(MouseLeaveCell);
+                    btnNewCell.Click += MouseClickCell;
 
                     //Put the buttons into the grid
                     Grid.SetRow(btnNewCell, i);
@@ -111,12 +112,7 @@ namespace ProjetOthello
 
 
 
-        private void UidToIJ(Button btn, ref int j, ref int i)
-        {
-            string[] strUid = btn.Uid.Split(';');
-            try { j = Convert.ToInt32(strUid[0]); i = Convert.ToInt32(strUid[1]); }
-            catch { Console.WriteLine("Btn.Uid is not integer."); }
-        }
+       
 
         #endregion
 
@@ -127,17 +123,103 @@ namespace ProjetOthello
         private void ChangeTurn(){iActualPlayerId = (iActualPlayerId == 0) ? 1 : 0; ResetPlayableToken(); }
 
         //Reset every IsPlayable for each cells
-        private void ResetPlayableToken() { lTokenPlayable.ForEach(token => token.IsPlayable = false); lTokenPlayable = new List<Token>();}
-
-        private bool IsCellPlayable(int x, int y, ref Token token)
+        private void ResetPlayableToken()
         {
-            lTokenPlayable.Add(token);
+            lTokenPlayable.ForEach(token => token.ResetTokenList());
+            lTokenPlayable = new List<Token>();
+        }
+
+        private int IsCellPlayable(int x, int y, ref Token token)
+        {
+            for (int i = -1; i <= 1; i++)
+                for (int j = -1; j <= 1; j++)
+                    if (!(i == 0 && j == 0))
+                    {
+                        List<Token> tempTokenRefs = new List<Token>();
+                        FindAction(j, i, x, y, ref tempTokenRefs);
+                        foreach(Token tokTarget in tempTokenRefs) { token.LTokenActionList.Add(tokTarget); }
+                    }
+
+            if (token.LTokenActionList.Count > 0)
+            {
+                lTokenPlayable.Add(token);
+                return 1;
+            }
+            else
+                return -1;
+
+        }
+
+        private bool FindAction(int j,int i, int x, int y, ref List<Token> tempTokenRefs)
+        {
+            x += j;
+            y += i;
+            bool blFindExtremis = false;
+            if(x >= 0 && x < iSize)
+                if(y >= 0 && y < iSize)
+                {
+                    if (iActualPlayerId == 0)
+                    {
+                        if (tokensBoard[x][y].ITokenValue == 1)
+                        {
+                            tempTokenRefs.Add(tokensBoard[x][y]);
+                            blFindExtremis = FindAction(j, i, x, y, ref tempTokenRefs);
+                        }
+                        else if (tokensBoard[x][y].ITokenValue == 0)
+                            return true;
+                        else
+                            return false;
+                    }
+                    else
+                    {
+                        if (tokensBoard[x][y].ITokenValue == 0)
+                        {
+                            tempTokenRefs.Add(tokensBoard[x][y]);
+                            blFindExtremis = FindAction(j, i, x, y, ref tempTokenRefs);
+                        }
+                        else if (tokensBoard[x][y].ITokenValue == 1)
+                            return true;
+                        else
+                            return false;
+
+                    }
+                }
+            if (!blFindExtremis)
+            {
+                tempTokenRefs = new List<Token>();
+                return false;
+            }
             return true;
+        }
+
+        private void UidToIJ(Button btn, ref int j, ref int i)
+        {
+            string[] strUid = btn.Uid.Split(';');
+            try { j = Convert.ToInt32(strUid[0]); i = Convert.ToInt32(strUid[1]); }
+            catch { Console.WriteLine("Btn.Uid is not integer."); }
         }
 
         #endregion
 
         #region Event
+
+        private void MouseClickCell(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            int iX = 0;
+            int iY = 0;
+            UidToIJ(btn, ref iX, ref iY);
+            Token tokenRef = tokensBoard[iX][iY];
+
+            if(tokenRef.IIsPlayable == 1)
+            {
+                tokenRef.UpdateToken(iActualPlayerId);
+                foreach (Token tokTarget in tokenRef.LTokenActionList){tokTarget.UpdateToken(iActualPlayerId);}
+                ChangeTurn();
+            }
+
+        }
+
 
         private void MouseEnterCell(object sender, MouseEventArgs e)
         {
@@ -146,13 +228,22 @@ namespace ProjetOthello
             int iY = 0;
             UidToIJ(btn, ref iX, ref iY);
             Token tokenRef = tokensBoard[iX][iY];
+            
+            
             if (tokenRef.ITokenValue == -1)
             {
-                if (!tokenRef.IsPlayable)
-                    tokenRef.IsPlayable = IsCellPlayable(iX, iY, ref tokenRef);
-                Image imgToken = new Image();
-                imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
-                btn.Content = imgToken;
+                if (tokenRef.IIsPlayable != -1)
+                {
+                    if (tokenRef.IIsPlayable == 0)
+                        tokenRef.IIsPlayable = IsCellPlayable(iX, iY, ref tokenRef);
+
+                    if (tokenRef.IIsPlayable == 1)
+                    {
+                        Image imgToken = new Image();
+                        imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
+                        btn.Content = imgToken;
+                    }
+                }
             }
         }
 

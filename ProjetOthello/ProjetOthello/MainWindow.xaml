@@ -10,7 +10,6 @@
         Background="Gray">
 
     <Window.Resources>
-        <BitmapImage x:Key="btmBackground" UriSource="Assets/BackGroundTest.png"/>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -30,9 +29,6 @@
     </Window.Resources>
 
     <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="{StaticResource btmBackground}"  />
-        </Grid.Background>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="214*" />
             <ColumnDefinition Width="800"/>
