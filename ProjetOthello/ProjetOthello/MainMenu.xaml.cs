@@ -39,8 +39,13 @@ namespace ProjetOthello
                     GameParameter.iStateGame = 2;
                     break;
             }
+            /*
             OptionMenu optionMenu = new OptionMenu();
             optionMenu.Show();
+            this.Close();
+            */
+            SelectionMenu selectionMenu = new SelectionMenu();
+            selectionMenu.Show();
             this.Close();
             
         }

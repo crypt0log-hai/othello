@@ -12,7 +12,7 @@ namespace ProjetOthello
     {
         public static BitmapImage[] imageIndex = new BitmapImage[2];
 
-        public static string[] tNameToken = { "Carrino", "Cortinovis", "Gorbel", "Husser", "Tieche" };
+        public static string[] tNameCharacter = { "Carrino", "Cortinovis", "Gorbel", "Husser", "Tieche" };
 
         public static int iSize = 8;
         public static int iStateGame = 0;
