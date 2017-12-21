@@ -10,7 +10,7 @@
         Background="Gray">
 
     <Window.Resources>
-        <BitmapImage x:Key="btmBackground" UriSource="Assets/BackGroundTest.png"/>
+        <BitmapImage x:Key="btmBackground" UriSource="Assets/Game/BoardBackground.png"/>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -34,14 +34,14 @@
             <ImageBrush ImageSource="{StaticResource btmBackground}"  />
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="214*" />
-            <ColumnDefinition Width="800"/>
-            <ColumnDefinition Width="215*"/>
+            <ColumnDefinition Width="559*" />
+            <ColumnDefinition Width="795"/>
+            <ColumnDefinition Width="558*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="800"/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="802"/>
+            <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Grid.Column="1" Name="gridBoard">
             <Grid.RowDefinitions>

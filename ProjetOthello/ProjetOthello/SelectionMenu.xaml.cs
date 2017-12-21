@@ -24,39 +24,51 @@ namespace ProjetOthello
 
         Rectangle[] rSelected;
         int iChooseTurn = 0;
-
-        List<Image> lImgPortraits;
+        
         int iSelectedPortrait = -1;
 
         BitmapImage btmVoidPortait;
+        //Passer en ressource
+        int nbSelection = 6;
+        Button[] btnSelection;
 
         public SelectionMenu()
         {
             InitializeComponent();
-            
-            string[] tPathsToSelectedImage = { "Carrino.png" };
-            tbtmPortrait = new BitmapImage[6];
-            lImgPortraits = new List<Image>();
+
+            string[] tPathsToSelectedImage = GameParameter.tNameToken;
+            tbtmPortrait = new BitmapImage[nbSelection];
+            btnSelection = new Button[nbSelection];
+            btnSelection[0] = btnPortrait0;
+            btnSelection[1] = btnPortrait1;
+            btnSelection[2] = btnPortrait2;
+            btnSelection[3] = btnPortrait3;
+            btnSelection[4] = btnPortrait4;
             for (int i = 0; i < tPathsToSelectedImage.Length; i++)
             {
                 tbtmPortrait[i] = new BitmapImage();
                 tbtmPortrait[i].BeginInit();
-                tbtmPortrait[i].UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/" + tPathsToSelectedImage[i], UriKind.RelativeOrAbsolute);
+                tbtmPortrait[i].UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/" + tPathsToSelectedImage[i] + ".png",  UriKind.RelativeOrAbsolute);
                 tbtmPortrait[i].EndInit();
-                Image imgSelected = new Image();
-                imgSelected.Source = tbtmPortrait[i];
-                lImgPortraits.Add(imgSelected);
+
+                BitmapImage btmSelection = new BitmapImage();
+                btmSelection.BeginInit();
+                btmSelection.UriSource = new Uri("pack://application:,,,/Assets/Menu/Selection/" + tPathsToSelectedImage[i] + ".png", UriKind.RelativeOrAbsolute);
+                btmSelection.EndInit();
+
+                Image imgSelection = new Image();
+                imgSelection.Source = btmSelection;
+                btnSelection[i].Content = imgSelection;
             }
 
             btmVoidPortait = new BitmapImage();
             btmVoidPortait.BeginInit();
-            btmVoidPortait.UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/QuestionMark.png", UriKind.RelativeOrAbsolute);
+            btmVoidPortait.UriSource = new Uri("pack://application:,,,/Assets/Menu/Selection/QuestionMark.png", UriKind.RelativeOrAbsolute);
             btmVoidPortait.EndInit();
 
             rSelected = new Rectangle[2];
             rSelected[0] = rPlayer1;
             rSelected[1] = rPlayer2;
-            btnPortrait0.Content = lImgPortraits[0];
 
 
             UpdatePlayerImage(0);

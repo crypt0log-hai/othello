@@ -110,8 +110,9 @@
             <Grid Grid.Column="2"  >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Rectangle Name="rPlayer2"></Rectangle>
+                <Rectangle Grid.Column="1"  Name="rPlayer2"></Rectangle>
             </Grid>
         </Grid>
 

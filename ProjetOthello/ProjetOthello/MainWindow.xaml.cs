@@ -45,12 +45,12 @@ namespace ProjetOthello
             //ZONE A MOURRIR
             BitmapImage btm1 = new BitmapImage();
             btm1.BeginInit();
-            btm1.UriSource = new Uri("pack://application:,,,/Assets/Tokens/BlackToken.png");
+            btm1.UriSource = new Uri("pack://application:,,,/Assets/Game/Tokens/Cortinovis.png");
             btm1.EndInit();
             GameParameter.imageIndex[0] = btm1;
             btm1 = new BitmapImage();
             btm1.BeginInit();
-            btm1.UriSource = new Uri("pack://application:,,,/Assets/Tokens/WhiteToken.png");
+            btm1.UriSource = new Uri("pack://application:,,,/Assets/Game/Tokens/Husser.png");
             btm1.EndInit();
             GameParameter.imageIndex[1] = btm1;
 

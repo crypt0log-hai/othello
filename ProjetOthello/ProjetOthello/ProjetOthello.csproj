@@ -132,20 +132,28 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Menu\Portrait\QuestionMark.png" />
-    <Resource Include="Assets\Menu\Portrait\Carrino.png" />
-    <Resource Include="Assets\BackGroundTest.png" />
-    <Content Include="Assets\Tokens\BlackToken.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Tokens\WhiteToken.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Assets\Menu\Selection\QuestionMark.png" />
+    <Resource Include="Assets\Menu\Selection\Carrino.png" />
+    <Resource Include="Assets\Game\BoardBackground.png" />
+    <Resource Include="Assets\Game\Tokens\Carrino.png" />
+    <Resource Include="Assets\Game\Tokens\Cortinovis.png" />
+    <Resource Include="Assets\Game\Tokens\Gorbel.png" />
+    <Resource Include="Assets\Game\Tokens\Husser.png" />
+    <Resource Include="Assets\Game\Tokens\Tieche.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Menu\BackgroundMenu.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\Menu\Portrait\Carrino.png" />
+    <Resource Include="Assets\Menu\Portrait\Cortinovis.png" />
+    <Resource Include="Assets\Menu\Portrait\Gorbel.png" />
+    <Resource Include="Assets\Menu\Portrait\Husser.png" />
+    <Resource Include="Assets\Menu\Portrait\Tieche.png" />
+    <Resource Include="Assets\Menu\Selection\Cortinovis.png" />
+    <Resource Include="Assets\Menu\Selection\Gorbel.png" />
+    <Resource Include="Assets\Menu\Selection\Husser.png" />
+    <Resource Include="Assets\Menu\Selection\Tieche.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Menu\Logo.png">
