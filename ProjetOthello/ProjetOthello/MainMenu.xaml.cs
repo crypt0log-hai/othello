@@ -30,13 +30,13 @@ namespace ProjetOthello
             switch(btnEvent.Uid)
             {
                 case "0":
-                    GameParameter.iStateGame = 0;
+                    GameParameter.iGameMod = 0;
                     break;
                 case "1":
-                    GameParameter.iStateGame = 1;
+                    GameParameter.iGameMod = 1;
                     break;
                 case "2":
-                    GameParameter.iStateGame = 2;
+                    GameParameter.iGameMod = 2;
                     break;
             }
             /*

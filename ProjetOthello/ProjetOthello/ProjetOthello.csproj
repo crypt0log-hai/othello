@@ -79,6 +79,7 @@
     <Compile Include="OptionMenu.xaml.cs">
       <DependentUpon>OptionMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProgramParameter.cs" />
     <Compile Include="SelectionMenu.xaml.cs">
       <DependentUpon>SelectionMenu.xaml</DependentUpon>
     </Compile>
@@ -138,13 +139,13 @@
   <ItemGroup>
     <Resource Include="Assets\Menu\Selection\QuestionMark.png" />
     <Resource Include="Assets\Game\BoardBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Assets\Game\Tokens\Carrino.png" />
     <Resource Include="Assets\Game\Tokens\Cortinovis.png" />
     <Resource Include="Assets\Game\Tokens\Gorbel.png" />
     <Resource Include="Assets\Game\Tokens\Husser.png" />
     <Resource Include="Assets\Game\Tokens\Tieche.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Assets\Menu\BackgroundMenu.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

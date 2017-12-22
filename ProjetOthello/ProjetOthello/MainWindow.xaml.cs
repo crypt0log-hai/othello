@@ -36,14 +36,18 @@ namespace ProjetOthello
 
         //Represent the cells who can be played this turn
         List<Token> lTokenPlayable;
-        #endregion
 
 
+        int[] tPlayerPoints;
 
         int iTime = 60 * 5;
         TextBlock[] tbxTimers = new TextBlock[2];
         TimeSpan[] timePlayer = new TimeSpan[2];
         DispatcherTimer dispatcherTimer;
+        
+        #endregion
+
+
 
         #region Constructor
 
@@ -55,6 +59,7 @@ namespace ProjetOthello
             InitializationParameter();
             InitializationBoard();
             InitializationGame();
+           
         }
 
         #endregion
@@ -71,19 +76,36 @@ namespace ProjetOthello
                 dispatcherTimer_Update, Dispatcher.CurrentDispatcher);
             dispatcherTimer.IsEnabled = true;
             dispatcherTimer.Start();
+
+            tbxPlayerName1.Text = GameParameter.tCharacterNames[0];
+            tbxPlayerName2.Text = GameParameter.tCharacterNames[1];
+
+            tPlayerPoints = new int[2];
         }
 
         //Initialize the cells, with the buttons and their events
         private void InitializationBoard()
         {
             tokensBoard = new Token[iSize][];
-            for(int i = 0; i < iSize; i++)
+
+
+            for (int i = 0; i < iSize; i++)
             {
+                
                 for (int j = 0; j < iSize; j++)
                 {
                     //[j,i] correspond to [x,y], so first of all the collumns are created and only after the rows are made
                     if(i==0)
+                    {
+                        RowDefinition row = new RowDefinition();
+                        ColumnDefinition column = new ColumnDefinition();
+                        
+
+                        gridCell.RowDefinitions.Add(row);
+                        gridCell.ColumnDefinitions.Add(column);
                         tokensBoard[j] = new Token[iSize];
+                    }
+                        
 
                     Button btnNewCell = new Button();
                     btnNewCell.IsEnabled = true;
@@ -95,7 +117,7 @@ namespace ProjetOthello
                     //Put the buttons into the grid
                     Grid.SetRow(btnNewCell, i);
                     Grid.SetColumn(btnNewCell, j);
-                    gridBoard.Children.Add(btnNewCell);
+                    gridCell.Children.Add(btnNewCell);
 
                    
                     tokensBoard[j][i] = new Token(btnNewCell);
@@ -103,6 +125,7 @@ namespace ProjetOthello
             }
             lTokenPlayable = new List<Token>();
 
+            GridCellResize();
         }
        
 
@@ -133,14 +156,20 @@ namespace ProjetOthello
         {
             lTokenPlayable.ForEach(token => token.ResetTokenList());
             lTokenPlayable = new List<Token>();
-            CellPlayableThisTurn();
+            UpCellInformations();
         }
 
-        private void CellPlayableThisTurn()
+        private void UpCellInformations()
         {
+            tPlayerPoints[0] = tPlayerPoints[1] = 0;
             for (int i = 0; i < iSize; i++)
                 for (int j = 0; j < iSize; j++)
-                    IsCellPlayable(j, i, ref tokensBoard[j][i]);
+                {
+                    if (tokensBoard[j][i].ITokenValue == -1)
+                        IsCellPlayable(j, i, ref tokensBoard[j][i]);
+                    else
+                        tPlayerPoints[tokensBoard[j][i].ITokenValue]++;
+                }
         }
 
         private void IsCellPlayable(int x, int y, ref Token token)
@@ -212,6 +241,27 @@ namespace ProjetOthello
             catch { Console.WriteLine("Btn.Uid is not integer."); }
         }
 
+        private void GridCellResize()
+        {
+            double dblWidth = mainWindow.Width;
+            double dblHeight = mainWindow.Height;
+            double dblCellSize = 0;
+
+            if (dblWidth / dblHeight < ProgramParameter.dblProgramSizeRatio)
+            {
+                dblCellSize = mainWindow.Width - 10;
+                dblCellSize = (dblCellSize / 2) / iSize;
+            }
+            else
+            {
+                dblCellSize = mainWindow.Height - 105;
+                dblCellSize = ((dblCellSize / 4) * 3) / iSize;
+            }          
+            for(int i = 0; i < iSize; i++)
+                for(int j = 0; j < iSize; j++)
+                    tokensBoard[j][i].BtnContainer.Width = tokensBoard[j][i].BtnContainer.Height = dblCellSize;
+        }
+
         #endregion
 
         #region Event
@@ -268,6 +318,12 @@ namespace ProjetOthello
             TimeSpan timeInterval = TimeSpan.FromSeconds(1);
             timePlayer[iActualPlayerId] =  timePlayer[iActualPlayerId].Subtract(timeInterval);
             tbxTimers[iActualPlayerId].Text = timePlayer[iActualPlayerId].ToString(@"\0m\:ss");
+        }
+
+
+        private void Grid_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            GridCellResize();
         }
 
         #endregion

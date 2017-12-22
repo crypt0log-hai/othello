@@ -53,14 +53,10 @@ namespace ProjetOthello
                 tbtmPortrait[i].BeginInit();
                 tbtmPortrait[i].UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/" + tPathsToSelectedImage[i] + ".png",  UriKind.RelativeOrAbsolute);
                 tbtmPortrait[i].EndInit();
-
-                BitmapImage btmSelection = new BitmapImage();
-                btmSelection.BeginInit();
-                btmSelection.UriSource = new Uri("pack://application:,,,/Assets/Menu/Selection/" + tPathsToSelectedImage[i] + ".png", UriKind.RelativeOrAbsolute);
-                btmSelection.EndInit();
+                
 
                 Image imgSelection = new Image();
-                imgSelection.Source = btmSelection;
+                imgSelection.Source = tbtmPortrait[i];
                 btnSelection[i].Content = imgSelection;
             }
 
@@ -88,6 +84,7 @@ namespace ProjetOthello
             btmChoose.BeginInit();
             btmChoose.UriSource = new Uri("pack://application:,,,/Assets/Game/Tokens/" + tPathsToSelectedImage[iSelectPortrait] + ".png", UriKind.RelativeOrAbsolute);
             btmChoose.EndInit();
+            GameParameter.tCharacterNames[iChooseTurn] = tPathsToSelectedImage[iSelectPortrait];
             GameParameter.imageIndex[iChooseTurn] = btmChoose;
             if(iChooseTurn == 0)
                 iChooseTurn++;

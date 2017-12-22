@@ -12,63 +12,10 @@
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Background" Value="Black"/>
         </Style>
+        
         <Style TargetType="{x:Type Button}">
-            <Setter Property="Padding" Value="-4"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Background" Value="Black"/>
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <Path Stretch="Fill"
-                                  Data="M20,0 L102,0 80,90 0,90 Z"
-                                  Fill="{TemplateBinding Background}"
-                                  Stroke="Black"
-                                  StrokeThickness="1"
-                                  SnapsToDevicePixels="True"
-                                  Margin="0,0,0,0"/>
-                            <ContentPresenter Name="content" 
-                         HorizontalAlignment="Center" 
-                         VerticalAlignment="Center"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="NormalButton" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="#1A1A1A" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontFamily" Value="./#Arial" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border CornerRadius="4" Background="{TemplateBinding Background}">
-                            <Grid>
-                                <Path x:Name="PathIcon" Width="20" Height="22" Stretch="Fill" Fill="#FFFFFF" HorizontalAlignment="Left" Margin="5,0,0,0" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z "/>
-                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
-                            </Grid>
-                        </Border>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#999999" />
-                                <Setter Property="Foreground" Value="#E2106E" />
-                                <Setter TargetName="PathIcon" Property="Fill" Value="#E2106E" />
-                            </Trigger>
-
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="White" />
-                                <Setter Property="Foreground" Value="Black" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
         </Style>
     </Window.Resources>
 
@@ -83,14 +30,14 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
 
-            <Canvas  Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Button x:Uid="0" Name="btnPortrait0" Canvas.ZIndex="0" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter" MouseLeave="btnPortrait_mouseLeave"  />
-                <Button x:Uid="1" Name="btnPortrait1" Canvas.ZIndex="1" Canvas.Left="77" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="2" Name="btnPortrait2" Canvas.ZIndex="2" Canvas.Left="154" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="3" Name="btnPortrait3" Canvas.ZIndex="3" Canvas.Left="231" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="4" Name="btnPortrait4" Canvas.ZIndex="4" Canvas.Left="308" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="5" Name="btnPortrait5" Canvas.ZIndex="5" Canvas.Left="385" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-            </Canvas>
+            <StackPanel  Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Uid="0" Name="btnPortrait0" Width="80" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter" MouseLeave="btnPortrait_mouseLeave"  />
+                <Button x:Uid="1" Name="btnPortrait1" Width="80" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="2" Name="btnPortrait2" Width="80" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="3" Name="btnPortrait3" Width="80" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="4" Name="btnPortrait4" Width="80" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+                <Button x:Uid="5" Name="btnPortrait5" Width="80" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
+            </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>

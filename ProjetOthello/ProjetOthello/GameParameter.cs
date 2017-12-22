@@ -11,10 +11,11 @@ namespace ProjetOthello
     public static class GameParameter
     {
         public static BitmapImage[] imageIndex = new BitmapImage[2];
+        public static string[] tCharacterNames = new string[2];
 
         public static string[] tNameCharacter = { "Carrino", "Cortinovis", "Gorbel", "Husser", "Tieche" };
 
         public static int iSize = 8;
-        public static int iStateGame = 0;
+        public static int iGameMod = 0;
     }
 }
