@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ProjetOthello
 {
@@ -26,6 +27,7 @@ namespace ProjetOthello
         //Number if collumns and rows of the board, iSize*iSize = Number of cells
         int iSize = 0;
 
+
         //Id of the player to whom it is the turn
         int iActualPlayerId = 0;
 
@@ -36,6 +38,13 @@ namespace ProjetOthello
         List<Token> lTokenPlayable;
         #endregion
 
+
+
+        int iTime = 60 * 5;
+        TextBlock[] tbxTimers = new TextBlock[2];
+        TimeSpan[] timePlayer = new TimeSpan[2];
+        DispatcherTimer dispatcherTimer;
+
         #region Constructor
 
         public MainWindow()
@@ -43,6 +52,7 @@ namespace ProjetOthello
             InitializeComponent();
             
             iSize = GameParameter.iSize;
+            InitializationParameter();
             InitializationBoard();
             InitializationGame();
         }
@@ -50,6 +60,19 @@ namespace ProjetOthello
         #endregion
 
         #region Initialization
+
+        private void InitializationParameter()
+        {
+            tbxTimers[0] = tbxTimerPlay1;
+            tbxTimers[1] = tbxTimerPlay2;
+            timePlayer[0] = TimeSpan.FromSeconds(iTime);
+            timePlayer[1] = TimeSpan.FromSeconds(iTime);
+            dispatcherTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 1, 0), DispatcherPriority.Background,
+                dispatcherTimer_Update, Dispatcher.CurrentDispatcher);
+            dispatcherTimer.IsEnabled = true;
+            dispatcherTimer.Start();
+        }
+
         //Initialize the cells, with the buttons and their events
         private void InitializationBoard()
         {
@@ -239,6 +262,15 @@ namespace ProjetOthello
             UidToIJ(btnEvent, ref iX, ref iY);
             tokensBoard[iX][iY].TokenResetDisplay();
         }
+
+        private void dispatcherTimer_Update(object sender, EventArgs e)
+        {
+            TimeSpan timeInterval = TimeSpan.FromSeconds(1);
+            timePlayer[iActualPlayerId] =  timePlayer[iActualPlayerId].Subtract(timeInterval);
+            tbxTimers[iActualPlayerId].Text = timePlayer[iActualPlayerId].ToString(@"\0m\:ss");
+        }
+
         #endregion
+
     }
 }

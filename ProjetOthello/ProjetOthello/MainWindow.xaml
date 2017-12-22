@@ -39,6 +39,8 @@
             <RowDefinition Height="802"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
+        <TextBlock Name="tbxTimerPlay1" Grid.Column="0" Text="05:00" FontFamily="Quartz MS" FontSize="100"></TextBlock>
+        <TextBlock Name="tbxTimerPlay2" Grid.Column="2" Text="05:00" FontFamily="Quartz MS" FontSize="100"></TextBlock>
         <Grid Grid.Row="1" Grid.Column="1" Name="gridBoard">
             <Grid.RowDefinitions>
                 <RowDefinition/>

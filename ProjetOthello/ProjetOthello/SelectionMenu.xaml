@@ -16,13 +16,13 @@
             <Setter Property="Padding" Value="-4"/>
             <Setter Property="BorderBrush" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="Black"/>
             <Setter Property="Control.Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
                             <Path Stretch="Fill"
-                                  Data="M22,0 L102,0 80,90 0,90 Z"
+                                  Data="M20,0 L102,0 80,90 0,90 Z"
                                   Fill="{TemplateBinding Background}"
                                   Stroke="Black"
                                   StrokeThickness="1"
@@ -32,12 +32,6 @@
                          HorizontalAlignment="Center" 
                          VerticalAlignment="Center"/>
                         </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#999999" />
-                                <Setter Property="Foreground" Value="#E2106E" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -48,7 +42,7 @@
             <Setter Property="Foreground" Value="White" />
             <Setter Property="FontFamily" Value="./#Arial" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
-            
+
 
             <Setter Property="Template">
                 <Setter.Value>
@@ -77,7 +71,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -101,15 +95,15 @@
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition Height="2*"/>
+                <RowDefinition Height="285"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            
-            <Rectangle Margin="5,5,5,5" Grid.Row="1" Grid.Column="0" Name="rPlayer1"></Rectangle>
+
+            <Rectangle Margin="5" Grid.Row="1" Grid.Column="0" Name="rPlayer1"/>
             <Rectangle Margin="5,5,5,5" Grid.Row="1" Grid.Column="2" Name="rPlayer2"></Rectangle>
         </Grid>
     </Grid>

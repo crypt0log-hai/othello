@@ -76,11 +76,7 @@ namespace ProjetOthello
 
             UpdatePlayerImage(0);
             UpdatePlayerImage(1);
-
-            BitmapImage btmBackground = new BitmapImage();
-            btmBackground.BeginInit();
-            btmBackground.UriSource = new Uri("pack://application:,,,/Assets/Menu/Selection/SelectionBackground.gif", UriKind.RelativeOrAbsolute);
-            btmBackground.EndInit();
+            
 
             
         }
