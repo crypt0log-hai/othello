@@ -80,6 +80,9 @@ namespace ProjetOthello
             tbxPlayerName1.Text = GameParameter.tCharacterNames[0];
             tbxPlayerName2.Text = GameParameter.tCharacterNames[1];
 
+            rPortraitPlayer1.Fill = new ImageBrush(GameParameter.tbtmTokenIndex[0]);
+            rPortraitPlayer2.Fill = new ImageBrush(GameParameter.tbtmTokenIndex[1]);
+
             tPlayerPoints = new int[2];
         }
 
@@ -249,13 +252,14 @@ namespace ProjetOthello
 
             if (dblWidth / dblHeight < ProgramParameter.dblProgramSizeRatio)
             {
-                dblCellSize = mainWindow.Width - 10;
+                dblCellSize = mainWindow.Width - 20;
                 dblCellSize = (dblCellSize / 2) / iSize;
             }
             else
             {
-                dblCellSize = mainWindow.Height - 105;
-                dblCellSize = ((dblCellSize / 4) * 3) / iSize;
+                dblCellSize = mainWindow.Height - 40;
+                dblCellSize = ((dblCellSize / 4) * 3) - 120;
+                dblCellSize = dblCellSize / iSize;
             }          
             for(int i = 0; i < iSize; i++)
                 for(int j = 0; j < iSize; j++)
@@ -298,7 +302,7 @@ namespace ProjetOthello
                 if (tokenRef.IIsPlayable)
                 {
                     Image imgToken = new Image();
-                    imgToken.Source = GameParameter.imageIndex[iActualPlayerId];
+                    imgToken.Source = GameParameter.tbtmTokenIndex[iActualPlayerId];
                     btn.Content = imgToken;
                 }
             }

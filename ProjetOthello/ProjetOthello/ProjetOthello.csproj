@@ -138,14 +138,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Menu\Selection\QuestionMark.png" />
-    <Resource Include="Assets\Game\BoardBackground.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Menu\Portrait\Gobron.png" />
+    <Resource Include="Assets\Menu\Portrait\Ouerhani.png" />
     <Resource Include="Assets\Game\Tokens\Carrino.png" />
     <Resource Include="Assets\Game\Tokens\Cortinovis.png" />
     <Resource Include="Assets\Game\Tokens\Gorbel.png" />
     <Resource Include="Assets\Game\Tokens\Husser.png" />
     <Resource Include="Assets\Game\Tokens\Tieche.png" />
+    <Resource Include="Assets\Game\Tokens\Gobron.png" />
+    <Resource Include="Assets\Game\Tokens\Ouerhani.png" />
+    <Resource Include="Assets\Game\BoardBackground.png" />
     <Content Include="Assets\Menu\BackgroundMenu.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

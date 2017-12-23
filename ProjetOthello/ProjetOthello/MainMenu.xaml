@@ -62,9 +62,11 @@
         </Grid.RowDefinitions>
         <Image x:Name="imgLogo" Source="{StaticResource btmLogo}" Grid.Column="1" Grid.Row="0" Visibility="Visible"/>
         <StackPanel Grid.Column="1" Grid.Row="1" Margin="85,0,85,65">            
-            <Button x:Name="btnOvO" x:Uid="0" FontSize="22" Margin="0,30,0,30" Height="42" Content="1  VS  1" Click="buttonsClicked"/>
-            <Button x:Name="btnOvI" x:Uid="1" FontSize="22" Margin="0,30,0,30" Height="42" Content="1  VS  IA" Click="buttonsClicked"/>
-            <Button x:Name="btnIvI" x:Uid="2" FontSize="22" Margin="0,30,0,30" Height="42" Content="IA  VS  IA" Click="buttonsClicked"/>
+            <Button x:Name="btnOvO" x:Uid="0" FontSize="22" Margin="0,15,0,15" Height="42" Content="1  VS  1" Click="buttonsClicked"/>
+            <Button x:Name="btnOvI" x:Uid="1" FontSize="22" Margin="0,15,0,15" Height="42" Content="1  VS  IA" Click="buttonsClicked"/>
+            <Button x:Name="btnIvI" x:Uid="2" FontSize="22" Margin="0,15,0,15" Height="42" Content="IA  VS  IA" Click="buttonsClicked"/>
+            <Button x:Name="btnOption" x:Uid="3" FontSize="22" Margin="0,15,0,15" Height="42" Content="Option" Click="buttonsClicked"/>
+            <Button x:Name="btnExit" x:Uid="4" FontSize="22" Margin="0,15,0,15" Height="42" Content="Exit" Click="buttonsClicked"/>
         </StackPanel>
 
 

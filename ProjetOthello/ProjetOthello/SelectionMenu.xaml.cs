@@ -32,32 +32,36 @@ namespace ProjetOthello
         int iSelectedPortrait = -1;
 
         //Passer en ressource
-        int nbSelection = 6;
-        Button[] btnSelection;
+        int iNbChar = GameParameter.iNbCharacter;
+        Button[] tbtnSelection;
 
-        string[] tPathsToSelectedImage = GameParameter.tNameCharacter;
+        string[] tNameCharacter = GameParameter.tNameCharacter;
 
         public SelectionMenu()
         {
             InitializeComponent();
-            tbtmPortrait = new BitmapImage[nbSelection];
-            btnSelection = new Button[nbSelection];
-            btnSelection[0] = btnPortrait0;
-            btnSelection[1] = btnPortrait1;
-            btnSelection[2] = btnPortrait2;
-            btnSelection[3] = btnPortrait3;
-            btnSelection[4] = btnPortrait4;
-            for (int i = 0; i < tPathsToSelectedImage.Length; i++)
+            tbtmPortrait = new BitmapImage[iNbChar];
+            tbtnSelection = new Button[iNbChar];
+            for (int i = 0; i < iNbChar; i++)
             {
+                Button btnSelection = new Button();
+                btnSelection.Uid = i.ToString();
+                btnSelection.Click += btnPortraits_click;
+                btnSelection.MouseEnter += btnPortrait_mouseEnter;
+                btnSelection.MouseLeave += btnPortrait_mouseLeave;
+                panelSelection.Children.Add(btnSelection);
+                tbtnSelection[i] = btnSelection;
+
+
                 tbtmPortrait[i] = new BitmapImage();
                 tbtmPortrait[i].BeginInit();
-                tbtmPortrait[i].UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/" + tPathsToSelectedImage[i] + ".png",  UriKind.RelativeOrAbsolute);
+                tbtmPortrait[i].UriSource = new Uri("pack://application:,,,/Assets/Menu/Portrait/" + tNameCharacter[i] + ".png",  UriKind.RelativeOrAbsolute);
                 tbtmPortrait[i].EndInit();
                 
 
                 Image imgSelection = new Image();
                 imgSelection.Source = tbtmPortrait[i];
-                btnSelection[i].Content = imgSelection;
+                tbtnSelection[i].Content = imgSelection;
             }
 
             btmVoidPortait = new BitmapImage();
@@ -82,10 +86,10 @@ namespace ProjetOthello
         {
             BitmapImage btmChoose = new BitmapImage();
             btmChoose.BeginInit();
-            btmChoose.UriSource = new Uri("pack://application:,,,/Assets/Game/Tokens/" + tPathsToSelectedImage[iSelectPortrait] + ".png", UriKind.RelativeOrAbsolute);
+            btmChoose.UriSource = new Uri("pack://application:,,,/Assets/Game/Tokens/" + tNameCharacter[iSelectPortrait] + ".png", UriKind.RelativeOrAbsolute);
             btmChoose.EndInit();
-            GameParameter.tCharacterNames[iChooseTurn] = tPathsToSelectedImage[iSelectPortrait];
-            GameParameter.imageIndex[iChooseTurn] = btmChoose;
+            GameParameter.tCharacterNames[iChooseTurn] = tNameCharacter[iSelectPortrait];
+            GameParameter.tbtmTokenIndex[iChooseTurn] = btmChoose;
             if(iChooseTurn == 0)
                 iChooseTurn++;
             else
@@ -128,6 +132,10 @@ namespace ProjetOthello
             }
             else
             {
+                if (iPlayerId == 0)
+                    tbxNamePlayer1.Text = tNameCharacter[iSelectPortrait];
+                else
+                    tbxNamePlayer2.Text = tNameCharacter[iSelectPortrait];
                 imageBrush.ImageSource = tbtmPortrait[iSelectPortrait];
                 rSelected[iPlayerId].Fill = imageBrush;
             }

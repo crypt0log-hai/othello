@@ -30,23 +30,22 @@ namespace ProjetOthello
             switch(btnEvent.Uid)
             {
                 case "0":
-                    GameParameter.iGameMod = 0;
-                    break;
                 case "1":
-                    GameParameter.iGameMod = 1;
-                    break;
                 case "2":
-                    GameParameter.iGameMod = 2;
+                    GameParameter.iGameMod = Convert.ToInt32(btnEvent.Uid);
+                    SelectionMenu selectionMenu = new SelectionMenu();
+                    selectionMenu.Show();
+                    this.Close();
+                    break;
+                case "3":
+                    OptionMenu optionMenu = new OptionMenu();
+                    optionMenu.Show();
+                    this.Close();
+                    break;
+                case "4":
+                    this.Close();
                     break;
             }
-            /*
-            OptionMenu optionMenu = new OptionMenu();
-            optionMenu.Show();
-            this.Close();
-            */
-            SelectionMenu selectionMenu = new SelectionMenu();
-            selectionMenu.Show();
-            this.Close();
             
         }
     }

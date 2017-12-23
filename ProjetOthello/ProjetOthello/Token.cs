@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
+
 namespace ProjetOthello
 {
     class Token
@@ -51,8 +53,9 @@ namespace ProjetOthello
         public void TokenChangeDisplay(int iPlayerId)
         {
             Image imgToken = new Image();
-            imgToken.Source = GameParameter.imageIndex[iPlayerId];
+            imgToken.Source = GameParameter.tbtmTokenIndex[iPlayerId];
             btnContainer.Content = imgToken;
+            btnContainer.Background = GameParameter.tColorBackgroundCell[iPlayerId];
         }
 
         public void TokenResetDisplay()
