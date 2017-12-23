@@ -16,7 +16,7 @@ namespace ProjetOthello
 
         public static string[] tNameCharacter = { "Carrino", "Cortinovis", "Gorbel", "Husser", "Tieche", "Gobron", "Ouerhani" };
 
-        public static Brush[] tColorBackgroundCell = { Brushes.White, Brushes.Black };
+        public static Brush[] tColorBackgroundCell = { Brushes.White, Brushes.Red };
 
         public static int iNbCharacter = 7;
         public static int iSize = 8;

@@ -26,7 +26,7 @@ namespace ProjetOthello
         
         //Number if collumns and rows of the board, iSize*iSize = Number of cells
         int iSize = 0;
-
+        int[] tnbTokensRemain;
 
         //Id of the player to whom it is the turn
         int iActualPlayerId = 0;
@@ -55,7 +55,6 @@ namespace ProjetOthello
         {
             InitializeComponent();
             
-            iSize = GameParameter.iSize;
             InitializationParameter();
             InitializationBoard();
             InitializationGame();
@@ -84,6 +83,13 @@ namespace ProjetOthello
             rPortraitPlayer2.Fill = new ImageBrush(GameParameter.tbtmTokenIndex[1]);
 
             tPlayerPoints = new int[2];
+            tPlayerPoints[0] = tPlayerPoints[1] = 2;
+
+            iSize = GameParameter.iSize;
+            int tokenRemains = Convert.ToInt32(iSize*iSize / 2) - 2;
+            tnbTokensRemain = new int[2];
+            tnbTokensRemain[0] = tnbTokensRemain[1] = tokenRemains;
+
         }
 
         //Initialize the cells, with the buttons and their events
@@ -145,14 +151,19 @@ namespace ProjetOthello
 
 
 
-       
+
 
         #endregion
 
         #region Function
 
-        
-        private void ChangeTurn(){iActualPlayerId = (iActualPlayerId == 0) ? 1 : 0; ResetPlayableToken(); }
+
+
+        #region sub_TurnChange
+
+        private void ChangeTurn(){ iActualPlayerId = InverseBin(iActualPlayerId);  ResetPlayableToken(); }
+
+        private int InverseBin(int x) { return (x == 0) ? 1 : 0; }
 
         //Reset every IsPlayable for each cells
         private void ResetPlayableToken()
@@ -160,6 +171,9 @@ namespace ProjetOthello
             lTokenPlayable.ForEach(token => token.ResetTokenList());
             lTokenPlayable = new List<Token>();
             UpCellInformations();
+            if (lTokenPlayable.Count == 0)
+                NoMoreMoves();
+
         }
 
         private void UpCellInformations()
@@ -173,6 +187,7 @@ namespace ProjetOthello
                     else
                         tPlayerPoints[tokensBoard[j][i].ITokenValue]++;
                 }
+            DisplayPlayerInformation();
         }
 
         private void IsCellPlayable(int x, int y, ref Token token)
@@ -183,7 +198,7 @@ namespace ProjetOthello
                     {
                         List<Token> tempTokenRefs = new List<Token>();
                         FindAction(j, i, x, y, ref tempTokenRefs);
-                        foreach(Token tokTarget in tempTokenRefs) { token.LTokenActionList.Add(tokTarget); }
+                        foreach(Token tokTarget in tempTokenRefs) { token.LTokenActionList.Add(tokTarget);}
                     }
 
             if (token.LTokenActionList.Count > 0)
@@ -237,6 +252,29 @@ namespace ProjetOthello
             return true;
         }
 
+        #endregion
+
+        private void DisplayPlayerInformation()
+        {
+            tbxScorePlayer1.Text = ((tPlayerPoints[0] < 10) ? "0" : "") + tPlayerPoints[0].ToString();
+            tbxScorePlayer2.Text = ((tPlayerPoints[1] < 10) ? "0" : "") + tPlayerPoints[1].ToString();
+            tbxTokenPlayer1.Text = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
+            tbxTokenPlayer2.Text = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
+        }
+
+
+        private void NoMoreMoves()
+        {
+
+        }
+
+
+        private void GameOver()
+        {
+
+        }
+
+
         private void UidToIJ(Button btn, ref int j, ref int i)
         {
             string[] strUid = btn.Uid.Split(';');
@@ -280,6 +318,19 @@ namespace ProjetOthello
 
             if(tokenRef.IIsPlayable)
             {
+                if(tnbTokensRemain[iActualPlayerId] > 0)
+                    tnbTokensRemain[iActualPlayerId]--;
+                else
+                {
+                    int iOtherPlayerId = InverseBin(iActualPlayerId);
+                    if (tnbTokensRemain[iOtherPlayerId] > 0)
+                        tnbTokensRemain[iActualPlayerId]--;
+                    else
+                        GameOver();
+
+                }
+
+
                 tokenRef.UpdateToken(iActualPlayerId);
                 foreach (Token tokTarget in tokenRef.LTokenActionList){tokTarget.UpdateToken(iActualPlayerId);}
                 ChangeTurn();

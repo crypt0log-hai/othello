@@ -11,7 +11,7 @@
    
     
     <Window.Resources>
-        <BitmapImage x:Key="btmBoardBackground" UriSource="Assets/Game/BoardBackground.png"/>
+        <BitmapImage x:Key="btmBoardBackground" UriSource="Assets/Game/BoardBackgroundDefault.png"/>
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="36"/>
@@ -76,16 +76,18 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label HorizontalAlignment="Center">Jetons restant</Label>
-                <TextBlock HorizontalAlignment="Center" Text="32" />
+            <Grid Grid.Column="1" >
+            <StackPanel  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Label Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
+                <TextBlock Name="tbxTokenPlayer1" HorizontalAlignment="Center" Text="32" />
                 <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
-                <TextBlock HorizontalAlignment="Center" Text="02" />
+                    <TextBlock Name="tbxScorePlayer1" HorizontalAlignment="Center" Text="02" />
             </StackPanel>
-            
+            </Grid>
+
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1">
-            <Canvas x:Name="canvaBoard" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,40,0,80"                
+            <Canvas x:Name="canvaBoard" Background="#202020" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,40,0,80"                
                     Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}">
                 <Grid Name="gridCell">
                 </Grid>
@@ -98,11 +100,11 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Label HorizontalAlignment="Center">Jetons restant</Label>
-                <TextBlock HorizontalAlignment="Center" Text="32" />
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Label Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
+                <TextBlock Name="tbxTokenPlayer2" HorizontalAlignment="Center" Text="32" />
                 <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
-                <TextBlock HorizontalAlignment="Center" Text="02" />
+                <TextBlock Name="tbxScorePlayer2" HorizontalAlignment="Center" Text="02" />
             </StackPanel>
 
         </Grid>

@@ -149,7 +149,7 @@
     <Resource Include="Assets\Game\Tokens\Tieche.png" />
     <Resource Include="Assets\Game\Tokens\Gobron.png" />
     <Resource Include="Assets\Game\Tokens\Ouerhani.png" />
-    <Resource Include="Assets\Game\BoardBackground.png" />
+    <Resource Include="Assets\Game\BoardBackgroundDefault.png" />
     <Content Include="Assets\Menu\BackgroundMenu.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
