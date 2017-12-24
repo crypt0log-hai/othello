@@ -62,8 +62,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <TextBlock Name="tbxTimerPlay1" HorizontalAlignment="Left" Padding="25,0,0,0"  VerticalAlignment="Center" Grid.Column="0" Text="05:00" FontFamily="Quartz MS" FontSize="100" Foreground="White"/>
-            <TextBlock Name="tbxTimerPlay2" HorizontalAlignment="Right"  Padding="0,0,25,0" VerticalAlignment="Center" Grid.Column="2" Text="05:00" FontFamily="Quartz MS" FontSize="100"/>
+            <TextBlock Name="tbxTimerPlay1" HorizontalAlignment="Left" Padding="25,0,0,0"  VerticalAlignment="Center" Grid.Column="0" Text="00:00" FontFamily="Quartz MS" FontSize="75" Foreground="White"/>
+            <TextBlock Name="tbxTimerPlay2" HorizontalAlignment="Right"  Padding="0,0,25,0" VerticalAlignment="Center" Grid.Column="2" Text="00:00" FontFamily="Quartz MS" FontSize="75"/>
         </Grid>
 
         <StackPanel Name="spPlayer2" Grid.Column="2" Margin="80,0,20,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
@@ -79,9 +79,9 @@
             <Grid Grid.Column="1" >
             <StackPanel  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Label Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
-                <TextBlock Name="tbxTokenPlayer1" HorizontalAlignment="Center" Text="32" />
+                    <TextBlock Name="tbxTokenPlayer1" HorizontalAlignment="Center" Text="{Binding NbTokenP1,Mode=TwoWay}" />
                 <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
-                    <TextBlock Name="tbxScorePlayer1" HorizontalAlignment="Center" Text="02" />
+                    <TextBlock Name="tbxScorePlayer1" HorizontalAlignment="Center" Text="{Binding ScoreP1,Mode=TwoWay}" />
             </StackPanel>
             </Grid>
 
@@ -102,9 +102,9 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
                 <Label Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
-                <TextBlock Name="tbxTokenPlayer2" HorizontalAlignment="Center" Text="32" />
+                <TextBlock Name="tbxTokenPlayer2" HorizontalAlignment="Center" Text="{Binding NbTokenP2,Mode=TwoWay}" />
                 <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
-                <TextBlock Name="tbxScorePlayer2" HorizontalAlignment="Center" Text="02" />
+                <TextBlock Name="tbxScorePlayer2" HorizontalAlignment="Center" Text="{Binding ScoreP2,Mode=TwoWay}" />
             </StackPanel>
 
         </Grid>

@@ -8,6 +8,6 @@ namespace ProjetOthello
 {
     public static class ProgramParameter
     {
-        public static double dblProgramSizeRatio = 1600 / 900;
+        public static double dblProgramSizeRatio = 1600.0 / 900.0;
     }
 }

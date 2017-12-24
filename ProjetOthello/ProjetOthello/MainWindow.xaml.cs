@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,24 +28,29 @@ namespace ProjetOthello
         //Number if collumns and rows of the board, iSize*iSize = Number of cells
         int iSize = 0;
         int[] tnbTokensRemain;
+        int[] tPlayerPoints;
+        PlayerInfo pInfo;
 
         //Id of the player to whom it is the turn
         int iActualPlayerId = 0;
 
         //Represent the cells on the board
-        Token[][] tokensBoard;
+        Token[,] tTokensBoard;
+        int[,] tiBoard;
+
 
         //Represent the cells who can be played this turn
         List<Token> lTokenPlayable;
+        
+        
 
-
-        int[] tPlayerPoints;
-
-        int iTime = 60 * 5;
+        int iTime = 0;
         TextBlock[] tbxTimers = new TextBlock[2];
         TimeSpan[] timePlayer = new TimeSpan[2];
         DispatcherTimer dispatcherTimer;
         
+
+
         #endregion
 
 
@@ -53,12 +59,11 @@ namespace ProjetOthello
 
         public MainWindow()
         {
-            InitializeComponent();
-            
+            InitializeComponent();            
             InitializationParameter();
             InitializationBoard();
             InitializationGame();
-           
+
         }
 
         #endregion
@@ -90,29 +95,29 @@ namespace ProjetOthello
             tnbTokensRemain = new int[2];
             tnbTokensRemain[0] = tnbTokensRemain[1] = tokenRemains;
 
+
+            pInfo = new PlayerInfo { ScoreP1 = "02", NbTokenP1 = "30", ScoreP2 = "02", NbTokenP2 = "30" };
+            this.DataContext = pInfo;
+
         }
 
         //Initialize the cells, with the buttons and their events
         private void InitializationBoard()
         {
-            tokensBoard = new Token[iSize][];
-
+            tTokensBoard = new Token[iSize,iSize];
+            tiBoard = new int[iSize, iSize];
 
             for (int i = 0; i < iSize; i++)
-            {
-                
+            {                
                 for (int j = 0; j < iSize; j++)
                 {
-                    //[j,i] correspond to [x,y], so first of all the collumns are created and only after the rows are made
+                    //[j,i] correspond to [x,y]
                     if(i==0)
                     {
                         RowDefinition row = new RowDefinition();
-                        ColumnDefinition column = new ColumnDefinition();
-                        
-
+                        ColumnDefinition column = new ColumnDefinition();         
                         gridCell.RowDefinitions.Add(row);
                         gridCell.ColumnDefinitions.Add(column);
-                        tokensBoard[j] = new Token[iSize];
                     }
                         
 
@@ -128,8 +133,8 @@ namespace ProjetOthello
                     Grid.SetColumn(btnNewCell, j);
                     gridCell.Children.Add(btnNewCell);
 
-                   
-                    tokensBoard[j][i] = new Token(btnNewCell);
+                    tiBoard[j, i] = -1;
+                    tTokensBoard[j,i] = new Token(btnNewCell);
                 }
             }
             lTokenPlayable = new List<Token>();
@@ -141,23 +146,18 @@ namespace ProjetOthello
         //Initialize the fourth first tokens
         private void InitializationGame()
         {
-            tokensBoard[(int)iSize / 2 - 1][(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
-            tokensBoard[(int)iSize / 2][(int)iSize / 2].UpdateToken(iActualPlayerId);
+            tTokensBoard[(int)iSize / 2 - 1,(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
+            tTokensBoard[(int)iSize / 2,(int)iSize / 2].UpdateToken(iActualPlayerId);
             ChangeTurn();
-            tokensBoard[(int)iSize / 2][(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
-            tokensBoard[(int)iSize / 2 - 1][(int)iSize / 2].UpdateToken(iActualPlayerId);
+            tTokensBoard[(int)iSize / 2,(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
+            tTokensBoard[(int)iSize / 2 - 1,(int)iSize / 2].UpdateToken(iActualPlayerId);
             ChangeTurn();
         }
 
-
-
-
-
         #endregion
+        
 
         #region Function
-
-
 
         #region sub_TurnChange
 
@@ -182,10 +182,10 @@ namespace ProjetOthello
             for (int i = 0; i < iSize; i++)
                 for (int j = 0; j < iSize; j++)
                 {
-                    if (tokensBoard[j][i].ITokenValue == -1)
-                        IsCellPlayable(j, i, ref tokensBoard[j][i]);
+                    if (tTokensBoard[j,i].ITokenValue == -1)
+                        IsCellPlayable(j, i, ref tTokensBoard[j,i]);
                     else
-                        tPlayerPoints[tokensBoard[j][i].ITokenValue]++;
+                        tPlayerPoints[tTokensBoard[j,i].ITokenValue]++;
                 }
             DisplayPlayerInformation();
         }
@@ -220,24 +220,24 @@ namespace ProjetOthello
                 {
                     if (iActualPlayerId == 0)
                     {
-                        if (tokensBoard[x][y].ITokenValue == 1)
+                        if (tTokensBoard[x,y].ITokenValue == 1)
                         {
-                            tempTokenRefs.Add(tokensBoard[x][y]);
+                            tempTokenRefs.Add(tTokensBoard[x,y]);
                             blFindExtremis = FindAction(j, i, x, y, ref tempTokenRefs);
                         }
-                        else if (tokensBoard[x][y].ITokenValue == 0)
+                        else if (tTokensBoard[x,y].ITokenValue == 0)
                             return true;
                         else
                             return false;
                     }
                     else
                     {
-                        if (tokensBoard[x][y].ITokenValue == 0)
+                        if (tTokensBoard[x,y].ITokenValue == 0)
                         {
-                            tempTokenRefs.Add(tokensBoard[x][y]);
+                            tempTokenRefs.Add(tTokensBoard[x,y]);
                             blFindExtremis = FindAction(j, i, x, y, ref tempTokenRefs);
                         }
-                        else if (tokensBoard[x][y].ITokenValue == 1)
+                        else if (tTokensBoard[x,y].ITokenValue == 1)
                             return true;
                         else
                             return false;
@@ -256,10 +256,10 @@ namespace ProjetOthello
 
         private void DisplayPlayerInformation()
         {
-            tbxScorePlayer1.Text = ((tPlayerPoints[0] < 10) ? "0" : "") + tPlayerPoints[0].ToString();
-            tbxScorePlayer2.Text = ((tPlayerPoints[1] < 10) ? "0" : "") + tPlayerPoints[1].ToString();
-            tbxTokenPlayer1.Text = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
-            tbxTokenPlayer2.Text = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
+            pInfo.ScoreP1 = ((tPlayerPoints[0] < 10) ? "0" : "") + tPlayerPoints[0].ToString();
+            pInfo.ScoreP2 = ((tPlayerPoints[1] < 10) ? "0" : "") + tPlayerPoints[1].ToString();
+            pInfo.NbTokenP1 = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
+            pInfo.NbTokenP2 = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
         }
 
 
@@ -284,24 +284,30 @@ namespace ProjetOthello
 
         private void GridCellResize()
         {
-            double dblWidth = mainWindow.Width;
-            double dblHeight = mainWindow.Height;
+            double dblWidth = mainWindow.ActualWidth;
+            double dblHeight = mainWindow.ActualHeight;
             double dblCellSize = 0;
 
-            if (dblWidth / dblHeight < ProgramParameter.dblProgramSizeRatio)
-            {
-                dblCellSize = mainWindow.Width - 20;
-                dblCellSize = (dblCellSize / 2) / iSize;
-            }
-            else
-            {
-                dblCellSize = mainWindow.Height - 40;
+
+            //if (dblWidth / dblHeight < ProgramParameter.dblProgramSizeRatio)
+            //{
+            //    dblCellSize = dblWidth - 20;
+            //    dblCellSize = (dblCellSize / 2) - 264;
+            //    dblCellSize /= iSize;
+            //}
+            //else
+            //{
+                dblCellSize = dblHeight - 40;
                 dblCellSize = ((dblCellSize / 4) * 3) - 120;
                 dblCellSize = dblCellSize / iSize;
-            }          
-            for(int i = 0; i < iSize; i++)
-                for(int j = 0; j < iSize; j++)
-                    tokensBoard[j][i].BtnContainer.Width = tokensBoard[j][i].BtnContainer.Height = dblCellSize;
+                
+            //}
+            if (dblHeight != 0)
+            {
+                for (int i = 0; i < iSize; i++)
+                    for (int j = 0; j < iSize; j++)
+                        tTokensBoard[j, i].BtnContainer.Width = tTokensBoard[j, i].BtnContainer.Height = dblCellSize;
+            }
         }
 
         #endregion
@@ -314,7 +320,7 @@ namespace ProjetOthello
             int iX = 0;
             int iY = 0;
             UidToIJ(btn, ref iX, ref iY);
-            Token tokenRef = tokensBoard[iX][iY];
+            Token tokenRef = tTokensBoard[iX,iY];
 
             if(tokenRef.IIsPlayable)
             {
@@ -345,7 +351,7 @@ namespace ProjetOthello
             int iX = 0;
             int iY = 0;
             UidToIJ(btn, ref iX, ref iY);
-            Token tokenRef = tokensBoard[iX][iY];
+            Token tokenRef = tTokensBoard[iX,iY];
             
             
             if (tokenRef.ITokenValue == -1)
@@ -365,13 +371,13 @@ namespace ProjetOthello
             int iX = 0;
             int iY = 0;
             UidToIJ(btnEvent, ref iX, ref iY);
-            tokensBoard[iX][iY].TokenResetDisplay();
+            tTokensBoard[iX,iY].TokenResetDisplay();
         }
 
         private void dispatcherTimer_Update(object sender, EventArgs e)
         {
             TimeSpan timeInterval = TimeSpan.FromSeconds(1);
-            timePlayer[iActualPlayerId] =  timePlayer[iActualPlayerId].Subtract(timeInterval);
+            timePlayer[iActualPlayerId] =  timePlayer[iActualPlayerId].Add(timeInterval);
             tbxTimers[iActualPlayerId].Text = timePlayer[iActualPlayerId].ToString(@"\0m\:ss");
         }
 
@@ -381,7 +387,77 @@ namespace ProjetOthello
             GridCellResize();
         }
 
+       
+
         #endregion
 
+    }
+
+    public class PlayerInfo : INotifyPropertyChanged
+    {
+        private string strScoreP1;
+        private string strNbTokenP1;
+        private string strScoreP2;
+        private string strNbTokenP2;
+
+        public string ScoreP1
+        {
+            get { return strScoreP1; }
+            set
+            {
+                if (strScoreP1 != value)
+                {
+                    strScoreP1 = value;
+                    RaisePropertyChanged("ScoreP1");
+                }
+            }
+        }
+        public string NbTokenP1
+        {
+            get { return strNbTokenP1; }
+            set
+            {
+                if (strNbTokenP1 != value)
+                {
+                    strNbTokenP1 = value;
+                    RaisePropertyChanged("NbTokenP1");
+                }
+            }
+        }
+        public string ScoreP2
+        {
+            get { return strScoreP2; }
+            set
+            {
+                if (strScoreP2 != value)
+                {
+                    strScoreP2 = value;
+                    RaisePropertyChanged("ScoreP2");
+                }
+            }
+        }
+        public string NbTokenP2
+        {
+            get { return strNbTokenP2; }
+            set
+            {
+                if (strNbTokenP2 != value)
+                {
+                    strNbTokenP2 = value;
+                    RaisePropertyChanged("NbTokenP2");
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }
