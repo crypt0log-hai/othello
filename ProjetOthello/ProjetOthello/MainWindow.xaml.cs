@@ -169,13 +169,15 @@ namespace ProjetOthello
         {
             string strTimer;
             string strFormatPlayer1, strFormatPlayer2;
+
+            iActualPlayerId = InverseBin(iActualPlayerId);
+            tblNoMoreMove[iActualPlayerId] = false;
+
             strFormatPlayer1 = (timePlayer[0].Minutes < 10) ? @"\0m\:ss" : @"\mm\:ss";
             strFormatPlayer2 = (timePlayer[1].Minutes < 10) ? @"\0m\:ss" : @"\mm\:ss";
             strTimer = timePlayer[0].ToString(strFormatPlayer1) + "_" + timePlayer[1].ToString(strFormatPlayer2);
             lHistoryGame.Add(new Tuple<int, int[,], string>(iActualPlayerId, tiBoard, strTimer));
             GameParameter.iNbTurn++;
-            iActualPlayerId = InverseBin(iActualPlayerId);
-            tblNoMoreMove[iActualPlayerId] = false;
             ResetPlayableToken();
         }
 

@@ -30,6 +30,7 @@ namespace ProjetOthello
                     string strIdPlayer = "Turn," + historyValue.Item1.ToString();
                     string strTime = "Time," + historyValue.Item3;
                     int[,] iBoards = historyValue.Item2;
+                    file.WriteLine("-");
                     file.WriteLine(strIdPlayer);
                     file.WriteLine(strTime);
                     file.WriteLine("Board");
@@ -52,7 +53,33 @@ namespace ProjetOthello
 
         public void LoadGame(string strNameFile)
         {
+            using (StreamReader file = new StreamReader("./Save/" + strNameFile + ".txt"))
+            {
+                int iSize = 0;
+                bool blReadBoard = false;
+                while(!file.EndOfStream)
+                {
+                    string line = file.ReadLine();
 
+                    if (line.Equals("-"))
+                        blReadBoard = true;
+                    else
+                    {
+                        string[] tComponent = line.Split(',');
+                        switch (tComponent[0])
+                        {
+                            case "Name":
+                                GameParameter.tCharacterNames[0] = tComponent[1];
+                                GameParameter.tCharacterNames[0] = tComponent[2];
+                                break;
+                            case "Size":
+                                GameParameter.iSize = iSize = Convert.ToInt32(tComponent[1]);
+                                break;
+                        }
+                    }
+
+                }
+            }
         }
 
     }

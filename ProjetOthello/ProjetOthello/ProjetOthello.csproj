@@ -75,6 +75,9 @@
     <Compile Include="GameBoard.cs" />
     <Compile Include="IPlayable.cs" />
     <Compile Include="GameParameter.cs" />
+    <Compile Include="LoadGame.xaml.cs">
+      <DependentUpon>LoadGame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoadSaveHandler.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
@@ -90,6 +93,10 @@
       <DependentUpon>SelectionMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Token.cs" />
+    <Page Include="LoadGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
