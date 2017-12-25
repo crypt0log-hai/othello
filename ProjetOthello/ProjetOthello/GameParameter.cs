@@ -18,7 +18,7 @@ namespace ProjetOthello
 
         public static Brush[] tColorBackgroundCell = { Brushes.White, Brushes.Red };
 
-        public static List<Tuple<int, int[,]>> lHistoryGame;
+        public static List<Tuple<int, int[,], string>> lHistoryGame;
 
         public static int iNbCharacter = 7;
         public static int iSize = 8;

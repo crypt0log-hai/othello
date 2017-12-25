@@ -15,9 +15,8 @@ namespace ProjetOthello
 
         //Reference of grid buttons
         private Button btnContainer;
-        private int iTokenValue = -1;
         private bool iIsPlayable = false;
-        private List<Token> lTokenActionList;
+        private List<int[]> lTokenCoordTarget;
 
         #endregion
 
@@ -25,9 +24,8 @@ namespace ProjetOthello
         #region Getter/Setter
 
         public Button BtnContainer { get => btnContainer; set => btnContainer = value; }
-        public int ITokenValue { get => iTokenValue;}
-        internal List<Token> LTokenActionList { get => lTokenActionList; set => lTokenActionList = value; }
         public bool IIsPlayable { get => iIsPlayable; set => iIsPlayable = value; }
+        public List<int[]> LTokenCoordTarget { get => lTokenCoordTarget; set => lTokenCoordTarget = value; }
 
         #endregion
 
@@ -37,20 +35,15 @@ namespace ProjetOthello
         public Token(Button _btnContainer)
         {
             BtnContainer = _btnContainer;
-            lTokenActionList = new List<Token>();
+            LTokenCoordTarget = new List<int[]>();
         }
 
         #endregion
 
         #region Function
+        
 
         public void UpdateToken(int iPlayerId)
-        {
-            iTokenValue = iPlayerId;
-            TokenChangeDisplay(iPlayerId);
-        }
-
-        public void TokenChangeDisplay(int iPlayerId)
         {
             Image imgToken = new Image();
             imgToken.Source = GameParameter.tbtmTokenIndex[iPlayerId];
@@ -60,14 +53,13 @@ namespace ProjetOthello
 
         public void TokenResetDisplay()
         {
-            if (iTokenValue == -1)
-                btnContainer.Content = "";
+            btnContainer.Content = "";
         }
 
         public void ResetTokenList()
         {
             IIsPlayable = false;
-            lTokenActionList = new List<Token>();
+            LTokenCoordTarget = new List<int[]>();
         }
 
         #endregion

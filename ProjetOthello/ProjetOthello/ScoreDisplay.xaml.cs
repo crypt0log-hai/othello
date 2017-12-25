@@ -28,6 +28,7 @@ namespace ProjetOthello
             this.Closing += OnWindowClosing;
             this.blIsOver = blIsOver;
             this.gameWindow = gameWindow;
+           
             string strName;
             if (blIsOver)
                 strName = "Menu,Restart,Save,Exit";
@@ -52,6 +53,7 @@ namespace ProjetOthello
             switch(btnSend.Uid)
             {
                 case "Resume":
+                    gameWindow.dispatcherTimer.IsEnabled = true;
                     gameWindow.IsEnabled = true;
                     this.Close();
                     break;
@@ -83,14 +85,11 @@ namespace ProjetOthello
 
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
-            if(blIsOver)
-            {
-                MainMenu mainMenu = new MainMenu();
-                mainMenu.Show();
+            if (blIsOver)
                 gameWindow.Close();
-            }
             else
             {
+                gameWindow.dispatcherTimer.IsEnabled = true;
                 gameWindow.IsEnabled = true;
             }
         }

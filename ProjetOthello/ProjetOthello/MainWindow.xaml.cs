@@ -42,12 +42,12 @@ namespace ProjetOthello
         //Represent the cells who can be played this turn
         List<Token> lTokenPlayable;
 
-        public List<Tuple<int, int[,]>> lHistoryGame;
+        public List<Tuple<int, int[,], string>> lHistoryGame;
 
         int iTime = 0;
         TextBlock[] tbxTimers = new TextBlock[2];
         TimeSpan[] timePlayer = new TimeSpan[2];
-        DispatcherTimer dispatcherTimer;
+        public DispatcherTimer dispatcherTimer;
 
         bool[] tblNoMoreMove = { false, false };
 
@@ -102,7 +102,7 @@ namespace ProjetOthello
             pInfo = new PlayerInfo { ScoreP1 = "02", NbTokenP1 = "30", ScoreP2 = "02", NbTokenP2 = "30" };
             this.DataContext = pInfo;
 
-            lHistoryGame = new List<Tuple<int, int[,]>>();
+            lHistoryGame = new List<Tuple<int, int[,], string>>();
 
         }
 
@@ -152,10 +152,11 @@ namespace ProjetOthello
         //Initialize the fourth first tokens
         private void InitializationGame()
         {
-            tTokensBoard[(int)iSize / 2, (int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
-            tTokensBoard[(int)iSize / 2 - 1, (int)iSize / 2].UpdateToken(iActualPlayerId);
-            tTokensBoard[(int)iSize / 2 - 1, (int)iSize / 2 - 1].UpdateToken(InverseBin(iActualPlayerId));
-            tTokensBoard[(int)iSize / 2, (int)iSize / 2].UpdateToken(InverseBin(iActualPlayerId));
+            tiBoard[(int)iSize / 2, (int)iSize / 2 - 1] = iActualPlayerId;
+            tiBoard[(int)iSize / 2 - 1, (int)iSize / 2] = iActualPlayerId;
+            tiBoard[(int)iSize / 2 - 1, (int)iSize / 2 - 1] = InverseBin(iActualPlayerId);
+            tiBoard[(int)iSize / 2, (int)iSize / 2] = InverseBin(iActualPlayerId);
+            UpdateTokenBoard();
         }
 
         #endregion
@@ -166,7 +167,12 @@ namespace ProjetOthello
 
         private void ChangeTurn()
         {
-            lHistoryGame.Add(new Tuple<int, int[,]>(iActualPlayerId, tiBoard));
+            string strTimer;
+            string strFormatPlayer1, strFormatPlayer2;
+            strFormatPlayer1 = (timePlayer[0].Minutes < 10) ? @"\0m\:ss" : @"\mm\:ss";
+            strFormatPlayer2 = (timePlayer[1].Minutes < 10) ? @"\0m\:ss" : @"\mm\:ss";
+            strTimer = timePlayer[0].ToString(strFormatPlayer1) + "_" + timePlayer[1].ToString(strFormatPlayer2);
+            lHistoryGame.Add(new Tuple<int, int[,], string>(iActualPlayerId, tiBoard, strTimer));
             GameParameter.iNbTurn++;
             iActualPlayerId = InverseBin(iActualPlayerId);
             tblNoMoreMove[iActualPlayerId] = false;
@@ -194,10 +200,10 @@ namespace ProjetOthello
             for (int i = 0; i < iSize; i++)
                 for (int j = 0; j < iSize; j++)
                 {
-                    if (tTokensBoard[j,i].ITokenValue == -1)
+                    if (tiBoard[j,i] == -1)
                         IsCellPlayable(j, i, ref tTokensBoard[j,i]);
                     else
-                        tPlayerPoints[tTokensBoard[j,i].ITokenValue]++;
+                        tPlayerPoints[tiBoard[j, i]]++;
                 }
             DisplayPlayerInformation();
         }
@@ -208,12 +214,12 @@ namespace ProjetOthello
                 for (int j = -1; j <= 1; j++)
                     if (!(i == 0 && j == 0))
                     {
-                        List<Token> tempTokenRefs = new List<Token>();
-                        FindAction(j, i, x, y, ref tempTokenRefs);
-                        foreach(Token tokTarget in tempTokenRefs) { token.LTokenActionList.Add(tokTarget);}
+                        List<int[]> tempTarget = new List<int[]>();
+                        FindAction(j, i, x, y, ref tempTarget);
+                        foreach(int[] coord in tempTarget) { token.LTokenCoordTarget.Add(coord); }
                     }
 
-            if (token.LTokenActionList.Count > 0)
+            if (token.LTokenCoordTarget.Count > 0)
             {
                 lTokenPlayable.Add(token);
                 token.IIsPlayable = true;
@@ -222,7 +228,7 @@ namespace ProjetOthello
 
         }
 
-        private bool FindAction(int j,int i, int x, int y, ref List<Token> tempTokenRefs)
+        private bool FindAction(int j,int i, int x, int y, ref List<int[]> tempTokenRefs)
         {
             x += j;
             y += i;
@@ -232,24 +238,24 @@ namespace ProjetOthello
                 {
                     if (iActualPlayerId == 0)
                     {
-                        if (tTokensBoard[x,y].ITokenValue == 1)
+                        if (tiBoard[x,y] == 1)
                         {
-                            tempTokenRefs.Add(tTokensBoard[x,y]);
+                            tempTokenRefs.Add(new int[]{x,y});
                             blFindExtremis = FindAction(j, i, x, y, ref tempTokenRefs);
                         }
-                        else if (tTokensBoard[x,y].ITokenValue == 0)
+                        else if (tiBoard[x, y] == 0)
                             return true;
                         else
                             return false;
                     }
                     else
                     {
-                        if (tTokensBoard[x,y].ITokenValue == 0)
+                        if (tiBoard[x, y] == 0)
                         {
-                            tempTokenRefs.Add(tTokensBoard[x,y]);
+                            tempTokenRefs.Add(new int[] {x, y});
                             blFindExtremis = FindAction(j, i, x, y, ref tempTokenRefs);
                         }
-                        else if (tTokensBoard[x,y].ITokenValue == 1)
+                        else if (tiBoard[x, y] == 1)
                             return true;
                         else
                             return false;
@@ -258,14 +264,24 @@ namespace ProjetOthello
                 }
             if (!blFindExtremis)
             {
-                tempTokenRefs = new List<Token>();
+                tempTokenRefs = new List<int[]>();
                 return false;
             }
             return true;
         }
 
+
+        private void UpdateTokenBoard()
+        {
+            for (int i = 0; i < iSize; i++)
+                for (int j = 0; j < iSize; j++)
+                    if (tiBoard[j, i] != -1)
+                        tTokensBoard[j, i].UpdateToken(tiBoard[j, i]);
+        }
+
         #endregion
 
+        #region sub_Rules
 
         public void Restart()
         {
@@ -274,13 +290,6 @@ namespace ProjetOthello
             InititializeAll();
         }
 
-        private void DisplayPlayerInformation()
-        {
-            pInfo.ScoreP1 = ((tPlayerPoints[0] < 10) ? "0" : "") + tPlayerPoints[0].ToString();
-            pInfo.ScoreP2 = ((tPlayerPoints[1] < 10) ? "0" : "") + tPlayerPoints[1].ToString();
-            pInfo.NbTokenP1 = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
-            pInfo.NbTokenP2 = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
-        }
 
 
         private void NoMoreMoves()
@@ -301,18 +310,28 @@ namespace ProjetOthello
                 GameParameter.iWinner = 0;
             else if (tPlayerPoints[0] < tPlayerPoints[1])
                 GameParameter.iWinner = 1;
-            dispatcherTimer.IsEnabled = false;
-            mainWindow.IsEnabled = false;
-
             ShowScore(true);         
         }
 
         private void ShowScore(bool blGameEnd)
         {
-            ScoreDisplay scoreDisplay = new ScoreDisplay(this, true);
+            dispatcherTimer.IsEnabled = false;
+            mainWindow.IsEnabled = false;
+            ScoreDisplay scoreDisplay = new ScoreDisplay(this, blGameEnd);
             scoreDisplay.Show();
         }
 
+        #endregion
+
+        #region sub_Tools
+
+        private void DisplayPlayerInformation()
+        {
+            pInfo.ScoreP1 = ((tPlayerPoints[0] < 10) ? "0" : "") + tPlayerPoints[0].ToString();
+            pInfo.ScoreP2 = ((tPlayerPoints[1] < 10) ? "0" : "") + tPlayerPoints[1].ToString();
+            pInfo.NbTokenP1 = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
+            pInfo.NbTokenP2 = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
+        }
 
         private void UidToIJ(Button btn, ref int j, ref int i)
         {
@@ -320,6 +339,8 @@ namespace ProjetOthello
             try { j = Convert.ToInt32(strUid[0]); i = Convert.ToInt32(strUid[1]); }
             catch { Console.WriteLine("Btn.Uid is not integer."); }
         }
+
+        #endregion
 
         private void GridCellResize()
         {
@@ -374,10 +395,9 @@ namespace ProjetOthello
                         GameOver();
 
                 }
-
-
-                tokenRef.UpdateToken(iActualPlayerId);
-                foreach (Token tokTarget in tokenRef.LTokenActionList){tokTarget.UpdateToken(iActualPlayerId);}
+                tiBoard[iX,iY] = iActualPlayerId;
+                foreach (int[] coord in tokenRef.LTokenCoordTarget){ tiBoard[coord[0], coord[1]] = iActualPlayerId;}
+                UpdateTokenBoard();
                 ChangeTurn();
             }
 
@@ -393,7 +413,7 @@ namespace ProjetOthello
             Token tokenRef = tTokensBoard[iX,iY];
             
             
-            if (tokenRef.ITokenValue == -1)
+            if (tiBoard[iX,iY] == -1)
             {
                 if (tokenRef.IIsPlayable)
                 {
@@ -410,7 +430,8 @@ namespace ProjetOthello
             int iX = 0;
             int iY = 0;
             UidToIJ(btnEvent, ref iX, ref iY);
-            tTokensBoard[iX,iY].TokenResetDisplay();
+            if(tiBoard[iX,iY] == -1)
+                tTokensBoard[iX,iY].TokenResetDisplay();
         }
 
         private void dispatcherTimer_Update(object sender, EventArgs e)
@@ -435,6 +456,9 @@ namespace ProjetOthello
         #endregion
 
     }
+
+    #region ClassBinding
+
 
     public class PlayerInfo : INotifyPropertyChanged
     {
@@ -503,4 +527,6 @@ namespace ProjetOthello
             }
         }
     }
+
+    #endregion
 }
