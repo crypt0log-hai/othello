@@ -32,43 +32,46 @@ namespace ProjetOthello
         PlayerInfo pInfo;
 
         //Id of the player to whom it is the turn
-        int iActualPlayerId = 0;
+        int iActualPlayerId = 1;
 
         //Represent the cells on the board
         Token[,] tTokensBoard;
         int[,] tiBoard;
-
+        Grid gridCell;
 
         //Represent the cells who can be played this turn
         List<Token> lTokenPlayable;
-        
-        
+
+        public List<Tuple<int, int[,]>> lHistoryGame;
 
         int iTime = 0;
         TextBlock[] tbxTimers = new TextBlock[2];
         TimeSpan[] timePlayer = new TimeSpan[2];
         DispatcherTimer dispatcherTimer;
-        
 
+        bool[] tblNoMoreMove = { false, false };
 
         #endregion
-
-
-
+        
         #region Constructor
 
         public MainWindow()
         {
-            InitializeComponent();            
-            InitializationParameter();
-            InitializationBoard();
-            InitializationGame();
-
+            InitializeComponent();
+            InititializeAll();
         }
 
         #endregion
 
         #region Initialization
+
+        private void InititializeAll()
+        {
+            InitializationParameter();
+            InitializationBoard();
+            InitializationGame();
+            ResetPlayableToken();
+        }
 
         private void InitializationParameter()
         {
@@ -99,6 +102,8 @@ namespace ProjetOthello
             pInfo = new PlayerInfo { ScoreP1 = "02", NbTokenP1 = "30", ScoreP2 = "02", NbTokenP2 = "30" };
             this.DataContext = pInfo;
 
+            lHistoryGame = new List<Tuple<int, int[,]>>();
+
         }
 
         //Initialize the cells, with the buttons and their events
@@ -106,7 +111,8 @@ namespace ProjetOthello
         {
             tTokensBoard = new Token[iSize,iSize];
             tiBoard = new int[iSize, iSize];
-
+            gridCell = new Grid();
+            canvaBoard.Children.Add(gridCell);
             for (int i = 0; i < iSize; i++)
             {                
                 for (int j = 0; j < iSize; j++)
@@ -146,22 +152,26 @@ namespace ProjetOthello
         //Initialize the fourth first tokens
         private void InitializationGame()
         {
-            tTokensBoard[(int)iSize / 2 - 1,(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
-            tTokensBoard[(int)iSize / 2,(int)iSize / 2].UpdateToken(iActualPlayerId);
-            ChangeTurn();
-            tTokensBoard[(int)iSize / 2,(int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
-            tTokensBoard[(int)iSize / 2 - 1,(int)iSize / 2].UpdateToken(iActualPlayerId);
-            ChangeTurn();
+            tTokensBoard[(int)iSize / 2, (int)iSize / 2 - 1].UpdateToken(iActualPlayerId);
+            tTokensBoard[(int)iSize / 2 - 1, (int)iSize / 2].UpdateToken(iActualPlayerId);
+            tTokensBoard[(int)iSize / 2 - 1, (int)iSize / 2 - 1].UpdateToken(InverseBin(iActualPlayerId));
+            tTokensBoard[(int)iSize / 2, (int)iSize / 2].UpdateToken(InverseBin(iActualPlayerId));
         }
 
         #endregion
         
-
         #region Function
 
         #region sub_TurnChange
 
-        private void ChangeTurn(){ iActualPlayerId = InverseBin(iActualPlayerId);  ResetPlayableToken(); }
+        private void ChangeTurn()
+        {
+            lHistoryGame.Add(new Tuple<int, int[,]>(iActualPlayerId, tiBoard));
+            GameParameter.iNbTurn++;
+            iActualPlayerId = InverseBin(iActualPlayerId);
+            tblNoMoreMove[iActualPlayerId] = false;
+            ResetPlayableToken();
+        }
 
         private int InverseBin(int x) { return (x == 0) ? 1 : 0; }
 
@@ -172,7 +182,9 @@ namespace ProjetOthello
             lTokenPlayable = new List<Token>();
             UpCellInformations();
             if (lTokenPlayable.Count == 0)
+            {
                 NoMoreMoves();
+            }
 
         }
 
@@ -254,6 +266,14 @@ namespace ProjetOthello
 
         #endregion
 
+
+        public void Restart()
+        {
+            gridCell.Children.RemoveRange(0, gridCell.Children.Count);
+            canvaBoard.Children.Remove(gridCell);
+            InititializeAll();
+        }
+
         private void DisplayPlayerInformation()
         {
             pInfo.ScoreP1 = ((tPlayerPoints[0] < 10) ? "0" : "") + tPlayerPoints[0].ToString();
@@ -265,13 +285,32 @@ namespace ProjetOthello
 
         private void NoMoreMoves()
         {
-
+            if (tblNoMoreMove[InverseBin(iActualPlayerId)])
+                GameOver();
+            else
+            {
+                tblNoMoreMove[iActualPlayerId] = true;
+                ChangeTurn();
+            }
         }
 
 
         private void GameOver()
         {
+            if (tPlayerPoints[0] > tPlayerPoints[1])
+                GameParameter.iWinner = 0;
+            else if (tPlayerPoints[0] < tPlayerPoints[1])
+                GameParameter.iWinner = 1;
+            dispatcherTimer.IsEnabled = false;
+            mainWindow.IsEnabled = false;
 
+            ShowScore(true);         
+        }
+
+        private void ShowScore(bool blGameEnd)
+        {
+            ScoreDisplay scoreDisplay = new ScoreDisplay(this, true);
+            scoreDisplay.Show();
         }
 
 
@@ -387,7 +426,11 @@ namespace ProjetOthello
             GridCellResize();
         }
 
-       
+
+        private void btnStart_Click(object sender, RoutedEventArgs e)
+        {
+            ShowScore(false);
+        }
 
         #endregion
 

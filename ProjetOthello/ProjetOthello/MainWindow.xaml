@@ -8,8 +8,8 @@
         Title="Othello vs He-Arc" Height="900" Width="1600" MinWidth="1280" MinHeight="720"            
         WindowStartupLocation="CenterScreen"
         Background="White">
-   
-    
+
+
     <Window.Resources>
         <BitmapImage x:Key="btmBoardBackground" UriSource="Assets/Game/BoardBackgroundDefault.png"/>
         <Style TargetType="{x:Type TextBlock}">
@@ -37,6 +37,42 @@
                 <Trigger Property="IsMouseOver" Value="False">
                 </Trigger>
             </Style.Triggers>
+        </Style>
+        <Style x:Key="MenuButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#1A1A1A" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontFamily" Value="./#Arial" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="4" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Path x:Name="PathIcon" Width="20" Height="22" Stretch="Fill" Fill="#FFFFFF" HorizontalAlignment="Left" Margin="5,0,0,0" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z "/>
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#999999" />
+                                <Setter Property="Foreground" Value="#E2106E" />
+                                <Setter TargetName="PathIcon" Property="Fill" Value="#E2106E" />
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -77,21 +113,24 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1" >
-            <StackPanel  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <StackPanel  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Label Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
                     <TextBlock Name="tbxTokenPlayer1" HorizontalAlignment="Center" Text="{Binding NbTokenP1,Mode=TwoWay}" />
-                <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
+                    <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
                     <TextBlock Name="tbxScorePlayer1" HorizontalAlignment="Center" Text="{Binding ScoreP1,Mode=TwoWay}" />
-            </StackPanel>
+                </StackPanel>
             </Grid>
 
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1">
-            <Canvas x:Name="canvaBoard" Background="#202020" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,40,0,80"                
-                    Width="{Binding Path=ActualHeight, RelativeSource={RelativeSource Self}}">
-                <Grid Name="gridCell">
-                </Grid>
-            </Canvas>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Canvas x:Name="canvaBoard" Background="#202020" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="118,8,118,0"/>
+            <TextBlock Name="tbxGameInfo" Grid.Row="1" Text="{Binding GameInfo}"/>
+            <Button x:Name="btnStart" Grid.Row="2" Content="Menu" Style="{StaticResource MenuButton}" Click="btnStart_Click"/>
 
         </Grid>
 
@@ -108,7 +147,5 @@
             </StackPanel>
 
         </Grid>
-
     </Grid>
-
 </Window>

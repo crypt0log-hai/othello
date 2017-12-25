@@ -82,6 +82,9 @@
       <DependentUpon>OptionMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="ProgramParameter.cs" />
+    <Compile Include="ScoreDisplay.xaml.cs">
+      <DependentUpon>ScoreDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SelectionMenu.xaml.cs">
       <DependentUpon>SelectionMenu.xaml</DependentUpon>
     </Compile>
@@ -103,6 +106,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="OptionMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScoreDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,6 +159,7 @@
     <Resource Include="Assets\Game\Tokens\Gobron.png" />
     <Resource Include="Assets\Game\Tokens\Ouerhani.png" />
     <Resource Include="Assets\Game\BoardBackgroundDefault.png" />
+    <Resource Include="Assets\Game\ScoreBackground.jpg" />
     <Content Include="Assets\Menu\BackgroundMenu.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
