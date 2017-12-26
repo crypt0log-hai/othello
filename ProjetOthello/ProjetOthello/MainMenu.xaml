@@ -17,7 +17,7 @@
             <Setter Property="Foreground" Value="White" />
             <Setter Property="FontFamily" Value="./#Arial" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
-            <Setter Property="Margin" Value="0,25,0,0"/>
+            <Setter Property="Margin" Value="0,10,0,0"/>
             <Setter Property="Height" Value="42"/>
             <Setter Property="FontSize" Value="22"/>
             <Setter Property="Template">
@@ -63,7 +63,7 @@
             <RowDefinition Height="auto" MinHeight="388"/>
         </Grid.RowDefinitions>
         <Image x:Name="imgLogo" Source="{StaticResource btmLogo}" Grid.Column="1" Grid.Row="0" Visibility="Visible"/>
-        <StackPanel Name="spMenuButton" Grid.Column="1" Grid.Row="1" Margin="85,0,85,65">            
+        <StackPanel Name="spMenuButton" Grid.Column="1" Grid.Row="1" Margin="25,0,25,65">            
         </StackPanel>
 
 

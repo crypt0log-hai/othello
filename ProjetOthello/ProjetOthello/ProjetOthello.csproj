@@ -171,11 +171,6 @@
     <Content Include="Assets\Menu\BackgroundMenu.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Assets\Menu\Selection\Carrino.png" />
-    <Resource Include="Assets\Menu\Selection\Cortinovis.png" />
-    <Resource Include="Assets\Menu\Selection\Gorbel.png" />
-    <Resource Include="Assets\Menu\Selection\Husser.png" />
-    <Resource Include="Assets\Menu\Selection\Tieche.png" />
     <Resource Include="Assets\Menu\Portrait\Carrino.png" />
     <Resource Include="Assets\Menu\Portrait\Cortinovis.png" />
     <Resource Include="Assets\Menu\Portrait\Gorbel.png" />

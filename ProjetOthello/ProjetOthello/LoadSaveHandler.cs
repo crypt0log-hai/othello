@@ -25,12 +25,11 @@ namespace ProjetOthello
             {
                 file.WriteLine(strName);
                 file.WriteLine(strSize);
-                foreach(Tuple<int,int[,], string> historyValue in lHistoryGame)
+                foreach (Tuple<int,int[,], string> historyValue in lHistoryGame)
                 {
                     string strIdPlayer = "Turn," + historyValue.Item1.ToString();
                     string strTime = "Time," + historyValue.Item3;
                     int[,] iBoards = historyValue.Item2;
-                    file.WriteLine("-");
                     file.WriteLine(strIdPlayer);
                     file.WriteLine(strTime);
                     file.WriteLine("Board");
@@ -44,7 +43,7 @@ namespace ProjetOthello
                         }
                         file.WriteLine(strLine);
                     }
-
+                    file.WriteLine("-");
                 }
                 file.Flush();
                 file.Close();
@@ -53,28 +52,61 @@ namespace ProjetOthello
 
         public void LoadGame(string strNameFile)
         {
-            using (StreamReader file = new StreamReader("./Save/" + strNameFile + ".txt"))
+            using (StreamReader file = new StreamReader(strNameFile))
             {
                 int iSize = 0;
                 bool blReadBoard = false;
+                int iTurn = 0;
+                string strTime = "";
+                int[,] tBoard = new int[0,0];
+                int iY = 0;
+                GameParameter.lHistoryGame = new List<Tuple<int, int[,], string>>();
+
                 while(!file.EndOfStream)
                 {
-                    string line = file.ReadLine();
+                    string line = file.ReadLine();                    
+                    string[] tComponent = line.Split(',');
 
                     if (line.Equals("-"))
-                        blReadBoard = true;
+                    {
+                        GameParameter.lHistoryGame.Add(new Tuple<int, int[,], string>(iTurn, tBoard, strTime));
+                        blReadBoard = false;
+                    }
                     else
                     {
-                        string[] tComponent = line.Split(',');
-                        switch (tComponent[0])
+                        if (blReadBoard)
                         {
-                            case "Name":
-                                GameParameter.tCharacterNames[0] = tComponent[1];
-                                GameParameter.tCharacterNames[0] = tComponent[2];
-                                break;
-                            case "Size":
-                                GameParameter.iSize = iSize = Convert.ToInt32(tComponent[1]);
-                                break;
+                            for (int iX = 0; iX < iSize; iX++)
+                                tBoard[iX, iY] = Convert.ToInt32(tComponent[iX]);
+                            iY++;
+                        }
+                        else
+                        {
+                            if (line.Equals("Board"))
+                            {
+                                blReadBoard = true;
+                                tBoard = new int[iSize,iSize];
+                                iY = 0;
+                            }
+                            else
+                            {
+                                switch (tComponent[0])
+                                {
+                                    case "Name":
+                                        GameParameter.tCharacterNames[0] = tComponent[1];
+                                        GameParameter.tCharacterNames[1] = tComponent[2];
+                                        break;
+                                    case "Size":
+                                        GameParameter.iSize = iSize = Convert.ToInt32(tComponent[1]);
+                                        break;
+                                    case "Turn":
+                                        iTurn = Convert.ToInt32(tComponent[1]);
+                                        break;
+                                    case "Time":
+                                        strTime = tComponent[1];
+                                        break;
+                                }
+                            }
                         }
                     }
 

@@ -61,6 +61,15 @@ namespace ProjetOthello
             InititializeAll();
         }
 
+        public MainWindow(Tuple<int, int[,], string> loadedGame)
+        {
+            InitializeComponent();
+            InitializationParameter();
+            InitializationBoard();
+            InitializationLoadedGame(loadedGame);
+            ResetPlayableToken();
+        }
+
         #endregion
 
         #region Initialization
@@ -159,6 +168,13 @@ namespace ProjetOthello
             UpdateTokenBoard();
         }
 
+        private void InitializationLoadedGame(Tuple<int, int[,], string> loadedGame)
+        {
+            iActualPlayerId = loadedGame.Item1;
+            tiBoard = loadedGame.Item2;
+            UpdateTokenBoard();
+        }
+
         #endregion
         
         #region Function
@@ -169,6 +185,11 @@ namespace ProjetOthello
         {
             string strTimer;
             string strFormatPlayer1, strFormatPlayer2;
+            int[,] board = new int[iSize,iSize];
+
+            for (int i = 0; i < iSize; i++)
+                for (int j = 0; j < iSize; j++)
+                    board[j, i] = tiBoard[j, i];
 
             iActualPlayerId = InverseBin(iActualPlayerId);
             tblNoMoreMove[iActualPlayerId] = false;
@@ -176,7 +197,7 @@ namespace ProjetOthello
             strFormatPlayer1 = (timePlayer[0].Minutes < 10) ? @"\0m\:ss" : @"\mm\:ss";
             strFormatPlayer2 = (timePlayer[1].Minutes < 10) ? @"\0m\:ss" : @"\mm\:ss";
             strTimer = timePlayer[0].ToString(strFormatPlayer1) + "_" + timePlayer[1].ToString(strFormatPlayer2);
-            lHistoryGame.Add(new Tuple<int, int[,], string>(iActualPlayerId, tiBoard, strTimer));
+            lHistoryGame.Add(new Tuple<int, int[,], string>(iActualPlayerId, board, strTimer));
             GameParameter.iNbTurn++;
             ResetPlayableToken();
         }

@@ -1,16 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ProjetOthello
 {
@@ -23,7 +15,7 @@ namespace ProjetOthello
 
         List<Button> lbtnMenu;
         List<string[]> lButtonName;
-
+        string[] filePaths;
         int iMenuState = 0;
 
         public MainMenu()
@@ -32,15 +24,45 @@ namespace ProjetOthello
             lButtonName = new List<string[]>();
             string[] tNames0 = { "NewGame", "Load", "Option", "Exit" };
             string[] tNames1 = { "1 vs 1", "1 vs IA", "IA vs IA", "Back" };
+            string[] tNames2 = { "Back"};
             lButtonName.Add(tNames0);
             lButtonName.Add(tNames1);
+            lButtonName.Add(tNames2);
             UpdateButtons();
         }
 
         private void UpdateButtons()
         {
             spMenuButton.Children.RemoveRange(0, spMenuButton.Children.Count);
-            foreach(string name in lButtonName[iMenuState])
+            if (iMenuState == 2)
+            {
+                ScrollViewer svLoadName = new ScrollViewer();
+                svLoadName.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                svLoadName.MaxHeight = 250;
+                spMenuButton.Children.Add(svLoadName);
+
+                StackPanel spLoadName = new StackPanel();
+                filePaths = Directory.GetFiles("./Save");
+                int iCpt = 0;
+                foreach(string path in filePaths)
+                {
+                    string[] tComponent = path.Split('\\');
+                    tComponent = tComponent[1].Split('.');
+                    tComponent = tComponent[0].Split('_');
+                    string strName = tComponent[0] + "VS" + tComponent[1] + " T" + tComponent[3] + " " + tComponent[4] + "." + tComponent[5] + "." + tComponent[6] +
+                        " " + tComponent[7] + ":" + tComponent[8] + ":" + tComponent[9];
+                    Button btn = new Button();
+                    btn.Content = strName;
+                    btn.FontSize = 15;
+                    btn.Uid = ""+iCpt;
+                    btn.Click += LoadSavedGame;
+                    spLoadName.Children.Add(btn);
+                    iCpt++;
+                }
+                svLoadName.Content = spLoadName;
+            } 
+
+            foreach (string name in lButtonName[iMenuState])
             {
                 Button btnMenu = new Button();
                 btnMenu.Uid = name;
@@ -48,8 +70,19 @@ namespace ProjetOthello
                 btnMenu.Click += buttonsClicked;
                 spMenuButton.Children.Add(btnMenu);
             }
+            
         }
 
+        private void LoadSavedGame(object sender, RoutedEventArgs e)
+        {
+            Button btnEvent = (Button)sender;
+            int iId = Convert.ToInt32(btnEvent.Uid);
+            LoadSaveHandler loadHandler = new LoadSaveHandler();
+            loadHandler.LoadGame(filePaths[iId]);
+            LoadGame loadGame = new LoadGame();
+            loadGame.Show();
+            this.Close();
+        }
 
         private void buttonsClicked(object sender, RoutedEventArgs e)
         {
@@ -61,12 +94,13 @@ namespace ProjetOthello
                     UpdateButtons();
                     break;
                 case "Load":
+                    iMenuState = 2;
+                    UpdateButtons();
                     break;
                 case "Option":
                     OptionMenu optionMenu = new OptionMenu();
                     optionMenu.Show();
                     this.Close();
-                    break;
                     break;
                 case "Exit":
                     this.Close();
