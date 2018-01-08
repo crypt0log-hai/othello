@@ -8,6 +8,11 @@
         Title="ScoreDisplay" Height="600" Width="700" ResizeMode="NoResize">
     <Window.Resources>
         <BitmapImage x:Key="btmBackground" UriSource="Assets/Game/ScoreBackground.jpg" />
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontFamily" Value="./#Arial"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="#1A1A1A" />
             <Setter Property="Foreground" Value="White" />
@@ -64,7 +69,13 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Label x:Name="lblWinner" Visibility="Hidden">Winner</Label>
+                <Rectangle x:Name="rWinner" Width="128" Height="128"/>
+                <Label x:Name="lblWinnerScore"/>                
+            </StackPanel>
         </Grid>
+        
         <StackPanel Name="spMenuButtons" Grid.Row="1" >
         </StackPanel>
     </Grid>

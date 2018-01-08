@@ -31,7 +31,10 @@ namespace ProjetOthello
            
             string strName;
             if (blIsOver)
+            {
                 strName = "Menu,Restart,Save,Exit";
+                ShowScore();
+            }
             else
                 strName = "Resume,Menu,Restart,Save,Exit";
             string[] tButtonsName = strName.Split(',');
@@ -45,6 +48,11 @@ namespace ProjetOthello
             }
         }
 
+        private void ShowScore()
+        {
+            rWinner.Fill = new ImageBrush(GameParameter.tbtmTokenIndex[GameParameter.iWinner]);
+            lblWinner.Visibility = Visibility.Visible;
+        }
         
 
         private void Button_Click(object sender, RoutedEventArgs e)

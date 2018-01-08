@@ -310,6 +310,7 @@ namespace ProjetOthello
         {
             gridCell.Children.RemoveRange(0, gridCell.Children.Count);
             canvaBoard.Children.Remove(gridCell);
+            GameParameter.iWinner = -1;
             InititializeAll();
         }
 
@@ -353,7 +354,7 @@ namespace ProjetOthello
             pInfo.ScoreP1 = ((tPlayerPoints[0] < 10) ? "0" : "") + tPlayerPoints[0].ToString();
             pInfo.ScoreP2 = ((tPlayerPoints[1] < 10) ? "0" : "") + tPlayerPoints[1].ToString();
             pInfo.NbTokenP1 = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
-            pInfo.NbTokenP2 = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
+            pInfo.NbTokenP2 = ((tnbTokensRemain[1] < 10) ? "0" : "") + tnbTokensRemain[1].ToString();
         }
 
         private void UidToIJ(Button btn, ref int j, ref int i)
@@ -413,7 +414,7 @@ namespace ProjetOthello
                 {
                     int iOtherPlayerId = InverseBin(iActualPlayerId);
                     if (tnbTokensRemain[iOtherPlayerId] > 0)
-                        tnbTokensRemain[iActualPlayerId]--;
+                        tnbTokensRemain[iOtherPlayerId]--;
                     else
                         GameOver();
 

@@ -23,11 +23,11 @@ namespace ProjetOthello
         {
             InitializeComponent();
         }
-
-        private void btnNext_Click(object sender, RoutedEventArgs e)
+        
+        private void btnBack_Clic(object sender, RoutedEventArgs e)
         {
-            SelectionMenu selectionMenu = new SelectionMenu();
-            selectionMenu.Show();
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.Show();
             this.Close();
         }
     }
