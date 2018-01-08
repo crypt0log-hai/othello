@@ -63,23 +63,40 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WpfAnimatedGif, Version=1.4.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.15\lib\net\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GameBoard.cs" />
+    <Compile Include="IPlayable.cs" />
     <Compile Include="GameParameter.cs" />
+    <Compile Include="LoadGame.xaml.cs">
+      <DependentUpon>LoadGame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoadSaveHandler.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="OptionMenu.xaml.cs">
       <DependentUpon>OptionMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProgramParameter.cs" />
+    <Compile Include="ScoreDisplay.xaml.cs">
+      <DependentUpon>ScoreDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SelectionMenu.xaml.cs">
       <DependentUpon>SelectionMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Token.cs" />
+    <Page Include="LoadGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -97,6 +114,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="OptionMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScoreDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -123,6 +144,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -132,20 +154,28 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Menu\Portrait\QuestionMark.png" />
-    <Resource Include="Assets\Menu\Portrait\Carrino.png" />
-    <Resource Include="Assets\BackGroundTest.png" />
-    <Content Include="Assets\Tokens\BlackToken.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Tokens\WhiteToken.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Assets\Menu\Selection\QuestionMark.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Menu\Portrait\Gobron.png" />
+    <Resource Include="Assets\Menu\Portrait\Ouerhani.png" />
+    <Resource Include="Assets\Game\Tokens\Carrino.png" />
+    <Resource Include="Assets\Game\Tokens\Cortinovis.png" />
+    <Resource Include="Assets\Game\Tokens\Gorbel.png" />
+    <Resource Include="Assets\Game\Tokens\Husser.png" />
+    <Resource Include="Assets\Game\Tokens\Tieche.png" />
+    <Resource Include="Assets\Game\Tokens\Gobron.png" />
+    <Resource Include="Assets\Game\Tokens\Ouerhani.png" />
+    <Resource Include="Assets\Game\BoardBackgroundDefault.png" />
+    <Resource Include="Assets\Game\ScoreBackground.jpg" />
     <Content Include="Assets\Menu\BackgroundMenu.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\Menu\Portrait\Carrino.png" />
+    <Resource Include="Assets\Menu\Portrait\Cortinovis.png" />
+    <Resource Include="Assets\Menu\Portrait\Gorbel.png" />
+    <Resource Include="Assets\Menu\Portrait\Husser.png" />
+    <Resource Include="Assets\Menu\Portrait\Tieche.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Menu\Logo.png">
@@ -168,6 +198,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Save\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,12 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjetOthello"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920"            
+        mc:Ignorable="d" Name="mainWindow"
+        Title="Othello vs He-Arc" Height="900" Width="1600" MinWidth="1280" MinHeight="720"            
         WindowStartupLocation="CenterScreen"
-        Background="Gray">
+        Background="White">
+
 
     <Window.Resources>
+        <BitmapImage x:Key="btmBoardBackground" UriSource="Assets/Game/BoardBackgroundDefault.png"/>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="FontFamily" Value="Quartz MS"/>
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontFamily" Value="Quartz MS"/>
+        </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -26,41 +38,114 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="MenuButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#1A1A1A" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontFamily" Value="./#Arial" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border CornerRadius="4" Background="{TemplateBinding Background}">
+                            <Grid>
+                                <Path x:Name="PathIcon" Width="20" Height="22" Stretch="Fill" Fill="#FFFFFF" HorizontalAlignment="Left" Margin="5,0,0,0" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z "/>
+                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#999999" />
+                                <Setter Property="Foreground" Value="#E2106E" />
+                                <Setter TargetName="PathIcon" Property="Fill" Value="#E2106E" />
+                            </Trigger>
+
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Foreground" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid  Grid.RowSpan="2" Grid.ColumnSpan="2" SizeChanged="Grid_SizeChanged">
+        <Grid.Background>
+            <ImageBrush  ImageSource="{StaticResource btmBoardBackground}" Stretch="Fill"/>
+        </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="214*" />
-            <ColumnDefinition Width="800"/>
-            <ColumnDefinition Width="215*"/>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
-            <RowDefinition Height="800"/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Grid.Column="1" Name="gridBoard">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+        <StackPanel Margin="20,0,80,0"  Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <TextBlock Name="tbxPlayerName1" FontSize="36" FontFamily="Salina" HorizontalAlignment="Center"/>
+            <Rectangle Name="rPortraitPlayer1" Width="100" Height="100"/>
+        </StackPanel>
+        <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Name="tbxTimerPlay1" HorizontalAlignment="Left" Padding="25,0,0,0"  VerticalAlignment="Center" Grid.Column="0" Text="00:00" FontFamily="Quartz MS" FontSize="75" Foreground="White"/>
+            <TextBlock Name="tbxTimerPlay2" HorizontalAlignment="Right"  Padding="0,0,25,0" VerticalAlignment="Center" Grid.Column="2" Text="00:00" FontFamily="Quartz MS" FontSize="75"/>
+        </Grid>
+
+        <StackPanel Name="spPlayer2" Grid.Column="2" Margin="80,0,20,0" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <TextBlock Name="tbxPlayerName2" FontSize="36" FontFamily="Salina" HorizontalAlignment="Center"/>
+            <Rectangle Name="rPortraitPlayer2" Width="100" Height="100"/>
+        </StackPanel>
+
+        <Grid  Grid.Column="0" Grid.Row="1">
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1" >
+                <StackPanel  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Label Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
+                    <TextBlock Name="tbxTokenPlayer1" HorizontalAlignment="Center" Text="{Binding NbTokenP1,Mode=TwoWay}" />
+                    <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
+                    <TextBlock Name="tbxScorePlayer1" HorizontalAlignment="Center" Text="{Binding ScoreP1,Mode=TwoWay}" />
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Canvas x:Name="canvaBoard" Background="#202020" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="118,8,118,0"/>
+            <TextBlock Name="tbxGameInfo" Grid.Row="1" Text="{Binding GameInfo}"/>
+            <Button x:Name="btnStart" Grid.Row="2" Content="Menu" Style="{StaticResource MenuButton}" Click="btnStart_Click"/>
+
+        </Grid>
+
+        <Grid  Grid.Column="2" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Label Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
+                <TextBlock Name="tbxTokenPlayer2" HorizontalAlignment="Center" Text="{Binding NbTokenP2,Mode=TwoWay}" />
+                <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
+                <TextBlock Name="tbxScorePlayer2" HorizontalAlignment="Center" Text="{Binding ScoreP2,Mode=TwoWay}" />
+            </StackPanel>
+
         </Grid>
     </Grid>
-
 </Window>

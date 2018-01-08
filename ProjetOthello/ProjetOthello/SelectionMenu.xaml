@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:local="clr-namespace:ProjetOthello"
         mc:Ignorable="d"
         Title="SelectionMenu" Height="567" Width="1063.208"
@@ -11,71 +12,26 @@
         <Style TargetType="{x:Type Grid}">
             <Setter Property="Background" Value="Black"/>
         </Style>
+        
         <Style TargetType="{x:Type Button}">
-            <Setter Property="Padding" Value="-4"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <Path Stretch="Fill"
-                                  Data="M22,0 L102,0 80,90 0,90 Z"
-                                  Fill="{TemplateBinding Background}"
-                                  Stroke="Black"
-                                  StrokeThickness="1"
-                                  SnapsToDevicePixels="True"
-                                  Margin="0,0,0,0"/>
-                            <ContentPresenter Name="content" 
-                         HorizontalAlignment="Center" 
-                         VerticalAlignment="Center"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#999999" />
-                                <Setter Property="Foreground" Value="#E2106E" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="NormalButton" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="#1A1A1A" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="FontFamily" Value="./#Arial" />
-            <Setter Property="SnapsToDevicePixels" Value="True" />
-            
-
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border CornerRadius="4" Background="{TemplateBinding Background}">
-                            <Grid>
-                                <Path x:Name="PathIcon" Width="20" Height="22" Stretch="Fill" Fill="#FFFFFF" HorizontalAlignment="Left" Margin="5,0,0,0" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z "/>
-                                <ContentPresenter x:Name="MyContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0" />
-                            </Grid>
+                        <Border Background="{TemplateBinding Background}" BorderBrush="Black" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#999999" />
-                                <Setter Property="Foreground" Value="#E2106E" />
-                                <Setter TargetName="PathIcon" Property="Fill" Value="#E2106E" />
-                            </Trigger>
-
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="White" />
-                                <Setter Property="Foreground" Value="Black" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="False">
+                </Trigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -84,37 +40,26 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="110"/>
             <RowDefinition/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4*"/>
-                <ColumnDefinition Width="8*"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0">
 
-            <Grid Grid.Column="0"  >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="121"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Name="rPlayer1"></Rectangle>
-            </Grid>
-            <Canvas  Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Button x:Uid="0" Name="btnPortrait0" Canvas.ZIndex="0" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter" MouseLeave="btnPortrait_mouseLeave"  />
-                <Button x:Uid="1" Name="btnPortrait1" Canvas.ZIndex="1" Canvas.Left="77" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="2" Name="btnPortrait2" Canvas.ZIndex="2" Canvas.Left="154" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="3" Name="btnPortrait3" Canvas.ZIndex="3" Canvas.Left="231" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="4" Name="btnPortrait4" Canvas.ZIndex="4" Canvas.Left="308" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-                <Button x:Uid="5" Name="btnPortrait5" Canvas.ZIndex="5" Canvas.Left="385" Width="100" Height="110" Click="btnPortraits_click" MouseEnter="btnPortrait_mouseEnter"  MouseLeave="btnPortrait_mouseLeave"/>
-            </Canvas>
-            <Grid Grid.Column="2"  >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Name="rPlayer2"></Rectangle>
-            </Grid>
+            <StackPanel Name="panelSelection"  Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" />
+
         </Grid>
-
-        <Button Style="{StaticResource NormalButton}" Grid.Row="2" x:Name="btnNext" Content="Next" Click="btnNext_Click"/>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="285"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Name="tbxNamePlayer1" FontSize="42" FontFamily="Salina" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White"/>
+            <TextBlock Name="tbxNamePlayer2" Grid.Column="2" FontSize="42" FontFamily="Salina" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White"/>
+            <Rectangle Margin="5" Grid.Row="1" Grid.Column="0" Name="rPlayer1"/>
+            <Rectangle Margin="5,5,5,5" Grid.Row="1" Grid.Column="2" Name="rPlayer2"></Rectangle>
+        </Grid>
     </Grid>
 </Window>
