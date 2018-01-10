@@ -93,6 +93,7 @@
       <DependentUpon>SelectionMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Token.cs" />
+    <Compile Include="Tools.cs" />
     <Page Include="LoadGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

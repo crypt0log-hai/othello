@@ -16,8 +16,8 @@ namespace ProjetOthello
         //Reference of grid buttons
         private Button btnContainer;
         private bool iIsPlayable = false;
-        private List<int[]> lTokenCoordTarget;
-
+        public List<int[]> lTokenCoordTarget;
+        public int x, y;
         #endregion
 
 
@@ -32,16 +32,24 @@ namespace ProjetOthello
 
         #region Constructor
 
-        public Token(Button _btnContainer)
-        {
+        public Token(Button _btnContainer, int x, int y)
+        {            
             BtnContainer = _btnContainer;
             LTokenCoordTarget = new List<int[]>();
+            this.x = x;
+            this.y = y;
+        }
+
+        public Token(int x, int y)
+        {
+            LTokenCoordTarget = new List<int[]>();
+            this.x = x;
+            this.y = y;
         }
 
         #endregion
 
-        #region Function
-        
+        #region Function        
 
         public void UpdateToken(int iPlayerId)
         {

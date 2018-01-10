@@ -11,11 +11,73 @@ namespace ProjetOthello
         private int[,] tiBoard;
         private int[] tPlayerPoints;
         private int iSize = 8;
+        
+        
+        public int[,] TiBoard { get => tiBoard; set => tiBoard = value; }
 
+        private Token currentToken;
 
-        public int[,] TiBoard { set => tiBoard = value; }
-        public int[] TPlayerPoints { set => tPlayerPoints = value; }
-        public int ISize { set => iSize = value; }
+        public GameBoard()
+        {
+            TiBoard = new int[iSize, iSize];
+            currentToken = new Token(0,0);
+        }
+
+        /// <summary>
+        /// For not tournament purpose only, update size of boards
+        /// </summary>
+        public void InitializationSolo(int iSize)
+        {
+            this.iSize = iSize;
+            TiBoard = new int[iSize, iSize];
+        }        
+
+        public bool IsCellPlayable(int iActualPlayerId, int x, int y, ref Token token)
+        {
+            for (int i = -1; i <= 1; i++)
+                for (int j = -1; j <= 1; j++)
+                    if (!(i == 0 && j == 0))
+                    {
+                        List<int[]> tempTarget = new List<int[]>();
+                        FindAction(iActualPlayerId,j, i, x, y, ref tempTarget);
+                        foreach (int[] coord in tempTarget) { token.LTokenCoordTarget.Add(coord); }
+                    }
+            if (token.LTokenCoordTarget.Count > 0)
+            {
+                token.IIsPlayable = true;
+                return true;
+            }
+            return false;
+        }
+
+        private bool FindAction(int iActualPlayerId, int j, int i, int x, int y, ref List<int[]> tempTokenRefs)
+        {
+            x += j;
+            y += i;
+            bool blFindExtremis = false;
+            if (x >= 0 && x < iSize)
+                if (y >= 0 && y < iSize)
+                {
+                        if (tiBoard[x, y] == Tools.InverseBin(iActualPlayerId))
+                        {
+                            tempTokenRefs.Add(new int[] { x, y });
+                            blFindExtremis = FindAction(iActualPlayerId,j, i, x, y, ref tempTokenRefs);
+                        }
+                        else if (tiBoard[x, y] == iActualPlayerId)
+                            return true;
+                        else
+                            return false;
+                }
+            if (!blFindExtremis)
+            {
+                tempTokenRefs = new List<int[]>();
+                return false;
+            }
+            return true;
+        }
+           
+        
+        #region IPlayable
 
         public string GetName()
         {
@@ -24,55 +86,38 @@ namespace ProjetOthello
 
         public bool IsPlayable(int column, int line, bool isWhite)
         {
-            int iActualPlayerId = (isWhite) ? 0 : 1;
+            int iActualPlayerId = Tools.IsWhiteToId(isWhite);
+            currentToken.ResetTokenList();
+            currentToken = new Token(column,line);
             if (tiBoard[column, line] == -1)
-            {
-                for (int i = -1; i <= 1; i++)
-                    for (int j = -1; j <= 1; j++)
-                        if (!(i == 0 && j == 0))
-                            if (FindAction(j, i, column, line, iActualPlayerId))
-                            {
-                                return true;
-                            }
-            }
+                return IsCellPlayable(iActualPlayerId,column,line, ref currentToken);
             return false;
         }
-
-        private bool FindAction(int j, int i, int column, int line, int iActualPlayerId)
-        {
-            column += j;
-            line += i;
-            if (column >= 0 && column < iSize)
-                if (line >= 0 && line < iSize)
-                {
-                    if (tiBoard[column, line] == InverseBin(iActualPlayerId))
-                        return FindAction(j, i, column, line, tiBoard[column, line]);
-                    else if (tiBoard[column, line] == iActualPlayerId)
-                        return true;
-                }
-
-            return false;
-        }
-
-
-        private int InverseBin(int x) { return (x == 0) ? 1 : 0; }
-
 
         public bool PlayMove(int column, int line, bool isWhite)
         {
+            int iActualPlayer = Tools.IsWhiteToId(isWhite);
             if (IsPlayable(column, line, isWhite))
+            {
+                tiBoard[column, line] = iActualPlayer;
+                foreach(int[] coord in currentToken.lTokenCoordTarget)
+                {
+                    tiBoard[coord[0], coord[1]] = iActualPlayer;
+                }
                 return true;
+            }
             return false;
         }
 
         public Tuple<int, int> GetNextMove(int[,] game, int level, bool whiteTurn)
         {
-            throw new NotImplementedException();
+            
+            return new Tuple<int, int>(-1, -1);
         }
 
         public int[,] GetBoard()
         {
-            return tiBoard;
+            return TiBoard;
         }
 
         public int GetWhiteScore()
@@ -84,6 +129,8 @@ namespace ProjetOthello
         {
             return tPlayerPoints[1];
         }
+
+        #endregion
 
     }
 
