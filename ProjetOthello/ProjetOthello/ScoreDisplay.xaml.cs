@@ -50,8 +50,11 @@ namespace ProjetOthello
 
         private void ShowScore()
         {
-            rWinner.Fill = new ImageBrush(GameParameter.tbtmTokenIndex[GameParameter.iWinner]);
+            int iWinner = GameParameter.iWinner;
+            rWinner.Fill = new ImageBrush(GameParameter.tbtmTokenIndex[iWinner]);
             lblWinner.Visibility = Visibility.Visible;
+            lblScore.Content = "Score : " + GameParameter.tScore[0] + " - " + GameParameter.tScore[1];
+            lblTime.Content = "Timer : " + GameParameter.tTime[0] + " - " + GameParameter.tTime[1];
         }
         
 

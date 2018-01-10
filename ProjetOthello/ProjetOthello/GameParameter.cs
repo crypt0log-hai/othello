@@ -20,6 +20,9 @@ namespace ProjetOthello
 
         public static List<Tuple<int, int[,], string>> lHistoryGame;
 
+
+        public static int[] tScore = new int[2];
+        public static string[] tTime = new string[2];
         public static int iNbCharacter = 7;
         public static int iSize = 8;
         public static int iGameMod = 0;

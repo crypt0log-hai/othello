@@ -9,9 +9,10 @@
     <Window.Resources>
         <BitmapImage x:Key="btmBackground" UriSource="Assets/Game/ScoreBackground.jpg" />
         <Style TargetType="Label">
-            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontFamily" Value="./#Arial"/>
             <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="#1A1A1A" />
@@ -72,7 +73,8 @@
             <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Label x:Name="lblWinner" Visibility="Hidden">Winner</Label>
                 <Rectangle x:Name="rWinner" Width="128" Height="128"/>
-                <Label x:Name="lblWinnerScore"/>                
+                <Label x:Name="lblScore"/>
+                <Label x:Name="lblTime"/>
             </StackPanel>
         </Grid>
         

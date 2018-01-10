@@ -84,8 +84,10 @@ namespace ProjetOthello
 
         private void InitializationParameter()
         {
+            
             tbxTimers[0] = tbxTimerPlay1;
             tbxTimers[1] = tbxTimerPlay2;
+            tbxTimers[0].Text = tbxTimers[1].Text = "00:00";
             timePlayer[0] = TimeSpan.FromSeconds(iTime);
             timePlayer[1] = TimeSpan.FromSeconds(iTime);
             dispatcherTimer = new DispatcherTimer(new TimeSpan(0, 0, 0, 1, 0), DispatcherPriority.Background,
@@ -330,10 +332,15 @@ namespace ProjetOthello
 
         private void GameOver()
         {
+            GameParameter.tScore = tPlayerPoints;
+            GameParameter.tTime[0] = timePlayer[0].ToString(@"\0m\:ss");
+            GameParameter.tTime[1] = timePlayer[0].ToString(@"\0m\:ss");
             if (tPlayerPoints[0] > tPlayerPoints[1])
                 GameParameter.iWinner = 0;
             else if (tPlayerPoints[0] < tPlayerPoints[1])
                 GameParameter.iWinner = 1;
+            else
+                GameParameter.iWinner = -1;
             ShowScore(true);         
         }
 
