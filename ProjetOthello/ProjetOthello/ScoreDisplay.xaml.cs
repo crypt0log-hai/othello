@@ -76,8 +76,9 @@ namespace ProjetOthello
                     this.Close();
                     break;
                 case "Restart":
-                    gameWindow.IsEnabled = true;
-                    gameWindow.Restart();
+                    gameWindow.Close();
+                    MainWindow newGameWindow = new MainWindow();
+                    newGameWindow.Show();
                     this.Close();
                     break;
                 case "Save":

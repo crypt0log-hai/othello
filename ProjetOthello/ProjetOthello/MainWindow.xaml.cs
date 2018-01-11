@@ -247,17 +247,7 @@ namespace ProjetOthello
         #endregion
 
         #region sub_Rules
-
-        public void Restart()
-        {
-            gridCell.Children.RemoveRange(0, gridCell.Children.Count);
-            canvaBoard.Children.Remove(gridCell);
-            GameParameter.iWinner = -1;
-            InititializeAll();
-        }
-
-
-
+        
         private void NoMoreMoves()
         {
             if (tblNoMoreMove[Tools.InverseBin(iActualPlayerId)])
