@@ -287,6 +287,7 @@ namespace ProjetOthello
         private void ShowScore(bool blGameEnd)
         {
             dispatcherTimer.IsEnabled = false;
+            dispatcherTimer.Stop();
             mainWindow.IsEnabled = false;
             ScoreDisplay scoreDisplay = new ScoreDisplay(this, blGameEnd);
             scoreDisplay.Show();

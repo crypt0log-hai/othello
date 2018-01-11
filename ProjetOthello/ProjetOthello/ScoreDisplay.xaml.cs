@@ -65,6 +65,7 @@ namespace ProjetOthello
             {
                 case "Resume":
                     gameWindow.dispatcherTimer.IsEnabled = true;
+                    gameWindow.dispatcherTimer.Start();
                     gameWindow.IsEnabled = true;
                     this.Close();
                     break;

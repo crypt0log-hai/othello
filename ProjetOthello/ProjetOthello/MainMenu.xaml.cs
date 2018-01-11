@@ -87,7 +87,8 @@ namespace ProjetOthello
         private void buttonsClicked(object sender, RoutedEventArgs e)
         {
             Button btnEvent = (Button)sender;
-            switch(btnEvent.Uid)
+            SelectionMenu selectionMenu;
+            switch (btnEvent.Uid)
             {
                 case "NewGame":
                     iMenuState = 1;
@@ -106,14 +107,22 @@ namespace ProjetOthello
                     this.Close();
                     break;
                 case "1 vs 1":
-                    GameParameter.iGameMod = 0;
-                    SelectionMenu selectionMenu = new SelectionMenu();
+                    GameParameter.isIA = new bool[2] { false, false };
+                    selectionMenu = new SelectionMenu();
                     selectionMenu.Show();
                     this.Close();
                     break;
                 case "1 vs IA":
+                    GameParameter.isIA = new bool[2] { false, true };
+                    selectionMenu = new SelectionMenu();
+                    selectionMenu.Show();
+                    this.Close();
                     break;
                 case "IA vs IA":
+                    GameParameter.isIA = new bool[2] { true, true };
+                    selectionMenu = new SelectionMenu();
+                    selectionMenu.Show();
+                    this.Close();
                     break;
                 case "Back":
                     iMenuState = 0;

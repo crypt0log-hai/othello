@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace ProjetOthello
 {
@@ -34,8 +35,12 @@ namespace ProjetOthello
         //Passer en ressource
         int iNbChar = GameParameter.iNbCharacter;
         Button[] tbtnSelection;
-
         string[] tNameCharacter = GameParameter.tNameCharacter;
+
+
+        DispatcherTimer timerAnimation;
+        int iValMaxAnimation = 0;
+        int iValAnimation = 0;
 
         public SelectionMenu()
         {
@@ -76,50 +81,10 @@ namespace ProjetOthello
 
             UpdatePlayerImage(0);
             UpdatePlayerImage(1);
-            
+
+            ControlIA();
 
             
-        }
-        
-
-        private void btnPortraits_click(object sender, RoutedEventArgs e)
-        {
-            BitmapImage btmChoose = new BitmapImage();
-            btmChoose.BeginInit();
-            btmChoose.UriSource = new Uri("pack://application:,,,/Assets/Game/Tokens/" + tNameCharacter[iSelectPortrait] + ".png", UriKind.RelativeOrAbsolute);
-            btmChoose.EndInit();
-            GameParameter.tCharacterNames[iChooseTurn] = tNameCharacter[iSelectPortrait];
-            GameParameter.tbtmTokenIndex[iChooseTurn] = btmChoose;
-            if(iChooseTurn == 0)
-                iChooseTurn++;
-            else
-            {
-
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
-            }
-            iSelectedPortrait = iSelectPortrait;
-        }
-
-        private void btnPortrait_mouseEnter(object sender, MouseEventArgs e)
-        {
-            Button btnEvent = (Button)sender;
-            try { iSelectPortrait = Convert.ToInt32(btnEvent.Uid); }
-            catch { Console.Write("Select Id is not integer"); iSelectPortrait = -1;}
-            if(iSelectPortrait != iSelectedPortrait)
-                UpdatePlayerImage(iChooseTurn);
-        }
-
-        private void btnPortrait_mouseLeave(object sender, MouseEventArgs e)
-        {
-            Button btnEvent = (Button)sender;
-            if (iSelectPortrait.ToString() == btnEvent.Uid)
-            {
-                iSelectPortrait = -1;
-                UpdatePlayerImage(iChooseTurn);
-            }
-
         }
 
         private void UpdatePlayerImage(int iPlayerId)
@@ -141,5 +106,99 @@ namespace ProjetOthello
             }
 
         }
+
+        private void ControlIA()
+        {
+            if(GameParameter.isIA[iChooseTurn])
+            {
+                iValMaxAnimation = new Random().Next(50, 75);
+                iValAnimation = 0;
+                timerAnimation = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 25), DispatcherPriority.Background,
+                timerAnimation_Update, Dispatcher.CurrentDispatcher);
+                timerAnimation.IsEnabled = true;
+                timerAnimation.Start();
+            }
+        }
+
+
+        private void PortraitSelect()
+        {
+            BitmapImage btmChoose = new BitmapImage();
+            btmChoose.BeginInit();
+            btmChoose.UriSource = new Uri("pack://application:,,,/Assets/Game/Tokens/" + tNameCharacter[iSelectPortrait] + ".png", UriKind.RelativeOrAbsolute);
+            btmChoose.EndInit();
+            GameParameter.tCharacterNames[iChooseTurn] = tNameCharacter[iSelectPortrait];
+            GameParameter.tbtmTokenIndex[iChooseTurn] = btmChoose;
+
+            iSelectedPortrait = iSelectPortrait;
+            if (iChooseTurn > 0)
+            {
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+            }
+            else
+            {
+                iChooseTurn++;
+                ControlIA();
+            }
+        }
+
+        #region Events
+
+        private void timerAnimation_Update(object sender, EventArgs e)
+        {
+            if(iValAnimation >= iValMaxAnimation)
+            {
+                timerAnimation.IsEnabled = false;
+                timerAnimation.Stop();
+                PortraitSelect();
+            }
+            else
+            {
+                iValAnimation++;
+                iSelectPortrait++;
+                if (iSelectPortrait == iSelectedPortrait)
+                    iSelectPortrait++;
+                if (iSelectPortrait >= iNbChar)
+                    iSelectPortrait = 0;
+                UpdatePlayerImage(iChooseTurn);
+            }
+        }
+
+        private void btnPortraits_click(object sender, RoutedEventArgs e)
+        {
+            if(!GameParameter.isIA[iChooseTurn])
+                PortraitSelect();
+        }
+
+        private void btnPortrait_mouseEnter(object sender, MouseEventArgs e)
+        {
+            if (!GameParameter.isIA[iChooseTurn])
+            {
+                Button btnEvent = (Button)sender;
+                try { iSelectPortrait = Convert.ToInt32(btnEvent.Uid); }
+                catch { Console.Write("Select Id is not integer"); iSelectPortrait = -1; }
+                if (iSelectPortrait != iSelectedPortrait)
+                    UpdatePlayerImage(iChooseTurn);
+            }
+        }
+
+        private void btnPortrait_mouseLeave(object sender, MouseEventArgs e)
+        {
+            if (!GameParameter.isIA[iChooseTurn])
+            {
+                Button btnEvent = (Button)sender;
+                if (iSelectPortrait.ToString() == btnEvent.Uid)
+                {
+                    iSelectPortrait = -1;
+                    UpdatePlayerImage(iChooseTurn);
+                }
+            }
+
+        }
+
+#endregion
+
     }
 }
