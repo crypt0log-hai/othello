@@ -158,6 +158,15 @@
     <Resource Include="Assets\Menu\Selection\QuestionMark.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Sound\CarrinoWin.mp3" />
+    <Content Include="Assets\Sound\CortinovisWin.mp3" />
+    <Content Include="Assets\Sound\Fight.mp3" />
+    <Content Include="Assets\Sound\GobronWin.mp3" />
+    <Content Include="Assets\Sound\GorbelWin.mp3" />
+    <Content Include="Assets\Sound\HusserWin.mp3" />
+    <Content Include="Assets\Sound\OuerhaniWin.mp3" />
+    <Content Include="Assets\Sound\Ready.mp3" />
+    <Content Include="Assets\Sound\TiecheWin.mp3" />
     <Resource Include="Assets\Menu\Portrait\Gobron.png" />
     <Resource Include="Assets\Menu\Portrait\Ouerhani.png" />
     <Resource Include="Assets\Game\Tokens\Carrino.png" />
