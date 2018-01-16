@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Threading;
 
 namespace ProjetOthello
 {
@@ -65,15 +66,19 @@ namespace ProjetOthello
         {
             InitializeComponent();
             InititializeAll();
+            ResetPlayableToken();
+            if (GameParameter.isIA[iActualPlayerId])
+                IaPlay();
         }
 
         public MainWindow(Tuple<int, int[,], string> loadedGame)
         {
             InitializeComponent();
-            InitializationParameter();
-            InitializationBoard();
+            InititializeAll();
             InitializationLoadedGame(loadedGame);
             ResetPlayableToken();
+            if (GameParameter.isIA[iActualPlayerId])
+                IaPlay();
         }
 
         #endregion
@@ -85,7 +90,6 @@ namespace ProjetOthello
             InitializationParameter();
             InitializationBoard();
             InitializationGame();
-            ResetPlayableToken();
         }
 
         private void InitializationParameter()
@@ -216,9 +220,23 @@ namespace ProjetOthello
             lHistoryGame.Add(new Tuple<int, int[,], string>(iActualPlayerId, board, strTimer));
             GameParameter.iNbTurn++;
             ResetPlayableToken();
+            DisplayPlayerInformation();
             if (lTokenPlayable.Count == 0)
                 NoMoreMoves();
-            DisplayPlayerInformation();
+            else
+            {
+                if (GameParameter.isIA[iActualPlayerId])
+                    IaPlay();
+            }
+
+        }
+
+        public void IaPlay()
+        {            
+            Tuple<int, int> nextMove = gameBoard.GetNextMove(gameBoard.TiBoard, 5, Tools.IdToIsWhite(iActualPlayerId));
+            gameBoard.PlayMove(nextMove.Item1, nextMove.Item2, Tools.IdToIsWhite(iActualPlayerId));
+            UpdateTokenBoard();
+            ChangeTurn();
         }
 
         public void ResetPlayableToken()
@@ -239,9 +257,9 @@ namespace ProjetOthello
                         if (gameBoard.IsCellPlayable(iActualPlayerId, j, i, ref tTokensBoard[j, i]))
                             lTokenPlayable.Add(tTokensBoard[j, i]);
                     }
-                    else
-                        tPlayerPoints[gameBoard.TiBoard[j, i]]++;
                 }
+            gameBoard.ComputeScore();
+            tPlayerPoints = gameBoard.TPlayerPoints;
         }       
 
         #endregion
@@ -333,28 +351,31 @@ namespace ProjetOthello
 
         private void MouseClickCell(object sender, RoutedEventArgs e)
         {
-            Button btn = (Button)sender;
-            int iX = 0;
-            int iY = 0;
-            Tools.UidToIJ(btn, ref iX, ref iY);
-            Token tokenRef = tTokensBoard[iX,iY];
-
-            if(tokenRef.IIsPlayable)
+            if (!GameParameter.isIA[iActualPlayerId])
             {
-                if(tnbTokensRemain[iActualPlayerId] > 0)
-                    tnbTokensRemain[iActualPlayerId]--;
-                else
+                Button btn = (Button)sender;
+                int iX = 0;
+                int iY = 0;
+                Tools.UidToIJ(btn, ref iX, ref iY);
+                Token tokenRef = tTokensBoard[iX, iY];
+            
+                if (tokenRef.IIsPlayable)
                 {
-                    int iOtherPlayerId = Tools.InverseBin(iActualPlayerId);
-                    if (tnbTokensRemain[iOtherPlayerId] > 0)
-                        tnbTokensRemain[iOtherPlayerId]--;
+                    if (tnbTokensRemain[iActualPlayerId] > 0)
+                        tnbTokensRemain[iActualPlayerId]--;
                     else
-                        GameOver();
+                    {
+                        int iOtherPlayerId = Tools.InverseBin(iActualPlayerId);
+                        if (tnbTokensRemain[iOtherPlayerId] > 0)
+                            tnbTokensRemain[iOtherPlayerId]--;
+                        else
+                            GameOver();
 
+                    }
+                    gameBoard.PlayMove(iX, iY, Tools.IdToIsWhite(iActualPlayerId));
+                    UpdateTokenBoard();
+                    ChangeTurn();
                 }
-                gameBoard.PlayMove(iX, iY, Tools.IdToIsWhite(iActualPlayerId));
-                UpdateTokenBoard();
-                ChangeTurn();
             }
 
         }
@@ -362,32 +383,38 @@ namespace ProjetOthello
 
         private void MouseEnterCell(object sender, MouseEventArgs e)
         {
-            Button btn = (Button)sender;
-            int iX = 0;
-            int iY = 0;
-            Tools.UidToIJ(btn, ref iX, ref iY);
-            Token tokenRef = tTokensBoard[iX,iY];
-            
-            
-            if (gameBoard.TiBoard[iX,iY] == -1)
+
+            if (!GameParameter.isIA[iActualPlayerId])
             {
-                if (tokenRef.IIsPlayable)
+                Button btn = (Button)sender;
+                int iX = 0;
+                int iY = 0;
+                Tools.UidToIJ(btn, ref iX, ref iY);
+                Token tokenRef = tTokensBoard[iX,iY];
+
+                if (gameBoard.TiBoard[iX, iY] == -1)
                 {
-                    Image imgToken = new Image();
-                    imgToken.Source = GameParameter.tbtmTokenIndex[iActualPlayerId];
-                    btn.Content = imgToken;
+                    if (tokenRef.IIsPlayable)
+                    {
+                        Image imgToken = new Image();
+                        imgToken.Source = GameParameter.tbtmTokenIndex[iActualPlayerId];
+                        btn.Content = imgToken;
+                    }
                 }
             }
         }
 
         private void MouseLeaveCell(object sender, MouseEventArgs e)
-        {            
-            Button btnEvent = (Button)sender;
-            int iX = 0;
-            int iY = 0;
-            Tools.UidToIJ(btnEvent, ref iX, ref iY);
-            if(gameBoard.TiBoard[iX,iY] == -1)
-                tTokensBoard[iX,iY].TokenResetDisplay();
+        {
+            if (!GameParameter.isIA[iActualPlayerId])
+            {
+                Button btnEvent = (Button)sender;
+                int iX = 0;
+                int iY = 0;
+                Tools.UidToIJ(btnEvent, ref iX, ref iY);
+                if (gameBoard.TiBoard[iX, iY] == -1)
+                    tTokensBoard[iX, iY].TokenResetDisplay();
+            }
         }
 
         private void dispatcherTimer_Update(object sender, EventArgs e)

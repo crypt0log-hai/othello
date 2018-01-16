@@ -92,6 +92,7 @@
     <Compile Include="SelectionMenu.xaml.cs">
       <DependentUpon>SelectionMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SoundEngine.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="Tools.cs" />
     <Page Include="LoadGame.xaml">
