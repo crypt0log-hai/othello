@@ -162,7 +162,7 @@ namespace ProjetOthello
             int resVal = 0;
             Tuple<int, int> actualMove;
 
-            AlphaBeta(tiBoard, iActualPlayer, level, score, iActualPlayer, out actualMove, out resVal);
+            AlphaBeta(out actualMove, out resVal, tiBoard, 1, level, score, iActualPlayer, iActualPlayer);
             return actualMove;
         }
         
@@ -187,7 +187,7 @@ namespace ProjetOthello
 
         #region IA
 
-        private void AlphaBeta(int[,] boardTest, int minOrMax, int depth,int parentScoreMove, int iActualPlayerId, out Tuple<int, int> actualMove, out int resVal)
+        private void AlphaBeta(out Tuple<int, int> actualMove, out int resVal, int[,] boardTest, int minOrMax, int depth,int parentScoreMove, int iActualPlayerId, int iPlayerId)
         {
             if (depth > 0)
             {
@@ -199,13 +199,13 @@ namespace ProjetOthello
                     for (int j = 0; j < iSize; j++)
                     {
                         Token token = new Token(j,i);
-                        if (IsCellPlayable(boardTest, iActualPlayerId, j, i, ref token))
+                        if (IsCellPlayable(boardTest, iPlayerId, j, i, ref token))
                         {
                             int[,] newboard = (int[,])boardTest.Clone();
-                            PushToken(ref newboard, iActualPlayerId, i, j, token);
+                            PushToken(ref newboard, iPlayerId, i, j, token);
                             int newResVal;
                             Tuple<int, int> actualNewMove;
-                            AlphaBeta(newboard, minOrMax * -1, depth - 1, resVal, iActualPlayerId,  out actualNewMove, out newResVal);
+                            AlphaBeta( out actualNewMove, out newResVal, newboard, minOrMax * -1, depth - 1, resVal, iActualPlayerId, Tools.InverseBin(iPlayerId));
                             if (newResVal * minOrMax > resVal * minOrMax)
                             {
                                 resVal = newResVal;
@@ -222,8 +222,8 @@ namespace ProjetOthello
             }
             else
             {
-                actualMove = Tuple.Create(-1, -1);
                 resVal = ComputeMoveScore(iActualPlayerId, boardTest);
+                actualMove = Tuple.Create(-1, -1);
             }
         }
 

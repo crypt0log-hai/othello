@@ -55,6 +55,8 @@ namespace ProjetOthello
         public DispatcherTimer dispatcherTimer;
 
         bool[] tblNoMoreMove = { false, false };
+        bool gameOver = false;
+
 
         private GameBoard gameBoard;
 
@@ -226,17 +228,22 @@ namespace ProjetOthello
             else
             {
                 if (GameParameter.isIA[iActualPlayerId])
+                {
                     IaPlay();
+                }
             }
 
         }
 
         public void IaPlay()
-        {            
-            Tuple<int, int> nextMove = gameBoard.GetNextMove(gameBoard.TiBoard, 5, Tools.IdToIsWhite(iActualPlayerId));
-            gameBoard.PlayMove(nextMove.Item1, nextMove.Item2, Tools.IdToIsWhite(iActualPlayerId));
+        {
+            Tuple<int, int> nextMove = gameBoard.GetNextMove(gameBoard.TiBoard, 6, Tools.IdToIsWhite(iActualPlayerId));
+            if (gameBoard.PlayMove(nextMove.Item1, nextMove.Item2, Tools.IdToIsWhite(iActualPlayerId)))
+                DecreaseToken();
             UpdateTokenBoard();
-            ChangeTurn();
+
+            if (!gameOver)
+                ChangeTurn();
         }
 
         public void ResetPlayableToken()
@@ -280,6 +287,7 @@ namespace ProjetOthello
 
         private void GameOver()
         {
+            gameOver = true;
             GameParameter.tScore = tPlayerPoints;
             GameParameter.tTime[0] = timePlayer[0].ToString(@"\0m\:ss");
             GameParameter.tTime[1] = timePlayer[0].ToString(@"\0m\:ss");
@@ -324,24 +332,38 @@ namespace ProjetOthello
             double dblCellSize = 0;
 
 
-            //if (dblWidth / dblHeight < ProgramParameter.dblProgramSizeRatio)
-            //{
-            //    dblCellSize = dblWidth - 20;
-            //    dblCellSize = (dblCellSize / 2) - 264;
-            //    dblCellSize /= iSize;
-            //}
-            //else
-            //{
+            if (dblWidth / dblHeight < ProgramParameter.dblProgramSizeRatio)
+            {
+                dblCellSize = dblWidth - 20;
+                dblCellSize = (dblCellSize / 2) - 264;
+                dblCellSize /= iSize;
+            }
+            else
+            {
                 dblCellSize = dblHeight - 40;
                 dblCellSize = ((dblCellSize / 4) * 3) - 120;
                 dblCellSize = dblCellSize / iSize;
-                
-            //}
-            if (dblHeight != 0)
+            }
+            if (dblCellSize > 0)
             {
                 for (int i = 0; i < iSize; i++)
                     for (int j = 0; j < iSize; j++)
                         tTokensBoard[j, i].BtnContainer.Width = tTokensBoard[j, i].BtnContainer.Height = dblCellSize;
+            }
+        }
+
+
+        private void DecreaseToken()
+        {
+            if (tnbTokensRemain[iActualPlayerId] > 0)
+                tnbTokensRemain[iActualPlayerId]--;
+            else
+            {
+                int iOtherPlayerId = Tools.InverseBin(iActualPlayerId);
+                if (tnbTokensRemain[iOtherPlayerId] > 0)
+                    tnbTokensRemain[iOtherPlayerId]--;
+                else
+                    GameOver();
             }
         }
 
@@ -361,20 +383,11 @@ namespace ProjetOthello
             
                 if (tokenRef.IIsPlayable)
                 {
-                    if (tnbTokensRemain[iActualPlayerId] > 0)
-                        tnbTokensRemain[iActualPlayerId]--;
-                    else
-                    {
-                        int iOtherPlayerId = Tools.InverseBin(iActualPlayerId);
-                        if (tnbTokensRemain[iOtherPlayerId] > 0)
-                            tnbTokensRemain[iOtherPlayerId]--;
-                        else
-                            GameOver();
-
-                    }
                     gameBoard.PlayMove(iX, iY, Tools.IdToIsWhite(iActualPlayerId));
                     UpdateTokenBoard();
-                    ChangeTurn();
+                    DecreaseToken();
+                    if (!gameOver)
+                        ChangeTurn();
                 }
             }
 
