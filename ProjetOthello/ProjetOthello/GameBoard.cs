@@ -6,25 +6,40 @@ using System.Threading.Tasks;
 
 namespace ProjetOthello
 {
-    class GameBoard : IPlayable
+    class GameBoard : IPlayable.IPlayable
     {
-        private int[,] tiBoard;
-        private int[] tPlayerPoints;
-        private int iSize = 8;
-        private Token currentToken;
-        private List<Token> lTokenPlayable;
 
+        #region Proprety
 
-        public int[,] TiBoard { get => tiBoard; set => tiBoard = value; }
+        public int[,] tiBoard;          //Represent the value of each cells
+        public Token[,] tToken;         //Reference each cells
+        private int[] tPlayerPoints;    //Game score of each player
+        private int iSize = 8;          //Size of the board (could be change in a solo game)         
+
+        #endregion
+
+        #region Getter/Setter
         public int[] TPlayerPoints { get => tPlayerPoints; set => tPlayerPoints = value; }
+        #endregion
 
-
+        #region Constructor
         public GameBoard()
         {
-            TiBoard = new int[iSize, iSize];
+            tiBoard = new int[iSize, iSize];
             tPlayerPoints = new int[2];
-            currentToken = new Token(0,0);
+            tToken = new Token[iSize, iSize];
+            for (int i = 0; i < iSize; i++)
+                for (int j = 0; j < iSize; j++)
+                {
+                    tiBoard[j, i] = -1;
+                    tToken[j, i] = new Token(j, i);
+                }
+            InitializationGame();
         }
+
+        #endregion
+
+        #region Initialization
 
         /// <summary>
         /// For not tournament purpose only, update size of boards
@@ -32,11 +47,31 @@ namespace ProjetOthello
         public void InitializationSolo(int iSize)
         {
             this.iSize = iSize;
-            TiBoard = new int[iSize, iSize];
-        }        
-        
+            tiBoard = new int[iSize, iSize];
+        }
 
+        /// <summary>
+        /// Initialise the 4th first tokens
+        /// </summary>
+        private void InitializationGame()
+        {
+            tiBoard[(int)iSize / 2, (int)iSize / 2 - 1] = 1;
+            tiBoard[(int)iSize / 2 - 1, (int)iSize / 2] = 1;
+            tiBoard[(int)iSize / 2 - 1, (int)iSize / 2 - 1] = 0;
+            tiBoard[(int)iSize / 2, (int)iSize / 2] = 0;
+        }
 
+        #endregion
+
+        #region Function
+        /// <summary>
+        /// Find if a cells is playable
+        /// </summary>
+        /// <param name="iActualPlayerId">Id of the player who have the turn</param>
+        /// <param name="x">Horizontal position of the cells </param>
+        /// <param name="y">Vertical position of the cells</param>
+        /// <param name="token">Reference from the token table tToken, to update the target list & token</param>
+        /// <returns>True if the cell is playable, false if not</returns>
         public bool IsCellPlayable(int iActualPlayerId, int x, int y, ref Token token)
         {
             for (int i = -1; i <= 1; i++)
@@ -54,7 +89,9 @@ namespace ProjetOthello
             }
             return false;
         }
-
+        
+        //Same as the first method, but this one take a board in parameter. 
+        //Usefull for the AlphaBeta testing
         public bool IsCellPlayable(int[,] board, int iActualPlayerId, int x, int y, ref Token token)
         {
             if (board[x, y] == -1)
@@ -76,7 +113,17 @@ namespace ProjetOthello
             return false;
         }
 
-
+        /// <summary>
+        /// Will find every target, who will be turned back if we play this cell
+        /// </summary>
+        /// <param name="board">The board we will use to find the action</param>
+        /// <param name="iActualPlayerId">Id of the player who have the turn</param>
+        /// <param name="j">The horizontal direction where we try to find action</param>
+        /// <param name="i">The vertical direction where we try to find action</param>
+        /// <param name="x">Horizontal position of the cells</param>
+        /// <param name="y">Vertical position of the cells</param>
+        /// <param name="tempTokenRefs">Temp token where the target will be save</param>
+        /// <returns>Return false if we didn't find actual action</returns>
         private bool FindAction(int[,] board, int iActualPlayerId, int j, int i, int x, int y, ref List<int[]> tempTokenRefs)
         {
             x += j;
@@ -102,7 +149,10 @@ namespace ProjetOthello
             }
             return true;
         }
-           
+        
+        /// <summary>
+        /// Compute the game score of the game, one point by token
+        /// </summary>
         public void ComputeScore()
         {
             tPlayerPoints[0] = tPlayerPoints[1] = 0;
@@ -114,14 +164,32 @@ namespace ProjetOthello
                 }
         }
 
-        public void PushToken(ref int[,] boardTest, int iPlayerId, int x, int y, Token token)
+        /// <summary>
+        /// Remove the list of Playable token, after every move
+        /// </summary>
+        public void ResetTokenTarget()
         {
-            boardTest[x, y] = iPlayerId;
-            foreach (int[] coord in currentToken.lTokenCoordTarget)
-                boardTest[coord[0], coord[1]] = iPlayerId;
+            foreach (Token t in tToken)
+                t.ResetTokenList();
         }
 
+        /// <summary>
+        /// Put a token on the board & Update everyone of his taget
+        /// </summary>
+        /// <param name="boardTest"></param>
+        /// <param name="iPlayerId"></param>
+        /// <param name="x">Horizontale position of the token</param>
+        /// <param name="y">Vertical position of the token</param>
+        /// <param name="token">Reference of the token put in the board</param>
+        public void PutToken(ref int[,] boardTest, int iPlayerId, int x, int y, Token token)
+        {
+            boardTest[x, y] = iPlayerId;
+            foreach (int[] coord in tToken[x,y].lTokenCoordTarget)
+                boardTest[coord[0], coord[1]] = iPlayerId;
+            ResetTokenTarget();
+        }
 
+        #endregion
 
         #region IPlayable
 
@@ -135,10 +203,8 @@ namespace ProjetOthello
             if (column >= 0 && column < iSize && line >= 0 && line < iSize)
             {
                 int iActualPlayerId = Tools.IsWhiteToId(isWhite);
-                currentToken.ResetTokenList();
-                currentToken = new Token(column, line);
                 if (tiBoard[column, line] == -1)
-                    return IsCellPlayable(iActualPlayerId, column, line, ref currentToken);
+                    return IsCellPlayable(iActualPlayerId, column, line, ref tToken[column,line]);
             }
             return false;
         }
@@ -148,7 +214,7 @@ namespace ProjetOthello
             int iActualPlayer = Tools.IsWhiteToId(isWhite);
             if (IsPlayable(column, line, isWhite))
             {
-                PushToken(ref tiBoard, iActualPlayer, column, line, currentToken);
+                PutToken(ref tiBoard, iActualPlayer, column, line, tToken[column, line]);
                 return true;
             }
             return false;
@@ -162,13 +228,13 @@ namespace ProjetOthello
             int resVal = 0;
             Tuple<int, int> actualMove;
 
-            AlphaBeta(tiBoard, iActualPlayer, level, score, iActualPlayer, out actualMove, out resVal);
+            AlphaBeta(out actualMove, out resVal, tiBoard, 1, level, score, iActualPlayer, iActualPlayer);
             return actualMove;
         }
         
         public int[,] GetBoard()
         {
-            return TiBoard;
+            return tiBoard;
         }
 
         public int GetWhiteScore()
@@ -187,7 +253,18 @@ namespace ProjetOthello
 
         #region IA
 
-        private void AlphaBeta(int[,] boardTest, int minOrMax, int depth,int parentScoreMove, int iActualPlayerId, out Tuple<int, int> actualMove, out int resVal)
+        /// <summary>
+        /// Will do the AlphaBeta algorithe to find one of the most optimised move to play
+        /// </summary>
+        /// <param name="actualMove">The chosen move</param>
+        /// <param name="resVal"></param>
+        /// <param name="boardTest"></param>
+        /// <param name="minOrMax">Represent if we are in a min part or a max part of the algoritme, to compare the opponent score</param>
+        /// <param name="depth">The number of phase the algoritm pass trough</param>
+        /// <param name="parentScoreMove">Score of the parent</param>
+        /// <param name="iActualPlayerId">Global player id</param>
+        /// <param name="iPlayerId">Local player id </param>
+        private void AlphaBeta(out Tuple<int, int> actualMove, out int resVal, int[,] boardTest, int minOrMax, int depth,int parentScoreMove, int iActualPlayerId, int iPlayerId)
         {
             if (depth > 0)
             {
@@ -199,13 +276,13 @@ namespace ProjetOthello
                     for (int j = 0; j < iSize; j++)
                     {
                         Token token = new Token(j,i);
-                        if (IsCellPlayable(boardTest, iActualPlayerId, j, i, ref token))
+                        if (IsCellPlayable(boardTest, iPlayerId, j, i, ref token))
                         {
                             int[,] newboard = (int[,])boardTest.Clone();
-                            PushToken(ref newboard, iActualPlayerId, i, j, token);
+                            PutToken(ref newboard, iPlayerId, i, j, token);
                             int newResVal;
                             Tuple<int, int> actualNewMove;
-                            AlphaBeta(newboard, minOrMax * -1, depth - 1, resVal, iActualPlayerId,  out actualNewMove, out newResVal);
+                            AlphaBeta( out actualNewMove, out newResVal, newboard, minOrMax * -1, depth - 1, resVal, iActualPlayerId, Tools.InverseBin(iPlayerId));
                             if (newResVal * minOrMax > resVal * minOrMax)
                             {
                                 resVal = newResVal;
@@ -222,37 +299,42 @@ namespace ProjetOthello
             }
             else
             {
-                actualMove = Tuple.Create(-1, -1);
                 resVal = ComputeMoveScore(iActualPlayerId, boardTest);
+                actualMove = Tuple.Create(-1, -1);
             }
         }
 
+        /// <summary>
+        /// Will compute the power score of the board 
+        /// </summary>
+        /// <param name="iActualPlayerId">Id of the player who actually play</param>
+        /// <param name="boardTest">The board that will be compute</param>
+        /// <returns></returns>
         private int ComputeMoveScore(int iActualPlayerId, int[,] boardTest)
         {
             int iScoreMove = 0;
+            int[,] tValPower = 
+                { 
+                    { 32,1,16,16,16,16,1,32},
+                    { 1,1,1,1,1,1,1,1},
+                    { 16,1,2,2,2,2,1,16},
+                    { 16,1,2,2,2,2,1,16},
+                    { 16,1,2,2,2,2,1,16},
+                    { 16,1,2,2,2,2,1,16},
+                    { 1,1,1,1,1,1,1,1},
+                    { 32,1,16,16,16,16,1,32}
+            };
+
             for (int i = 0; i < iSize; i++)
             {
                 for (int j = 0; j < iSize; j++)
                 {
                     if (boardTest[j,i] != iActualPlayerId)
                     {
-                        int iValPower = 1;
-                        if (j == 0 || j == iSize - 1)
-                        {
-                            if (i == 0 || i == iSize - 1)
-                                iValPower *= 4;
-                            else
-                                iValPower *= 2;
-                        }
-                        else
-                            if (i == 0 || i == iSize - 1)
-                                iValPower *= 2;
-                        if (j == 0 || j == 7)
-                            iValPower *= 2;
                         if (boardTest[i, j] == iActualPlayerId)
-                            iScoreMove += iValPower;
+                            iScoreMove += tValPower[j,i];
                         else if (boardTest[i, j] == Tools.InverseBin(iActualPlayerId))
-                            iScoreMove -= iValPower;
+                            iScoreMove -= tValPower[j, i];
                     }
                 }
             }

@@ -42,6 +42,8 @@ namespace ProjetOthello
                 spMenuButton.Children.Add(svLoadName);
 
                 StackPanel spLoadName = new StackPanel();
+                if (!Directory.Exists("./Save"))
+                    Directory.CreateDirectory("./Save");
                 filePaths = Directory.GetFiles("./Save");
                 int iCpt = 0;
                 foreach(string path in filePaths)

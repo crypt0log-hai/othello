@@ -44,7 +44,7 @@ namespace ProjetOthello
         /// </summary>
         List<Token> lTokenPlayable;
 
-        Token[,] tTokensBoard;
+        Button[,] tTokensBoard;
 
 
         public List<Tuple<int, int[,], string>> lHistoryGame;
@@ -55,6 +55,8 @@ namespace ProjetOthello
         public DispatcherTimer dispatcherTimer;
 
         bool[] tblNoMoreMove = { false, false };
+        bool gameOver = false;
+
 
         private GameBoard gameBoard;
 
@@ -89,7 +91,7 @@ namespace ProjetOthello
         {
             InitializationParameter();
             InitializationBoard();
-            InitializationGame();
+            UpdateTokenBoard();
         }
 
         private void InitializationParameter()
@@ -132,7 +134,7 @@ namespace ProjetOthello
         {
             gameBoard = new GameBoard();
 
-            tTokensBoard = new Token[iSize, iSize];
+            tTokensBoard = new Button[iSize, iSize];
             gridCell = new Grid();
             canvaBoard.Children.Add(gridCell);
             for (int i = 0; i < iSize; i++)
@@ -160,9 +162,8 @@ namespace ProjetOthello
                     Grid.SetRow(btnNewCell, i);
                     Grid.SetColumn(btnNewCell, j);
                     gridCell.Children.Add(btnNewCell);
-
-                    gameBoard.TiBoard[j, i] = -1;
-                    tTokensBoard[j,i] = new Token(btnNewCell,j,i);
+                    
+                    tTokensBoard[j,i] = btnNewCell;
                 }
             }
             lTokenPlayable = new List<Token>();
@@ -171,19 +172,12 @@ namespace ProjetOthello
        
 
         //Initialize the fourth first tokens
-        private void InitializationGame()
-        {            
-            gameBoard.TiBoard[(int)iSize / 2, (int)iSize / 2 - 1] = iActualPlayerId;
-            gameBoard.TiBoard[(int)iSize / 2 - 1, (int)iSize / 2] = iActualPlayerId;
-            gameBoard.TiBoard[(int)iSize / 2 - 1, (int)iSize / 2 - 1] = Tools.InverseBin(iActualPlayerId);
-            gameBoard.TiBoard[(int)iSize / 2, (int)iSize / 2] = Tools.InverseBin(iActualPlayerId);
-            UpdateTokenBoard();
-        }
+        
 
         private void InitializationLoadedGame(Tuple<int, int[,], string> loadedGame)
         {
             iActualPlayerId = loadedGame.Item1;
-            gameBoard.TiBoard = loadedGame.Item2;
+            gameBoard.tiBoard = loadedGame.Item2;
             UpdateTokenBoard();
         }
 
@@ -193,11 +187,26 @@ namespace ProjetOthello
 
         private void UpdateTokenBoard()
         {
+            gameBoard.GetBoard();
             for (int i = 0; i < iSize; i++)
                 for (int j = 0; j < iSize; j++)
-                    if (gameBoard.TiBoard[j, i] != -1)
-                        tTokensBoard[j, i].UpdateToken(gameBoard.TiBoard[j, i]);
+                    if (gameBoard.tiBoard[j, i] != -1)
+                        UpdateToken(gameBoard.tiBoard[j, i], j, i);
         }
+
+        public void UpdateToken(int iPlayerId, int x, int y)
+        {
+            Image imgToken = new Image();
+            imgToken.Source = GameParameter.tbtmTokenIndex[iPlayerId];
+            tTokensBoard[x,y].Content = imgToken;
+            tTokensBoard[x, y].Background = GameParameter.tColorBackgroundCell[iPlayerId];
+        }
+
+        public void TokenResetDisplay(int x, int y)
+        {
+            tTokensBoard[x, y].Content = "";
+        }
+
 
         #region sub_TurnChange
 
@@ -209,7 +218,7 @@ namespace ProjetOthello
 
             for (int i = 0; i < iSize; i++)
                 for (int j = 0; j < iSize; j++)
-                    board[j, i] = gameBoard.TiBoard[j, i];
+                    board[j, i] = gameBoard.tiBoard[j, i];
 
             iActualPlayerId = Tools.InverseBin(iActualPlayerId);
             tblNoMoreMove[iActualPlayerId] = false;
@@ -232,11 +241,14 @@ namespace ProjetOthello
         }
 
         public void IaPlay()
-        {            
-            Tuple<int, int> nextMove = gameBoard.GetNextMove(gameBoard.TiBoard, 5, Tools.IdToIsWhite(iActualPlayerId));
-            gameBoard.PlayMove(nextMove.Item1, nextMove.Item2, Tools.IdToIsWhite(iActualPlayerId));
+        {
+            Tuple<int, int> nextMove = gameBoard.GetNextMove(gameBoard.tiBoard, 6, Tools.IdToIsWhite(iActualPlayerId));
+            if (gameBoard.PlayMove(nextMove.Item1, nextMove.Item2, Tools.IdToIsWhite(iActualPlayerId)))
+                DecreaseToken();
             UpdateTokenBoard();
-            ChangeTurn();
+
+            if (!gameOver)
+                ChangeTurn();
         }
 
         public void ResetPlayableToken()
@@ -252,10 +264,13 @@ namespace ProjetOthello
             for (int i = 0; i < iSize; i++)
                 for (int j = 0; j < iSize; j++)
                 {
-                    if (gameBoard.TiBoard[j, i] == -1)
+                    if (gameBoard.tiBoard[j, i] == -1)
                     {
-                        if (gameBoard.IsCellPlayable(iActualPlayerId, j, i, ref tTokensBoard[j, i]))
-                            lTokenPlayable.Add(tTokensBoard[j, i]);
+
+
+                        Token token = new Token(j, i);
+                        if (gameBoard.IsCellPlayable(iActualPlayerId, j, i, ref gameBoard.tToken[j,i]))
+                            lTokenPlayable.Add(token);
                     }
                 }
             gameBoard.ComputeScore();
@@ -280,6 +295,7 @@ namespace ProjetOthello
 
         private void GameOver()
         {
+            gameOver = true;
             GameParameter.tScore = tPlayerPoints;
             GameParameter.tTime[0] = timePlayer[0].ToString(@"\0m\:ss");
             GameParameter.tTime[1] = timePlayer[0].ToString(@"\0m\:ss");
@@ -311,9 +327,16 @@ namespace ProjetOthello
             pInfo.ScoreP2 = ((tPlayerPoints[1] < 10) ? "0" : "") + tPlayerPoints[1].ToString();
             pInfo.NbTokenP1 = ((tnbTokensRemain[0] < 10) ? "0" : "") + tnbTokensRemain[0].ToString();
             pInfo.NbTokenP2 = ((tnbTokensRemain[1] < 10) ? "0" : "") + tnbTokensRemain[1].ToString();
+            UpdateTokenBoard();
         }
 
-        
+        public static void UidToIJ(Button btn, ref int j, ref int i)
+        {
+            string[] strUid = btn.Uid.Split(';');
+            try { j = Convert.ToInt32(strUid[0]); i = Convert.ToInt32(strUid[1]); }
+            catch { Console.WriteLine("Btn.Uid is not integer."); }
+        }
+
 
         #endregion
 
@@ -324,24 +347,38 @@ namespace ProjetOthello
             double dblCellSize = 0;
 
 
-            //if (dblWidth / dblHeight < ProgramParameter.dblProgramSizeRatio)
-            //{
-            //    dblCellSize = dblWidth - 20;
-            //    dblCellSize = (dblCellSize / 2) - 264;
-            //    dblCellSize /= iSize;
-            //}
-            //else
-            //{
+            if (dblWidth / dblHeight < ProgramParameter.dblProgramSizeRatio)
+            {
+                dblCellSize = dblWidth - 20;
+                dblCellSize = (dblCellSize / 2) - 264;
+                dblCellSize /= iSize;
+            }
+            else
+            {
                 dblCellSize = dblHeight - 40;
                 dblCellSize = ((dblCellSize / 4) * 3) - 120;
                 dblCellSize = dblCellSize / iSize;
-                
-            //}
-            if (dblHeight != 0)
+            }
+            if (dblCellSize > 0)
             {
                 for (int i = 0; i < iSize; i++)
                     for (int j = 0; j < iSize; j++)
-                        tTokensBoard[j, i].BtnContainer.Width = tTokensBoard[j, i].BtnContainer.Height = dblCellSize;
+                        tTokensBoard[j, i].Width = tTokensBoard[j, i].Height = dblCellSize;
+            }
+        }
+
+
+        private void DecreaseToken()
+        {
+            if (tnbTokensRemain[iActualPlayerId] > 0)
+                tnbTokensRemain[iActualPlayerId]--;
+            else
+            {
+                int iOtherPlayerId = Tools.InverseBin(iActualPlayerId);
+                if (tnbTokensRemain[iOtherPlayerId] > 0)
+                    tnbTokensRemain[iOtherPlayerId]--;
+                else
+                    GameOver();
             }
         }
 
@@ -356,25 +393,16 @@ namespace ProjetOthello
                 Button btn = (Button)sender;
                 int iX = 0;
                 int iY = 0;
-                Tools.UidToIJ(btn, ref iX, ref iY);
-                Token tokenRef = tTokensBoard[iX, iY];
+                UidToIJ(btn, ref iX, ref iY);
+                Token tokenRef = gameBoard.tToken[iX, iY];
             
                 if (tokenRef.IIsPlayable)
                 {
-                    if (tnbTokensRemain[iActualPlayerId] > 0)
-                        tnbTokensRemain[iActualPlayerId]--;
-                    else
-                    {
-                        int iOtherPlayerId = Tools.InverseBin(iActualPlayerId);
-                        if (tnbTokensRemain[iOtherPlayerId] > 0)
-                            tnbTokensRemain[iOtherPlayerId]--;
-                        else
-                            GameOver();
-
-                    }
                     gameBoard.PlayMove(iX, iY, Tools.IdToIsWhite(iActualPlayerId));
                     UpdateTokenBoard();
-                    ChangeTurn();
+                    DecreaseToken();
+                    if (!gameOver)
+                        ChangeTurn();
                 }
             }
 
@@ -389,11 +417,17 @@ namespace ProjetOthello
                 Button btn = (Button)sender;
                 int iX = 0;
                 int iY = 0;
-                Tools.UidToIJ(btn, ref iX, ref iY);
-                Token tokenRef = tTokensBoard[iX,iY];
+                UidToIJ(btn, ref iX, ref iY);
+                Token tokenRef = gameBoard.tToken[iX, iY];
+               
 
-                if (gameBoard.TiBoard[iX, iY] == -1)
+
+                if (gameBoard.tiBoard[iX, iY] == -1)
                 {
+                    if (iX == 4 && iY == 5)
+                    {
+                        Console.WriteLine("");
+                    }
                     if (tokenRef.IIsPlayable)
                     {
                         Image imgToken = new Image();
@@ -411,9 +445,9 @@ namespace ProjetOthello
                 Button btnEvent = (Button)sender;
                 int iX = 0;
                 int iY = 0;
-                Tools.UidToIJ(btnEvent, ref iX, ref iY);
-                if (gameBoard.TiBoard[iX, iY] == -1)
-                    tTokensBoard[iX, iY].TokenResetDisplay();
+                UidToIJ(btnEvent, ref iX, ref iY);
+                if (gameBoard.tiBoard[iX, iY] == -1)
+                    TokenResetDisplay(iX,iY);
             }
         }
 

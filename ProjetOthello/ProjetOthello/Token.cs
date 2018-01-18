@@ -3,43 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace ProjetOthello
 {
     class Token
     {
 
-        #region Propreties
+        #region Propreties        
 
-        //Reference of grid buttons
-        public Button btnContainer;
-        private bool iIsPlayable = false;
-        public List<int[]> lTokenCoordTarget;
-        public int x, y;
+        private bool IsPlayable = false;        //Usefull to not reverified if a cell is playable, everytime user enter in it
+        public List<int[]> lTokenCoordTarget;   //List of token who would be changed if you play this move
+        public int x, y;                        //Position of the token
+
         #endregion
 
-
         #region Getter/Setter
-
-        public Button BtnContainer { get => btnContainer; set => btnContainer = value; }
-        public bool IIsPlayable { get => iIsPlayable; set => iIsPlayable = value; }
+        
+        public bool IIsPlayable { get => IsPlayable; set => IsPlayable = value; }
         public List<int[]> LTokenCoordTarget { get => lTokenCoordTarget; set => lTokenCoordTarget = value; }
 
         #endregion
-
-
+        
         #region Constructor
-
-        public Token(Button _btnContainer, int x, int y)
-        {            
-            BtnContainer = _btnContainer;
-            LTokenCoordTarget = new List<int[]>();
-            this.x = x;
-            this.y = y;
-        }
-
+        
         public Token(int x, int y)
         {
             LTokenCoordTarget = new List<int[]>();
@@ -51,28 +37,16 @@ namespace ProjetOthello
 
         #region Function        
 
-        public void UpdateToken(int iPlayerId)
-        {
-            Image imgToken = new Image();
-            imgToken.Source = GameParameter.tbtmTokenIndex[iPlayerId];
-            btnContainer.Content = imgToken;
-            btnContainer.Background = GameParameter.tColorBackgroundCell[iPlayerId];
-        }
-
-        public void TokenResetDisplay()
-        {
-            btnContainer.Content = "";
-        }
-
+        /// <summary>
+        /// Reset the list of target and IsPlayable, call every end of a turn
+        /// </summary>
         public void ResetTokenList()
         {
-            IIsPlayable = false;
-            LTokenCoordTarget = new List<int[]>();
+            IsPlayable = false;
+            lTokenCoordTarget = new List<int[]>();
         }
 
         #endregion
-
-
-
+        
     }
 }
