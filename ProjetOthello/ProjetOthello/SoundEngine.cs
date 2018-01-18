@@ -13,7 +13,7 @@ namespace ProjetOthello
         public SoundEngine(string musicPaths)
         {
             mediaPlayer = new MediaPlayer();
-            mediaPlayer.Open();
+            mediaPlayer.Open(new Uri(musicPaths));
         }   
     }
 }
