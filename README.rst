@@ -24,6 +24,7 @@ Dans cette fonction nous avons créer une matrice carré de 8x8, qui reférence 
 	32	1	16	16	16	16	1	32
 
 	
-Les coins sont les positions qui valent le plus puisqu'ils ne peuvent pas être modifié, les cases autours W
+Les coins sont les positions qui valent le plus puisqu'ils ne peuvent pas être modifié, les cases autours valent très peu puisque elles permettent
+à l'opposant de peut être prendre un coin, tous comme les cases sur les côtés.
 	
 Cette matrice est uniquement basé sur nos recherches et notre éxperience du jeu, il en éxiste donc d'autres plus optimisé.

@@ -7,12 +7,18 @@
         mc:Ignorable="d" Name="mainWindow"
         Title="Othello vs He-Arc" Height="900" Width="1600" MinWidth="1280" MinHeight="720"            
         WindowStartupLocation="CenterScreen"
-        Background="White">
+        WindowStyle="None" AllowsTransparency="True"
+        Background="Transparent">
 
 
     <Window.Resources>
         <BitmapImage x:Key="btmBoardBackground" UriSource="Assets/Game/BoardBackgroundDefault.png"/>
 
+        <Style TargetType="{x:Type Grid}">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+               
+        
         <Style x:Key="tbxScore" TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="40"/>
