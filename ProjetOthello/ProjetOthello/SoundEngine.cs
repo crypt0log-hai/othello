@@ -9,7 +9,7 @@ namespace ProjetOthello
 {
     class SoundEngine : MediaPlayer
     {
-        public SoundEngine()
+        public SoundEngine(string strPathSong)
         {
 
         }

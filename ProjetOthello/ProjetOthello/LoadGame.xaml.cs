@@ -104,6 +104,7 @@ namespace ProjetOthello
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
+            GameParameter.isIA[0] = GameParameter.isIA[1] = false;
             MainWindow gameWindow = new MainWindow(lHistoryGame[gInfo.Index]);
             gameWindow.Show();
             this.Close();
