@@ -12,16 +12,37 @@
 
     <Window.Resources>
         <BitmapImage x:Key="btmBoardBackground" UriSource="Assets/Game/BoardBackgroundDefault.png"/>
+
+        <Style x:Key="tbxScore" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="FontFamily" Value="Quartz MS"/>
+        </Style>
+        
+        <Style x:Key="lblScore" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="FontFamily" Value="Quartz MS"/>
+        </Style>
+        
+        <Style x:Key="tbxToken" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Quartz MS"/>
+        </Style>
+
+        <Style x:Key="lblToken" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Quartz MS"/>
+        </Style>
+
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="36"/>
             <Setter Property="FontFamily" Value="Quartz MS"/>
         </Style>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontFamily" Value="Quartz MS"/>
-        </Style>
+        
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
@@ -114,10 +135,10 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="1" >
                 <StackPanel  Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <Label Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
-                    <TextBlock Name="tbxTokenPlayer1" HorizontalAlignment="Center" Text="{Binding NbTokenP1,Mode=TwoWay}" />
-                    <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
-                    <TextBlock Name="tbxScorePlayer1" HorizontalAlignment="Center" Text="{Binding ScoreP1,Mode=TwoWay}" />
+                    <Label Style="{StaticResource lblScore}" Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
+                    <TextBlock Style="{StaticResource tbxScore}" Name="tbxScorePlayer1" HorizontalAlignment="Center" Text="{Binding ScoreP1,Mode=TwoWay}" />
+                    <Label Style="{StaticResource lblToken}" Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
+                    <TextBlock Style="{StaticResource tbxToken}" Name="tbxTokenPlayer1" HorizontalAlignment="Center" Text="{Binding NbTokenP1,Mode=TwoWay}" />
                 </StackPanel>
             </Grid>
 
@@ -140,10 +161,10 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
-                <Label Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
-                <TextBlock Name="tbxTokenPlayer2" HorizontalAlignment="Center" Text="{Binding NbTokenP2,Mode=TwoWay}" />
-                <Label Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
-                <TextBlock Name="tbxScorePlayer2" HorizontalAlignment="Center" Text="{Binding ScoreP2,Mode=TwoWay}" />
+                <Label Style="{StaticResource lblScore}" Margin="0,50,0,0" HorizontalAlignment="Center">Score</Label>
+                <TextBlock Style="{StaticResource tbxScore}" Name="tbxScorePlayer2" HorizontalAlignment="Center" Text="{Binding ScoreP2,Mode=TwoWay}" />
+                <Label Style="{StaticResource lblToken}" Margin="0,80,0,0" HorizontalAlignment="Center">Jetons restant</Label>
+                <TextBlock Style="{StaticResource tbxToken}" Name="tbxTokenPlayer2" HorizontalAlignment="Center" Text="{Binding NbTokenP2,Mode=TwoWay}" />
             </StackPanel>
 
         </Grid>
