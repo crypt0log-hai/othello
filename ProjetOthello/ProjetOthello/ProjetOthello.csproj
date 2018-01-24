@@ -161,18 +161,42 @@
     <Resource Include="Assets\Menu\Selection\QuestionMark.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Sound\CarrinoWin.mp3" />
-    <Content Include="Assets\Sound\character_select_theme.mp3" />
-    <Content Include="Assets\Sound\CortinovisWin.mp3" />
-    <Content Include="Assets\Sound\Fight.mp3" />
-    <Content Include="Assets\Sound\fight_theme.mp3" />
-    <Content Include="Assets\Sound\GobronWin.mp3" />
-    <Content Include="Assets\Sound\GorbelWin.mp3" />
-    <Content Include="Assets\Sound\HusserWin.mp3" />
-    <Content Include="Assets\Sound\menu_theme.mp3" />
-    <Content Include="Assets\Sound\OuerhaniWin.mp3" />
-    <Content Include="Assets\Sound\Ready.mp3" />
-    <Content Include="Assets\Sound\TiecheWin.mp3" />
+    <Content Include="Assets\Sound\CarrinoWin.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\character_select_theme.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\CortinovisWin.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\Fight.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\fight_theme.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\GobronWin.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\GorbelWin.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\HusserWin.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\menu_theme.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\OuerhaniWin.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\Ready.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Sound\TiecheWin.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Assets\Menu\Portrait\Gobron.png" />
     <Resource Include="Assets\Menu\Portrait\Ouerhani.png" />
     <Resource Include="Assets\Game\Tokens\Carrino.png" />

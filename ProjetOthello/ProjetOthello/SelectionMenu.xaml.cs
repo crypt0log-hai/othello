@@ -42,9 +42,16 @@ namespace ProjetOthello
         int iValMaxAnimation = 0;
         int iValAnimation = 0;
 
+
+        SoundEngine soundEngine;
+
+
         public SelectionMenu()
         {
             InitializeComponent();
+
+            soundEngine = new SoundEngine("./Assets/Sound/character_select_theme.wav");
+
             tbtmPortrait = new BitmapImage[iNbChar];
             tbtnSelection = new Button[iNbChar];
             for (int i = 0; i < iNbChar; i++)
