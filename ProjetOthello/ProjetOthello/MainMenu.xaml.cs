@@ -17,10 +17,12 @@ namespace ProjetOthello
         List<string[]> lButtonName;
         string[] filePaths;
         int iMenuState = 0;
+        SoundEngine soundEngine;
 
         public MainMenu()
         {
             InitializeComponent();
+            soundEngine = new SoundEngine("./Assets/Sound/menu_theme.mp3");
             lButtonName = new List<string[]>();
             string[] tNames0 = { "NewGame", "Load", "Option", "Exit" };
             string[] tNames1 = { "1 vs 1", "1 vs IA", "IA vs IA", "Back" };

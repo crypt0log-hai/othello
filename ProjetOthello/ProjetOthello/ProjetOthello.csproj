@@ -49,6 +49,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IPlayable, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\IPlayable.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -159,11 +163,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Sound\CarrinoWin.mp3" />
+    <Content Include="Assets\Sound\character_select_theme.mp3" />
     <Content Include="Assets\Sound\CortinovisWin.mp3" />
     <Content Include="Assets\Sound\Fight.mp3" />
+    <Content Include="Assets\Sound\fight_theme.mp3" />
     <Content Include="Assets\Sound\GobronWin.mp3" />
     <Content Include="Assets\Sound\GorbelWin.mp3" />
     <Content Include="Assets\Sound\HusserWin.mp3" />
+    <Content Include="Assets\Sound\menu_theme.mp3" />
     <Content Include="Assets\Sound\OuerhaniWin.mp3" />
     <Content Include="Assets\Sound\Ready.mp3" />
     <Content Include="Assets\Sound\TiecheWin.mp3" />
