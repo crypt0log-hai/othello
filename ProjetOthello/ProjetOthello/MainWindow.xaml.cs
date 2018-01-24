@@ -96,7 +96,10 @@ namespace ProjetOthello
 
         private void InitializationParameter()
         {
-            
+
+            if (GameParameter.isIA[0] || GameParameter.isIA[1])
+                btnUndo.IsEnabled = false;
+
             tbxTimers[0] = tbxTimerPlay1;
             tbxTimers[1] = tbxTimerPlay2;
             tbxTimers[0].Text = tbxTimers[1].Text = "00:00";
