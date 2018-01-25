@@ -10,6 +10,9 @@
         Title="Options" Height="711.198" Width="1010.516"
         Background="Black">
     <Window.Resources>
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
         <Style x:Key="ButtonColumns" TargetType="DockPanel">
             <Setter Property="Background" Value="Red"/>
         </Style>
@@ -52,17 +55,11 @@
     </Style>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="4*"/>
-        </Grid.ColumnDefinitions>
-        <DockPanel>
-        <StackPanel  Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center">
-        <Button Content="Game" x:Name="btnGame" />
-        <Button Content="Sound" x:Name="btnSound"/>
-        <Button Content="Help" x:Name="btnHelp"/>
-                <Button Content="Back" x:Name="btnNext" Click="btnBack_Clic"/>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Foreground="White" Content="Credits" HorizontalAlignment="Center" FontSize="45" Margin="20"></Label>
+            <Label x:Name="lblCredit" Foreground="White" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+            <CheckBox x:Name="cbxMusic" Content="Musique" HorizontalAlignment="Center" Click="cbxMusicClick"/>
+            <Button x:Name="btnBack" Content="Back" Click="btnBack_Clic" Margin="25"/>
         </StackPanel>
-        </DockPanel>
     </Grid>
 </Window>

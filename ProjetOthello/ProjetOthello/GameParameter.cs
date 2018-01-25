@@ -22,6 +22,8 @@ namespace ProjetOthello
 
         public static bool[] isIA = { false, false };
 
+        public static bool isMusiqueEnabled = true;
+
         public static int[] tScore = new int[2];
         public static string[] tTime = new string[2];
         public static int iNbCharacter = 7;

@@ -14,8 +14,11 @@ namespace ProjetOthello
         public SoundEngine(string musicPaths)
         {
             mediaPlayer = new SoundPlayer(musicPaths);
-            mediaPlayer.Load();            
-            mediaPlayer.Play();
+            if (GameParameter.isMusiqueEnabled)
+            {
+                mediaPlayer.Load();
+                mediaPlayer.Play();
+            }
         }   
 
         public void StopSound()

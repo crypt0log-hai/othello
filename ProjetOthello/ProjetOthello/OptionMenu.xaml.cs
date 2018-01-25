@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,16 +20,41 @@ namespace ProjetOthello
     /// </summary>
     public partial class OptionMenu : Window
     {
+        bool blOnLoad = true;
         public OptionMenu()
         {
             InitializeComponent();
+            if (GameParameter.isMusiqueEnabled)
+                cbxMusic.IsChecked = true;
+            ReadCredit();
         }
+
+        private void ReadCredit()
+        {
+            string strCredits = "";
+            using (StreamReader file = new StreamReader("./Assets/Credit.txt"))
+            {
+                while (!file.EndOfStream)
+                    strCredits += file.ReadLine() +"\n";
+            }
+            lblCredit.Content = strCredits;
+        }
+
         
         private void btnBack_Clic(object sender, RoutedEventArgs e)
         {
             MainMenu mainMenu = new MainMenu();
             mainMenu.Show();
             this.Close();
+        }
+
+        private void cbxMusicClick(object sender, RoutedEventArgs e)
+        {
+            if (cbxMusic.IsChecked.Value)
+                GameParameter.isMusiqueEnabled = true;
+            else
+                GameParameter.isMusiqueEnabled = false;
+            
         }
     }
 }

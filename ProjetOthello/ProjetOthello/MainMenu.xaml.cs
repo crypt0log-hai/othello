@@ -73,8 +73,6 @@ namespace ProjetOthello
                 btnMenu.Uid = name;
                 btnMenu.Content = name;
                 btnMenu.Click += buttonsClicked;
-                if (name == "Option")
-                    btnMenu.IsEnabled = false;
                 spMenuButton.Children.Add(btnMenu);
             }
             

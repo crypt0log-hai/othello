@@ -197,6 +197,9 @@
     <Content Include="Assets\Sound\TiecheWin.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\Credit.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Assets\Menu\Portrait\Gobron.png" />
     <Resource Include="Assets\Menu\Portrait\Ouerhani.png" />
     <Resource Include="Assets\Game\Tokens\Carrino.png" />
