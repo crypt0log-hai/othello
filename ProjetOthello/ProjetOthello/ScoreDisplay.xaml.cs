@@ -22,16 +22,20 @@ namespace ProjetOthello
     {
         MainWindow gameWindow;
         bool blIsOver;
+        SoundEngine soundEngine;
+
         public ScoreDisplay(MainWindow gameWindow, bool blIsOver)
         {
             InitializeComponent();
             this.Closing += OnWindowClosing;
             this.blIsOver = blIsOver;
             this.gameWindow = gameWindow;
-           
+
+
             string strName;
             if (blIsOver)
             {
+                soundEngine = new SoundEngine("./Assets/Sound/" + GameParameter.tCharacterNames[GameParameter.iWinner] + "Win.wav");
                 strName = "Menu,Restart,Save,Exit";
                 ShowScore();
             }
@@ -61,7 +65,10 @@ namespace ProjetOthello
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button btnSend = (Button)sender;
-            switch(btnSend.Uid)
+            if(btnSend.Uid != "Save")
+                if(soundEngine != null)
+                    soundEngine.StopSound();
+            switch (btnSend.Uid)
             {
                 case "Resume":
                     gameWindow.dispatcherTimer.IsEnabled = true;
@@ -99,7 +106,9 @@ namespace ProjetOthello
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {
             if (blIsOver)
+            {
                 gameWindow.Close();
+            }
             else
             {
                 gameWindow.dispatcherTimer.IsEnabled = true;

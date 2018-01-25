@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,10 +18,12 @@ namespace ProjetOthello
         List<string[]> lButtonName;
         string[] filePaths;
         int iMenuState = 0;
+        SoundEngine soundEngine;
 
         public MainMenu()
         {
             InitializeComponent();
+            soundEngine = new SoundEngine("./Assets/Sound/menu_theme.wav");
             lButtonName = new List<string[]>();
             string[] tNames0 = { "NewGame", "Load", "Option", "Exit" };
             string[] tNames1 = { "1 vs 1", "1 vs IA", "IA vs IA", "Back" };
@@ -70,6 +73,8 @@ namespace ProjetOthello
                 btnMenu.Uid = name;
                 btnMenu.Content = name;
                 btnMenu.Click += buttonsClicked;
+                if (name == "Option")
+                    btnMenu.IsEnabled = false;
                 spMenuButton.Children.Add(btnMenu);
             }
             
@@ -109,18 +114,21 @@ namespace ProjetOthello
                     this.Close();
                     break;
                 case "1 vs 1":
+                    soundEngine.StopSound();
                     GameParameter.isIA = new bool[2] { false, false };
                     selectionMenu = new SelectionMenu();
                     selectionMenu.Show();
                     this.Close();
                     break;
                 case "1 vs IA":
+                    soundEngine.StopSound();
                     GameParameter.isIA = new bool[2] { false, true };
                     selectionMenu = new SelectionMenu();
                     selectionMenu.Show();
                     this.Close();
                     break;
                 case "IA vs IA":
+                    soundEngine.StopSound();
                     GameParameter.isIA = new bool[2] { true, true };
                     selectionMenu = new SelectionMenu();
                     selectionMenu.Show();

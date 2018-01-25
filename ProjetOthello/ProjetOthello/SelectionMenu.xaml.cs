@@ -42,9 +42,16 @@ namespace ProjetOthello
         int iValMaxAnimation = 0;
         int iValAnimation = 0;
 
+
+        SoundEngine soundEngine;
+
+
         public SelectionMenu()
         {
             InitializeComponent();
+
+            soundEngine = new SoundEngine("./Assets/Sound/character_select_theme.wav");
+
             tbtmPortrait = new BitmapImage[iNbChar];
             tbtnSelection = new Button[iNbChar];
             for (int i = 0; i < iNbChar; i++)
@@ -113,7 +120,7 @@ namespace ProjetOthello
             {
                 iValMaxAnimation = new Random().Next(50, 75);
                 iValAnimation = 0;
-                timerAnimation = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 25), DispatcherPriority.Background,
+                timerAnimation = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 100), DispatcherPriority.Background,
                 timerAnimation_Update, Dispatcher.CurrentDispatcher);
                 timerAnimation.IsEnabled = true;
                 timerAnimation.Start();
@@ -123,24 +130,27 @@ namespace ProjetOthello
 
         private void PortraitSelect()
         {
-            BitmapImage btmChoose = new BitmapImage();
-            btmChoose.BeginInit();
-            btmChoose.UriSource = new Uri("pack://application:,,,/Assets/Game/Tokens/" + tNameCharacter[iSelectPortrait] + ".png", UriKind.RelativeOrAbsolute);
-            btmChoose.EndInit();
-            GameParameter.tCharacterNames[iChooseTurn] = tNameCharacter[iSelectPortrait];
-            GameParameter.tbtmTokenIndex[iChooseTurn] = btmChoose;
+            if (iSelectedPortrait != iSelectPortrait)
+            {
+                BitmapImage btmChoose = new BitmapImage();
+                btmChoose.BeginInit();
+                btmChoose.UriSource = new Uri("pack://application:,,,/Assets/Game/Tokens/" + tNameCharacter[iSelectPortrait] + ".png", UriKind.RelativeOrAbsolute);
+                btmChoose.EndInit();
+                GameParameter.tCharacterNames[iChooseTurn] = tNameCharacter[iSelectPortrait];
+                GameParameter.tbtmTokenIndex[iChooseTurn] = btmChoose;
 
-            iSelectedPortrait = iSelectPortrait;
-            if (iChooseTurn > 0)
-            {
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
-            }
-            else
-            {
-                iChooseTurn++;
-                ControlIA();
+                iSelectedPortrait = iSelectPortrait;
+                if (iChooseTurn > 0)
+                {
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    this.Close();
+                }
+                else
+                {
+                    iChooseTurn++;
+                    ControlIA();
+                }
             }
         }
 

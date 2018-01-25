@@ -38,10 +38,7 @@ namespace ProjetOthello
         //Represent the cells on the board
         Grid gridCell;
 
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         List<Token> lTokenPlayable;
 
         Button[,] tTokensBoard;
@@ -59,6 +56,8 @@ namespace ProjetOthello
 
 
         private GameBoard gameBoard;
+
+        SoundEngine soundEngine;
 
         #endregion
         
@@ -89,6 +88,7 @@ namespace ProjetOthello
 
         private void InititializeAll()
         {
+            soundEngine = new SoundEngine("./Assets/Sound/fight_theme.wav");
             InitializationParameter();
             InitializationBoard();
             UpdateTokenBoard();
@@ -96,7 +96,10 @@ namespace ProjetOthello
 
         private void InitializationParameter()
         {
-            
+
+            if (GameParameter.isIA[0] || GameParameter.isIA[1])
+                btnUndo.IsEnabled = false;
+
             tbxTimers[0] = tbxTimerPlay1;
             tbxTimers[1] = tbxTimerPlay2;
             tbxTimers[0].Text = tbxTimers[1].Text = "00:00";
@@ -190,16 +193,23 @@ namespace ProjetOthello
             gameBoard.GetBoard();
             for (int i = 0; i < iSize; i++)
                 for (int j = 0; j < iSize; j++)
-                    if (gameBoard.tiBoard[j, i] != -1)
-                        UpdateToken(gameBoard.tiBoard[j, i], j, i);
+                     UpdateToken(gameBoard.tiBoard[j, i], j, i);
         }
 
         public void UpdateToken(int iPlayerId, int x, int y)
         {
-            Image imgToken = new Image();
-            imgToken.Source = GameParameter.tbtmTokenIndex[iPlayerId];
-            tTokensBoard[x,y].Content = imgToken;
-            tTokensBoard[x, y].Background = GameParameter.tColorBackgroundCell[iPlayerId];
+            if (iPlayerId == -1)
+            {
+                tTokensBoard[x, y].Content = "";
+                tTokensBoard[x, y].Background = Brushes.Transparent;
+            }
+            else
+            {
+                Image imgToken = new Image();
+                imgToken.Source = GameParameter.tbtmTokenIndex[iPlayerId];
+                tTokensBoard[x, y].Content = imgToken;
+                tTokensBoard[x, y].Background = GameParameter.tColorBackgroundCell[iPlayerId];
+            }
         }
 
         public void TokenResetDisplay(int x, int y)
@@ -266,8 +276,6 @@ namespace ProjetOthello
                 {
                     if (gameBoard.tiBoard[j, i] == -1)
                     {
-
-
                         Token token = new Token(j, i);
                         if (gameBoard.IsCellPlayable(iActualPlayerId, j, i, ref gameBoard.tToken[j,i]))
                             lTokenPlayable.Add(token);
@@ -295,6 +303,7 @@ namespace ProjetOthello
 
         private void GameOver()
         {
+            soundEngine.StopSound();
             gameOver = true;
             GameParameter.tScore = tPlayerPoints;
             GameParameter.tTime[0] = timePlayer[0].ToString(@"\0m\:ss");
@@ -363,7 +372,7 @@ namespace ProjetOthello
             {
                 for (int i = 0; i < iSize; i++)
                     for (int j = 0; j < iSize; j++)
-                        tTokensBoard[j, i].Width = tTokensBoard[j, i].Height = dblCellSize;
+                        tTokensBoard[j, i].Width = tTokensBoard[j, i].Height = dblCellSize + 5;
             }
         }
 
@@ -424,10 +433,6 @@ namespace ProjetOthello
 
                 if (gameBoard.tiBoard[iX, iY] == -1)
                 {
-                    if (iX == 4 && iY == 5)
-                    {
-                        Console.WriteLine("");
-                    }
                     if (tokenRef.IIsPlayable)
                     {
                         Image imgToken = new Image();
@@ -453,9 +458,9 @@ namespace ProjetOthello
 
         private void dispatcherTimer_Update(object sender, EventArgs e)
         {
-            TimeSpan timeInterval = TimeSpan.FromSeconds(1);
-            timePlayer[iActualPlayerId] =  timePlayer[iActualPlayerId].Add(timeInterval);
-            tbxTimers[iActualPlayerId].Text = timePlayer[iActualPlayerId].ToString(@"\0m\:ss");
+                TimeSpan timeInterval = TimeSpan.FromSeconds(1);
+                timePlayer[iActualPlayerId] = timePlayer[iActualPlayerId].Add(timeInterval);
+                tbxTimers[iActualPlayerId].Text = timePlayer[iActualPlayerId].ToString(@"\0m\:ss");
         }
 
 
@@ -468,6 +473,20 @@ namespace ProjetOthello
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             ShowScore(false);
+        }
+
+        private void btnUndo_Click(object sender, RoutedEventArgs e)
+        {
+            if (lHistoryGame.Count >= 2)
+            {
+                Tuple<int, int[,], string> tuple = lHistoryGame[lHistoryGame.Count - 2];
+                lHistoryGame.RemoveAt(lHistoryGame.Count - 1);
+                gameBoard.tiBoard = (int[,])tuple.Item2.Clone();
+                iActualPlayerId = Tools.InverseBin(iActualPlayerId);
+                UpdateTokenBoard();
+                gameBoard.ResetTokenTarget();
+                ResetPlayableToken();
+            }
         }
 
         #endregion

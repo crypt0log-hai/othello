@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Media;
 
 namespace ProjetOthello
 {
-    class SoundEngine : MediaPlayer
+    class SoundEngine
     {
-        public SoundEngine(string strPathSong)
+        SoundPlayer mediaPlayer;
+        public SoundEngine(string musicPaths)
         {
+            mediaPlayer = new SoundPlayer(musicPaths);
+            mediaPlayer.Load();            
+            mediaPlayer.Play();
+        }   
 
+        public void StopSound()
+        {
+            mediaPlayer.Stop();
+            mediaPlayer.Dispose();
         }
-
     }
 }
