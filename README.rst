@@ -1,4 +1,4 @@
-Projet othello Luca srdjenovic - Axel Bento Da Silva
+Projet othello Luca srdjenovic - Axel Bento Da Silva - Gabriel Griesser
 
 
 Partie IA
@@ -28,3 +28,5 @@ Les coins sont les positions qui valent le plus puisqu'ils ne peuvent pas être 
 à l'opposant de peut être prendre un coin, tous comme les cases sur les côtés.
 	
 Cette matrice est uniquement basé sur nos recherches et notre éxperience du jeu, il en éxiste donc d'autres plus optimisé.
+
+Pour tester l'IA, l'ancez l'application -> NewGame -> 1 vs IA -> Sélectionnez un avatar -> La partie va se lancer une fois que l'IA ait choisis le sien.

@@ -14,7 +14,7 @@ namespace ProjetOthello
         public static BitmapImage[] tbtmTokenIndex = new BitmapImage[2];
         public static string[] tCharacterNames = new string[2];
 
-        public static string[] tNameCharacter = { "Carrino", "Cortinovis", "Gorbel", "Husser", "Tieche", "Gobron", "Ouerhani" };
+        public static string[] tNameCharacter = { "Carrino", "Cortinovis", "Ghorbel", "Husser", "Tieche", "Gobron", "Ouerhani" };
 
         public static Brush[] tColorBackgroundCell = { Brushes.White, Brushes.Red };
 

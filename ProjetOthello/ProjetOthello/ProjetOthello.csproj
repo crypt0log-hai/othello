@@ -165,7 +165,7 @@
     <Resource Include="Assets\Menu\Portrait\Ouerhani.png" />
     <Resource Include="Assets\Game\Tokens\Carrino.png" />
     <Resource Include="Assets\Game\Tokens\Cortinovis.png" />
-    <Resource Include="Assets\Game\Tokens\Gorbel.png" />
+    <Resource Include="Assets\Game\Tokens\Ghorbel.png" />
     <Resource Include="Assets\Game\Tokens\Husser.png" />
     <Resource Include="Assets\Game\Tokens\Tieche.png" />
     <Resource Include="Assets\Game\Tokens\Gobron.png" />
@@ -177,7 +177,7 @@
     </Content>
     <Resource Include="Assets\Menu\Portrait\Carrino.png" />
     <Resource Include="Assets\Menu\Portrait\Cortinovis.png" />
-    <Resource Include="Assets\Menu\Portrait\Gorbel.png" />
+    <Resource Include="Assets\Menu\Portrait\Ghorbel.png" />
     <Resource Include="Assets\Menu\Portrait\Husser.png" />
     <Resource Include="Assets\Menu\Portrait\Tieche.png" />
   </ItemGroup>
